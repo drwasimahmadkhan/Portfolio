@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Wasim Ahmad Khan | AI & Robotics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Typography: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    boxShadow: {
+                        '3d': '0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+    </style>
+    <style>
+        /* Custom Utilities - Light Theme */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(14, 165, 233, 0.4);
+            /* Adapted to Brand Blue */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+            /* Brand Blue Glow */
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* 3D Transform Utilities for Innovation Section */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .rotate-y-12.rotate-x-6 {
+            transform: rotate3d(1, 0, 0, 6deg) rotate3d(0, 1, 0, 12deg);
+        }
+
+        .hover\:rotate-0:hover {
+            transform: rotate3d(0, 0, 0, 0deg);
+        }
+    </style>
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body class="font-sans text-slate-900 antialiased selection:bg-brand-500 selection:text-white relative">
+
+    <!-- GLOBAL AMBIENT BACKGROUND -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-slate-50">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-500/20 rounded-full blur-[100px] animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/20 rounded-full blur-[100px] animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute top-[30%] right-[10%] w-[50%] h-[50%] bg-purple-500/20 rounded-full blur-[120px] animate-blob animation-delay-4000">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 brightness-100 contrast-150 mix-blend-overlay">
+        </div>
+    </div>
+
+    <!-- NAVIGATION: Luminous Horizon (All Links, Professional) -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 border-b border-white/50 shadow-sm bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
+        id="navbar">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Identity Core -->
+                <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                    <div class="relative w-10 h-10">
+                        <div
+                            class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 group-hover:rotate-6 transition-transform duration-300 opacity-20 blur-sm">
+                        </div>
+                        <div
+                            class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100 group-hover:ring-brand-200 transition-all">
+                            <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col hidden lg:flex">
+                        <span class="text-base font-bold text-slate-900 leading-tight tracking-tight font-display">Dr.
+                            Wasim A. Khan</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Research
+                            Laboratory</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation: Horizon Layout -->
+                <!-- Using flexible gap and text sizing to ensure fit for 8 items -->
+                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <!-- Home -->
+                    <a href="index.html"
+                        class="relative px-3 py-2 text-sm font-semibold text-brand-700 bg-brand-50/80 rounded-[7px] border border-brand-100/50 hover:bg-brand-100 hover:border-brand-200 transition-all shadow-sm">
+                        Home
+                    </a>
+
+                    <!-- Standard Links with Magnetic Hover Effect -->
+                    <a href="Pages/teaching.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Teaching
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="Pages/research.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Research
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="Pages/publications.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Publications
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="Pages/projects.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Projects
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="Pages/about.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        About
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="Pages/services.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Services
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+                    <!-- Contact CTA -->
+                    <a href="Pages/contact.html"
+                        class="px-6 py-2.5 rounded-[7px] bg-brand-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-brand-500/20 hover:bg-brand-700 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        Contact <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden p-2 rounded-[7px] text-slate-600 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO SECTION: Holographic Interface -->
+        <section class="min-h-screen relative flex items-center justify-center pt-32 pb-20 px-6 overflow-hidden"
+            id="hero-section">
+
+
+
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+
+                <!-- Center: Profile (Order 1 on Mobile, 2 on Desktop) -->
+                <div class="lg:col-span-4 lg:order-2 relative flex justify-center">
+                    <!-- Rotating Rings -->
+                    <div
+                        class="absolute w-[300px] h-[300px] border-2 border-indigo-400/60 rounded-full animate-[spin_10s_linear_infinite] shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                    </div>
+                    <div
+                        class="absolute w-[320px] h-[320px] border border-cyan-500/60 rounded-full animate-[spin_15s_linear_infinite_reverse] shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                    </div>
+                    <div
+                        class="absolute w-[340px] h-[340px] border-2 border-dashed border-slate-300/80 rounded-full animate-[spin_20s_linear_infinite]">
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div
+                        class="relative w-[280px] h-[280px] rounded-full overflow-hidden border-4 border-white shadow-2xl shadow-indigo-200 z-10">
+                        <img src="assets/images/profileimage.jpeg" alt="Dr. Wasim"
+                            class="w-full h-full object-cover hover:scale-110 transition-all duration-700">
+                    </div>
+                </div>
+
+                <!-- Left Content: Intro (Order 2 on Mobile, 1 on Desktop) -->
+                <div class="lg:col-span-4 lg:order-1 text-center lg:text-right space-y-6">
+                    <div
+                        class="inline-block px-3 py-1 rounded-[7px] border border-indigo-100 bg-white/80 backdrop-blur shadow-sm">
+                        <span class="text-indigo-600 text-xs font-bold tracking-widest uppercase">SYSTEM ONLINE</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                        Engineering <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">Sentience</span>
+                    </h1>
+                    <p class="text-slate-600 text-lg leading-relaxed">
+                        Architecting the convergence of <span class="text-slate-900 font-medium">Cloud Robotics</span>
+                        and
+                        <span class="text-slate-900 font-medium">Cognitive Consciousness</span>.
+                    </p>
+
+                    <!-- Floating Stats Card (Left) -->
+                    <div class="glass-panel p-6 rounded-[7px] inline-block text-left animate-float bg-white/80">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl border border-indigo-100">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-slate-900">14+ Years</div>
+                                <div class="text-xs text-slate-500 font-mono uppercase">Academic Exp.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content: Actions (Order 3 on Mobile, 3 on Desktop) -->
+                <div class="lg:col-span-4 lg:order-3 text-center lg:text-left space-y-6">
+                    <div class="space-y-4">
+                        <h3 class="text-slate-500 text-xl font-medium">Primary Directives</h3>
+                        <div class="flex flex-col gap-3 max-w-xs mx-auto lg:mx-0">
+                            <a href="Pages/research.html"
+                                class="glass-panel px-6 py-4 rounded-[7px] flex items-center justify-between group hover:bg-indigo-50 transition-all">
+                                <span
+                                    class="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">Explore
+                                    Research</span>
+                                <i
+                                    class="fas fa-arrow-right text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+                            <a href="Pages/publications.html"
+                                class="glass-panel px-6 py-4 rounded-[7px] flex items-center justify-between group hover:bg-cyan-50 transition-all">
+                                <span
+                                    class="font-medium text-slate-900 group-hover:text-cyan-600 transition-colors">View
+                                    Publications</span>
+                                <i
+                                    class="fas fa-arrow-right text-slate-400 group-hover:text-cyan-600 group-hover:translate-x-1 transition-all"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Floating Stats Card (Right) -->
+                    <div class="glass-panel p-6 rounded-[7px] inline-block text-left animate-float bg-white/80"
+                        style="animation-delay: 2s;">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 text-xl border border-cyan-100">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-slate-900">28 Papers</div>
+                                <div class="text-xs text-slate-500 font-mono uppercase">Top-tier Journals</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- STATS STRIP -->
+        <section class="border-y border-white/20 bg-white/30 backdrop-blur-md relative z-10 w-full overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-slate-200">
+                    <div class="group">
+                        <div class="text-3xl font-bold text-slate-900 mb-1 group-hover:text-brand-600 transition-colors counter"
+                            data-target="14" data-suffix="+">0</div>
+                        <div class="text-xs font-mono text-slate-500 uppercase tracking-widest">Years Experience</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold text-slate-900 mb-1 group-hover:text-cyan-600 transition-colors counter"
+                            data-target="3" data-suffix="">0</div>
+                        <div class="text-xs font-mono text-slate-500 uppercase tracking-widest">PhD Scholars</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold text-slate-900 mb-1 group-hover:text-brand-600 transition-colors counter"
+                            data-target="48" data-suffix="+">0</div>
+                        <div class="text-xs font-mono text-slate-500 uppercase tracking-widest">Publications</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold text-slate-900 mb-1 group-hover:text-cyan-600 transition-colors counter"
+                            data-target="35" data-suffix="+">0</div>
+                        <div class="text-xs font-mono text-slate-500 uppercase tracking-widest">Impact Factor</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Counter Script -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const counters = document.querySelectorAll(".counter");
+                const duration = 2000; // 2 seconds - Normal/Standard speed
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const counter = entry.target;
+                            const target = +counter.getAttribute("data-target");
+                            const suffix = counter.getAttribute("data-suffix") || "";
+                            const startTime = performance.now();
+
+                            const updateCount = (currentTime) => {
+                                const elapsed = currentTime - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+
+                                // Ease Out Cubic: Standard smooth deceleration
+                                const ease = 1 - Math.pow(1 - progress, 3);
+
+                                const current = Math.floor(ease * target);
+                                counter.innerText = current + suffix;
+
+                                if (progress < 1) {
+                                    requestAnimationFrame(updateCount);
+                                } else {
+                                    counter.innerText = target + suffix;
+                                }
+                            };
+
+                            requestAnimationFrame(updateCount);
+                            observer.unobserve(counter);
+                        }
+                    });
+                }, {
+                    threshold: 0.5
+                });
+
+                counters.forEach(counter => {
+                    observer.observe(counter);
+                });
+            });
+        </script>
+
+        <!-- SECTION: Research Cards (Holographic Glass Design) -->
+        <section class="py-24 bg-white/40 backdrop-blur-3xl relative z-20 overflow-hidden border-t border-white/40">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                <div class="absolute top-1/4 left-0 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl -translate-x-1/2">
+                </div>
+                <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl translate-x-1/2">
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-16">
+                    <div
+                        class="inline-block px-3 py-1 rounded-[7px] border border-brand-100 bg-white/80 backdrop-blur shadow-sm mb-4">
+                        <span class="text-brand-600 text-xs font-bold tracking-widest uppercase">EXPERTISE</span>
+                    </div>
+                    <h2 class="text-4xl font-bold text-slate-900 mt-2">Core Computational Domains</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1: Cloud Robotics -->
+                    <div
+                        class="group bg-white rounded-[7px] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden flex flex-col">
+                        <!-- Bottom Line Effect -->
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-1 bg-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left">
+                        </div>
+
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-6">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 text-2xl group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-cyan-700 transition-colors">
+                            Cloud Robotics</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Leveraging distributed cloud computing to enhance the computational capabilities and memory
+                            of robotic systems.
+                        </p>
+
+                        <!-- Technical Tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-cyan-200 group-hover:text-cyan-700 transition-colors">Distributed</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-cyan-200 group-hover:text-cyan-700 transition-colors">Swarm
+                                Intel</span>
+                        </div>
+
+                        <!-- View More Button -->
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <a href="Pages/research.html"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-cyan-600 transition-colors">
+                                View More <i
+                                    class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Cognitive Agents -->
+                    <div
+                        class="group bg-white rounded-[7px] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-brand-500/30 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden flex flex-col">
+                        <!-- Bottom Line Effect -->
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-1 bg-brand-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left">
+                        </div>
+
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-6">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 text-2xl group-hover:bg-brand-600 group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-700 transition-colors">
+                            Cognitive Agents</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Implementing advanced LIDA/SOAR architectures for human-like reasoning and autonomous memory
+                            systems.
+                        </p>
+
+                        <!-- Technical Tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-brand-200 group-hover:text-brand-700 transition-colors">LIDA/SOAR</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-brand-200 group-hover:text-brand-700 transition-colors">Reasoning</span>
+                        </div>
+
+                        <!-- View More Button -->
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <a href="Pages/research.html"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-brand-600 transition-colors">
+                                View More <i
+                                    class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: AI Engineering -->
+                    <div
+                        class="group bg-white rounded-[7px] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-teal-500/30 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden flex flex-col">
+                        <!-- Bottom Line Effect -->
+                        <div
+                            class="absolute bottom-0 left-0 w-full h-1 bg-teal-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left">
+                        </div>
+
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-6">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 text-2xl group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">AI
+                            Engineering</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Fine-tuning Large Language Models and developing predictive healthcare systems with high
+                            accuracy.
+                        </p>
+
+                        <!-- Technical Tags -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-teal-200 group-hover:text-teal-700 transition-colors">LLMs</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:border-teal-200 group-hover:text-teal-700 transition-colors">Predictive
+                                AI</span>
+                        </div>
+
+                        <!-- View More Button -->
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <a href="Pages/research.html"
+                                class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-teal-600 transition-colors">
+                                View More <i
+                                    class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SECTION: Latest Breakthroughs (Impact Holograms) -->
+    <section class="py-24 bg-white/40 backdrop-blur-3xl relative z-20 overflow-hidden border-t border-white/40">
+        <!-- Background Orbs for Glass Effect -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div
+                class="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-[100px] -translate-y-1/2">
+            </div>
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <div>
+                    <div
+                        class="inline-block px-3 py-1 rounded-[7px] border border-brand-100 bg-white/80 backdrop-blur shadow-sm mb-4">
+                        <span class="text-brand-600 text-xs font-bold tracking-widest uppercase">RESEARCH
+                            HIGHLIGHTS</span>
+                    </div>
+                    <h2 class="text-4xl font-bold text-slate-900 mt-2">Latest Breakthroughs</h2>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Highlight 1: Skin Disease Prediction (2025) -->
+                <a href="https://doi.org/10.1038/s41598-024-83966-4" target="_blank"
+                    class="block group relative bg-white/60 backdrop-blur-md border border-white/60 p-8 rounded-[7px] shadow-xl shadow-slate-200/50 hover:shadow-brand-500/10 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                    <!-- Hover Gradient Border -->
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 via-cyan-500 to-brand-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out">
+                    </div>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="px-4 py-1.5 bg-brand-50 text-brand-700 text-xs font-bold rounded-full border border-brand-100 shadow-sm">
+                                Scientific Reports
+                            </span>
+                            <span
+                                class="px-3 py-1.5 bg-cyan-50 text-cyan-700 text-xs font-bold rounded-full border border-cyan-100 shadow-sm flex items-center gap-1">
+                                <i class="fas fa-calendar-alt text-[10px]"></i> Jan 2025
+                            </span>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-2xl font-bold text-slate-900 mb-4 group-hover:text-brand-600 transition-colors leading-tight">
+                        Intelligent Skin Disease Prediction Using Transfer Learning & XAI
+                    </h3>
+
+                    <p class="text-slate-600 leading-relaxed mb-8 border-l-2 border-brand-200 pl-4">
+                        Pioneering work in explainable AI ensuring transparent and accurate diagnosis systems for
+                        dermatological conditions.
+                    </p>
+
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="flex items-center gap-2 px-4 py-2 bg-white/80 rounded-[7px] border border-slate-100 shadow-sm group-hover:border-brand-100 transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-[7px] bg-brand-100 flex items-center justify-center text-brand-600">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Impact
+                                    Factor</span>
+                                <span class="text-sm font-bold text-slate-900">3.8</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 px-4 py-2 bg-white/80 rounded-[7px] border border-slate-100 shadow-sm group-hover:border-cyan-100 transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-[7px] bg-cyan-100 flex items-center justify-center text-cyan-600">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</span>
+                                <span class="text-sm font-bold text-slate-900">Top Tier</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Highlight 2: Kidney Stone Identification (2024) -->
+                <a href="https://doi.org/10.1038/s41598-024-60554-0" target="_blank"
+                    class="block group relative bg-white/60 backdrop-blur-md border border-white/60 p-8 rounded-[7px] shadow-xl shadow-slate-200/50 hover:shadow-cyan-500/10 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                    <!-- Hover Gradient Border -->
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-brand-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out">
+                    </div>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="px-4 py-1.5 bg-brand-50 text-brand-700 text-xs font-bold rounded-full border border-brand-100 shadow-sm">
+                                Scientific Reports
+                            </span>
+                            <span
+                                class="px-3 py-1.5 bg-cyan-50 text-cyan-700 text-xs font-bold rounded-full border border-cyan-100 shadow-sm flex items-center gap-1">
+                                <i class="fas fa-calendar-alt text-[10px]"></i> May 2024
+                            </span>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-2xl font-bold text-slate-900 mb-4 group-hover:text-cyan-600 transition-colors leading-tight">
+                        Kidney Stone Identification via VGG16 Empowered XAI
+                    </h3>
+
+                    <p class="text-slate-600 leading-relaxed mb-8 border-l-2 border-cyan-200 pl-4">
+                        Enhancing medical imaging diagnostic accuracy using deep learning architectures and visual
+                        interpretability.
+                    </p>
+
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="flex items-center gap-2 px-4 py-2 bg-white/80 rounded-[7px] border border-slate-100 shadow-sm group-hover:border-brand-100 transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-[7px] bg-brand-100 flex items-center justify-center text-brand-600">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Impact
+                                    Factor</span>
+                                <span class="text-sm font-bold text-slate-900">4.6</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 px-4 py-2 bg-white/80 rounded-[7px] border border-slate-100 shadow-sm group-hover:border-cyan-100 transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-[7px] bg-cyan-100 flex items-center justify-center text-cyan-600">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Publisher</span>
+                                <span class="text-sm font-bold text-slate-900">Nature Portfolio</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex justify-center">
+                <a href="Pages/publications.html"
+                    class="group flex items-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-[7px] shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:scale-95">
+                    View Impact Archive <i
+                        class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Global Impact & Leadership -->
+    <!-- SECTION: Global Impact & Leadership (Colorful Redesign) -->
+    <section class="py-20 bg-slate-50 relative overflow-hidden">
+        <!-- Background Decorations -->
+        <div
+            class="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <div
+                    class="inline-block px-3 py-1 rounded-[7px] border border-brand-100 bg-white/80 backdrop-blur shadow-sm mb-4">
+                    <span class="text-brand-600 text-xs font-bold tracking-widest uppercase">GLOBAL RECOGNITION</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600">Leadership
+                        & Innovation</span>
+                </h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+                    Pioneering contributions to AI education and research, recognized by global institutions and
+                    industry leaders.
+                </p>
+            </div>
+
+            <!-- Authentic Bento Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <!-- Card 1: QS Award (Vibrant Gradient) - Spans 8 cols -->
+                <div
+                    class="md:col-span-12 lg:col-span-8 group relative bg-gradient-to-br from-violet-600 to-indigo-700 p-8 rounded-[20px] overflow-hidden shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-500 hover:-translate-y-1">
+                    <!-- Decor -->
+                    <div
+                        class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform rotate-12 scale-150">
+                        <i class="fas fa-award text-9xl text-white"></i>
+                    </div>
+
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold mb-6">
+                                <i class="fas fa-globe"></i> London, UK | 2025
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-3">QS Reimagine Education Awards</h3>
+                            <p class="text-indigo-100 text-base md:text-lg mb-6 max-w-lg leading-relaxed">
+                                Selected as a global <span class="text-white font-bold">Judge & Evaluator</span> for the
+                                "Oscars of Education", reviewing groundbreaking academic innovations worldwide.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span
+                                class="px-3 py-1.5 bg-white text-indigo-700 text-xs font-bold rounded-[7px] shadow-sm flex items-center gap-2">
+                                <i class="fas fa-check-circle"></i> Global Evaluator
+                            </span>
+                            <span
+                                class="px-3 py-1.5 bg-indigo-500/40 text-white text-xs font-bold rounded-[7px] border border-white/20 shadow-sm flex items-center gap-2">
+                                <i class="fas fa-star"></i> Innovation Review
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Patent (Cyan/Teal Gradient) - Spans 4 cols -->
+                <div
+                    class="md:col-span-6 lg:col-span-4 group relative bg-gradient-to-br from-cyan-500 to-teal-600 p-8 rounded-[20px] overflow-hidden shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-500 hover:-translate-y-1">
+                    <div
+                        class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/20 rounded-full blur-2xl group-hover:blur-3xl transition-all">
+                    </div>
+
+                    <div class="relative z-10 flex flex-col h-full justify-between">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-[7px] bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
+                                <i class="fas fa-vr-cardboard"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Patent: Gyro-Hit</h4>
+                            <p class="text-cyan-50 text-sm leading-relaxed mb-4">Virtual Reality Defence Training System
+                                (VRDTS) for immersive combat simulations.</p>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-white/20 pt-4">
+                            <span class="text-xs font-bold text-white/80 uppercase tracking-wider">IPO Pakistan</span>
+                            <span class="text-xs font-bold bg-white/20 px-2 py-1 rounded text-white">#18926-D</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Research Supervision (White with Colorful Stats) - Spans 4 cols -->
+                <div
+                    class="md:col-span-6 lg:col-span-4 group relative bg-white border border-slate-100 p-8 rounded-[20px] overflow-hidden shadow-lg shadow-slate-200/50 hover:shadow-xl hover:border-brand-200 transition-all duration-500">
+                    <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 left-0"></div>
+
+                    <div class="flex items-start justify-between mb-6">
+                        <div
+                            class="w-12 h-12 rounded-[7px] bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center text-emerald-600 text-2xl">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <span
+                            class="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase rounded-full">Mentorship</span>
+                    </div>
+
+                    <div class="mb-2">
+                        <span
+                            class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">215+</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2">Scholars Supervised</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">
+                        Guiding the next generation of researchers: <strong class="text-slate-700">200+ BS</strong>,
+                        <strong class="text-slate-700">12 MS</strong>, and <strong class="text-slate-700">3 PhD</strong>
+                        candidates.
+                    </p>
+                </div>
+
+                <!-- Card 4: Academic Leadership (White with Colorful Badges) - Spans 8 cols -->
+                <div
+                    class="md:col-span-12 lg:col-span-8 group relative bg-white border border-slate-100 p-8 rounded-[20px] overflow-hidden shadow-lg shadow-slate-200/50 hover:shadow-xl hover:border-brand-200 transition-all duration-500">
+                    <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 left-0"></div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center h-full">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-[7px] bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-900 mb-3">Academic Leadership</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                                Bridging theoretical computer science and industrial application through dual strategic
+                                roles across international borders.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Role 1 -->
+                            <div
+                                class="flex items-center gap-4 p-4 rounded-[7px] bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 transition-all cursor-default group/role">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-sm shrink-0 group-hover/role:scale-110 transition-transform">
+                                    <i class="fas fa-star-and-crescent py-1"></i>
+                                </div>
+                                <div>
+                                    <div class="text-slate-900 font-bold text-sm">Associate Professor</div>
+                                    <div class="text-xs text-slate-500 font-medium">Institute for Art and Culture,
+                                        Lahore</div>
+                                </div>
+                            </div>
+
+                            <!-- Role 2 -->
+                            <div
+                                class="flex items-center gap-4 p-4 rounded-[7px] bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 transition-all cursor-default group/role">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-sm shrink-0 group-hover/role:scale-110 transition-transform">
+                                    <i class="fas fa-globe-asia py-1"></i>
+                                </div>
+                                <div>
+                                    <div class="text-slate-900 font-bold text-sm">Research Fellow</div>
+                                    <div class="text-xs text-slate-500 font-medium">INTI International University,
+                                        Malaysia</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Ready to Innovate (Academic Prestige) -->
+    <section class="relative py-24 bg-slate-50 border-t border-slate-200">
+        <!-- Subtle Pattern -->
+        <!-- Subtle Pattern Removed -->
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+                <!-- Left Content: Formal Invitation -->
+                <div class="lg:col-span-7 text-left">
+                    <div
+                        class="inline-block px-3 py-1 rounded-[7px] border border-brand-100 bg-white/80 backdrop-blur shadow-sm mb-6">
+                        <span class="text-brand-600 text-xs font-bold tracking-widest uppercase">INDUSTRIAL
+                            PARTNERSHIP</span>
+                    </div>
+
+                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
+                        Advance Your <br>
+                        <span class="text-brand-700">Research Objectives</span>
+                    </h2>
+
+                    <p class="text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl font-normal">
+                        The laboratory invites proposals for collaborative research, industrial R&D consultancy, and
+                        advanced doctoral supervision. We are committed to translating theoretical breakthroughs into
+                        deployable cognitive architectures.
+                    </p>
+
+                    <!-- Key Areas -->
+                    <div class="grid sm:grid-cols-2 gap-4 mb-10">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-brand-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Industrial R&D</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">LLM Deployment, Edge AI & Custom NLP Solutions.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-brand-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">Academic Mentorship</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">PhD supervision in Cognitive Robotics & Agents.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formal Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <a href="Pages/contact.html"
+                            class="w-full sm:w-auto px-8 py-4 bg-brand-700 text-white font-bold rounded-[7px] hover:bg-brand-800 transition-all shadow-sm flex items-center justify-center gap-2">
+                            <span>Submit Proposal</span>
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="mailto:drwasimahmadkhan@gmail.com"
+                            class="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-300 font-bold rounded-[7px] hover:bg-slate-50 hover:border-slate-400 transition-all flex items-center justify-center gap-2">
+                            <span>Contact Principal Investigator</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Content: Research Card Metaphor -->
+                <div class="lg:col-span-5 relative mt-12 lg:mt-0">
+                    <!-- Background Accent -->
+                    <div
+                        class="absolute top-4 -right-4 w-full h-full bg-slate-200 rounded-[7px] border border-slate-300">
+                    </div>
+
+                    <!-- Main Card -->
+                    <div class="relative bg-white rounded-[7px] border border-slate-200 shadow-xl p-8">
+                        <!-- Header -->
+                        <div class="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 bg-brand-50 rounded-[7px] flex items-center justify-center border border-brand-100">
+                                    <i class="fas fa-university text-brand-700 text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400 uppercase tracking-widest font-bold">Lab Status
+                                    </div>
+                                    <div class="text-brand-700 font-bold">Open for Collaboration</div>
+                                </div>
+                            </div>
+                            <span
+                                class="bg-green-50 text-green-700 text-xs font-bold px-3 py-1 rounded-full border border-green-200">
+                                <i class="fas fa-circle text-[8px] mr-1"></i> Active
+                            </span>
+                        </div>
+
+                        <!-- Content Mockup -->
+                        <div class="space-y-4 font-mono text-sm text-slate-600">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Research Focus:</span>
+                                <span class="text-slate-900 font-bold">Cognitive Agents & Robotics</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Funding Cycle:</span>
+                                <span class="text-slate-900 font-bold">2025-2026</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Supervision Slots:</span>
+                                <span class="text-slate-900 font-bold">Open for PhD/MS</span>
+                            </div>
+                        </div>
+
+                        <!-- Signature Line -->
+                        <div class="mt-8 pt-6 border-t border-slate-100 flex items-center gap-4">
+                            <div class="h-12 w-12 rounded-full ring-2 ring-brand-100 overflow-hidden shadow-sm">
+                                <img src="assets/images/profileimage.jpeg" alt="Dr. Wasim"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-900 text-lg">Dr. Wasim A. Khan</div>
+                                <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Lab Director
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER: Academic Anchor (Professional Light Theme) -->
+    <footer class="bg-slate-50 border-t border-brand-200 pt-16 pb-8 relative overflow-hidden">
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Identity -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <div
+                                class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 transition-transform duration-300 opacity-20 blur-sm">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100">
+                                <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight">Dr. Wasim A. Khan</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed border-l-2 border-brand-200 pl-3">
+                        Associate Professor & Research Fellow specializing in <span
+                            class="text-brand-700 font-semibold">Cognitive Robotics</span> and <span
+                            class="text-brand-700 font-semibold">Generative AI</span>. Bridging the gap between theory
+                        and industrial application.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <!-- Socials -->
+                        <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fas fa-graduation-cap"></i></a>
+                        <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li><a href="index.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Home</a></li>
+                        <li><a href="Pages/about.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                About Laboratory</a></li>
+                        <li><a href="Pages/research.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Research & Pubs</a></li>
+                        <li><a href="Pages/teaching.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Academic Teaching</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Research Focus -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Research Domains</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="Pages/research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Cognitive
+                            Robotics</a>
+                        <a href="Pages/research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Generative
+                            AI</a>
+                        <a href="Pages/research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">LLM
+                            Agents</a>
+                        <a href="Pages/research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">MLOps</a>
+                        <a href="Pages/research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">HRI</a>
+                    </div>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Contact</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="mt-1 w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-map-marker-alt text-xs"></i>
+                            </div>
+                            <span>Lahore, Pakistan<br><span class="text-xs text-slate-400">Available for Global Remote
+                                    Collaboration</span></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-envelope text-xs"></i>
+                            </div>
+                            <a href="mailto:drwasimahmadkhan@gmail.com"
+                                class="hover:text-brand-700 transition-colors">drwasimahmadkhan@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-phone text-xs"></i>
+                            </div>
+                            <a href="tel:+923224645667"
+                                class="hover:text-brand-700 transition-colors">+92-322-4645667</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium">
+                <p>&copy; 2025 Dr. Wasim Ahmad Khan with <span class="text-brand-600 font-bold">Academic
+                        Excellence</span>. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="Pages/privacy.html" class="hover:text-brand-600 transition-colors">Privacy Policy</a>
+                    <a href="Pages/terms.html" class="hover:text-brand-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.querySelector('button.md\\:hidden');
+        const menu = document.createElement('div');
+        menu.className = 'fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 space-y-6';
+        menu.innerHTML = `
+            <a href="index.html" class="text-lg font-bold text-brand-600">Home</a>
+            <a href="Pages/teaching.html" class="text-lg font-medium text-slate-600">Teaching</a>
+            <a href="Pages/research.html" class="text-lg font-medium text-slate-600">Research</a>
+            <a href="Pages/publications.html" class="text-lg font-medium text-slate-600">Publications</a>
+            <a href="Pages/projects.html" class="text-lg font-medium text-slate-600">Projects</a>
+            <a href="Pages/about.html" class="text-lg font-medium text-slate-600">About</a>
+            <a href="Pages/services.html" class="text-lg font-medium text-slate-600">Services</a>
+            <a href="Pages/contact.html" class="text-lg font-medium text-slate-600">Contact</a>
+            <button class="absolute top-6 right-6 p-2 text-slate-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        `;
+        document.body.appendChild(menu);
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+        });
+
+        menu.querySelector('button').addEventListener('click', () => {
+            menu.classList.add('translate-x-full');
+        });
+    </script>
+</body>
+
+</html>

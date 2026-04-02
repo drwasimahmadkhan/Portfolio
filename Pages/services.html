@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Dr. Wasim Ahmad Khan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .hero-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body class="font-sans text-slate-900 antialiased selection:bg-brand-500 selection:text-white relative">
+
+    <!-- GLOBAL AMBIENT BACKGROUND -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-slate-50">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-500/20 rounded-full blur-[100px] animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/20 rounded-full blur-[100px] animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute top-[30%] right-[10%] w-[50%] h-[50%] bg-purple-500/20 rounded-full blur-[120px] animate-blob animation-delay-4000">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 brightness-100 contrast-150 mix-blend-overlay">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 border-b border-white/50 shadow-sm bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
+        id="navbar">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Identity Core -->
+                <a href="../index.html" class="flex items-center gap-3 group shrink-0">
+                    <div class="relative w-10 h-10">
+                        <div
+                            class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 group-hover:rotate-6 transition-transform duration-300 opacity-20 blur-sm">
+                        </div>
+                        <div
+                            class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100 group-hover:ring-brand-200 transition-all">
+                            <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col hidden lg:flex">
+                        <span class="text-base font-bold text-slate-900 leading-tight tracking-tight font-display">Dr.
+                            Wasim A. Khan</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Research
+                            Laboratory</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation: Horizon Layout -->
+                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <!-- Home -->
+                    <a href="../index.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Home
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="teaching.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Teaching
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="research.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Research
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="publications.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Publications
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="projects.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Projects
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="about.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        About
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Services (Active) -->
+                    <!-- Services (Active) -->
+                    <a href="services.html"
+                        class="relative px-3 py-2 text-sm font-semibold text-brand-700 bg-brand-50/80 rounded-[7px] border border-brand-100/50 hover:bg-brand-100 hover:border-brand-200 transition-all shadow-sm">
+                        Services
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+                    <!-- Contact CTA -->
+                    <a href="contact.html"
+                        class="px-6 py-2.5 rounded-[7px] bg-brand-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-brand-500/20 hover:bg-brand-700 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2 ring-2 ring-brand-100 overflow-hidden relative">
+                        <span class="relative z-10">Contact</span>
+                        <i class="fas fa-arrow-right text-[10px] relative z-10"></i>
+                        <div class="absolute inset-0 bg-brand-700/0 hover:bg-brand-700/10 transition-colors"></div>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden p-2 rounded-[7px] text-slate-600 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <!-- HERO SECTION: Modern Cinematic -->
+    <section class="relative pt-40 pb-20 overflow-hidden">
+        <!-- Spotlight Effect -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fade-in-up">
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-[7px] bg-white/50 backdrop-blur-md border border-brand-100 shadow-sm mb-8 hover:shadow-md transition-all duration-300 group cursor-default">
+                <span class="text-xs font-bold tracking-widest text-brand-600 uppercase">Professional
+                    Collaboration</span>
+            </div>
+
+            <!-- Modern Heading -->
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tight leading-tight">
+                What I <br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-purple-600 to-brand-600 bg-300% animate-gradient">Offer</span>
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                Expert guidance, <span class="font-medium text-slate-900">Educational Resources</span>, and technical
+                solutions tailored to your <span class="font-medium text-slate-900">Academic & Professional</span>
+                needs.
+            </p>
+        </div>
+    </section>
+
+    <!-- SERVICES GRID -->
+    <section class="py-20 bg-transparent relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Service 1: Online Tutoring -->
+                <div
+                    class="bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full group">
+                    <div
+                        class="w-16 h-16 rounded-[7px] bg-brand-50 text-brand-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                        Online Tutoring</h3>
+                    <div class="text-brand-600 font-bold mb-4 flex items-baseline gap-1">
+                        Contact <span class="text-slate-400 font-normal text-sm">/ hour</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6">Personalized online classes and tutoring sessions.</p>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-brand-500 mt-0.5"></i> 1-on-1 Zoom/Meet Sessions</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-brand-500 mt-0.5"></i> Customized Curriculum</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-brand-500 mt-0.5"></i> Code Reviews & Debugging</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-brand-500 mt-0.5"></i> Exam Preparation</li>
+                    </ul>
+                    <button
+                        class="open-modal-btn w-full py-3 bg-brand-600 text-white font-semibold rounded-[7px] hover:bg-brand-700 transition-colors shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2"
+                        data-service="Online Tutoring">
+                        <i class="fas fa-calendar-check"></i> Book Session
+                    </button>
+                </div>
+
+                <!-- Service 2: Educational Resources -->
+                <div
+                    class="bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full group">
+                    <div
+                        class="w-16 h-16 rounded-[7px] bg-purple-50 text-purple-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
+                        Educational Resources</h3>
+                    <div class="text-purple-600 font-bold mb-4 flex items-baseline gap-1">
+                        Premium <span class="text-slate-400 font-normal text-sm">Access</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6">Comprehensive notes and study materials.</p>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-purple-500 mt-0.5"></i> Comprehensive Topic PDFs</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-purple-500 mt-0.5"></i> Solved Past Papers</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-purple-500 mt-0.5"></i> Project Source Codes</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-purple-500 mt-0.5"></i> Research Templates</li>
+                    </ul>
+                    <button
+                        class="open-modal-btn w-full py-3 bg-purple-600 text-white font-semibold rounded-[7px] hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2"
+                        data-service="Educational Resources">
+                        <i class="fas fa-unlock-alt"></i> Get Access
+                    </button>
+                </div>
+
+                <!-- Service 3: Research Supervision -->
+                <div
+                    class="bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full group">
+                    <div
+                        class="w-16 h-16 rounded-[7px] bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                        Research Supervision</h3>
+                    <div class="text-emerald-600 font-bold mb-4 flex items-baseline gap-1">
+                        Academic <span class="text-slate-400 font-normal text-sm">Mentorship</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6">Expert guidance for research projects.</p>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-emerald-500 mt-0.5"></i> Thesis Supervision</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-emerald-500 mt-0.5"></i> Research Methodology</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-emerald-500 mt-0.5"></i> Publication Guidance</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-emerald-500 mt-0.5"></i> Proposal Writing</li>
+                    </ul>
+                    <button
+                        class="open-modal-btn w-full py-3 bg-emerald-600 text-white font-semibold rounded-[7px] hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2"
+                        data-service="Research Supervision">
+                        <i class="fas fa-file-signature"></i> Apply Now
+                    </button>
+                </div>
+
+                <!-- Service 4: Consulting & Speaking -->
+                <div
+                    class="bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full group">
+                    <div
+                        class="w-16 h-16 rounded-[7px] bg-amber-50 text-amber-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors">
+                        Consulting & Speaking</h3>
+                    <div class="text-amber-600 font-bold mb-4 flex items-baseline gap-1">
+                        Custom <span class="text-slate-400 font-normal text-sm">Quote</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6">Professional engagements and workshops.</p>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-amber-500 mt-0.5"></i> Corporate Workshops</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-amber-500 mt-0.5"></i> Keynote Speaking</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-amber-500 mt-0.5"></i> AI Project Strategy</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-amber-500 mt-0.5"></i> Curriculum Consulting</li>
+                    </ul>
+                    <button
+                        class="open-modal-btn w-full py-3 bg-amber-600 text-white font-semibold rounded-[7px] hover:bg-amber-700 transition-colors shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2"
+                        data-service="Consulting & Speaking">
+                        <i class="fas fa-envelope"></i> Contact Me
+                    </button>
+                </div>
+
+                <!-- Service 5: AI Solutions -->
+                <div
+                    class="bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full group">
+                    <div
+                        class="w-16 h-16 rounded-[7px] bg-rose-50 text-rose-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-rose-600 transition-colors">AI
+                        Solutions</h3>
+                    <div class="text-rose-600 font-bold mb-4 flex items-baseline gap-1">
+                        Project <span class="text-slate-400 font-normal text-sm">Based</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6">Custom AI development services.</p>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-rose-500 mt-0.5"></i> Custom Model Training</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-rose-500 mt-0.5"></i> NLP & Chatbot Systems</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-rose-500 mt-0.5"></i> Computer Vision Apps</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-600"><i
+                                class="fas fa-check-circle text-rose-500 mt-0.5"></i> Deployment & MLOps</li>
+                    </ul>
+                    <button
+                        class="open-modal-btn w-full py-3 bg-rose-600 text-white font-semibold rounded-[7px] hover:bg-rose-700 transition-colors shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2"
+                        data-service="AI Solutions">
+                        <i class="fas fa-comments"></i> Discuss Project
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section (Simplified for this page) -->
+    <section class="py-16 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Stay Updated</h2>
+            <p class="text-slate-600 mb-8">Join our mailing list to receive the latest updates on courses and services.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="email" placeholder="Enter your email address"
+                    class="flex-1 px-5 py-3 rounded-[7px] border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                    required>
+                <button type="submit"
+                    class="px-6 py-3 bg-brand-600 text-white font-semibold rounded-[7px] hover:bg-brand-700 transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-brand-200 pt-16 pb-8 relative overflow-hidden">
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Identity -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <div
+                                class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 transition-transform duration-300 opacity-20 blur-sm">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100">
+                                <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight">Dr. Wasim A. Khan</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed border-l-2 border-brand-200 pl-3">
+                        Associate Professor & Research Fellow specializing in <span
+                            class="text-brand-700 font-semibold">Cognitive Robotics</span> and <span
+                            class="text-brand-700 font-semibold">Generative AI</span>. Bridging the gap between theory
+                        and industrial application.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <!-- Socials -->
+                        <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fas fa-graduation-cap"></i></a>
+                        <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li><a href="../index.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Home</a></li>
+                        <li><a href="about.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                About Laboratory</a></li>
+                        <li><a href="research.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Research & Pubs</a></li>
+                        <li><a href="teaching.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Academic Teaching</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Research Focus -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Research Domains</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Cognitive
+                            Robotics</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Generative
+                            AI</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">LLM
+                            Agents</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">MLOps</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">HRI</a>
+                    </div>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Contact</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="mt-1 w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-map-marker-alt text-xs"></i>
+                            </div>
+                            <span>Institute for Art and Culture, Lahore, Pakistan<br><span
+                                    class="text-xs text-slate-400">Available for Global Remote
+                                    Collaboration</span></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-envelope text-xs"></i>
+                            </div>
+                            <a href="mailto:drwasimahmadkhan@gmail.com"
+                                class="hover:text-brand-700 transition-colors">drwasimahmadkhan@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-phone text-xs"></i>
+                            </div>
+                            <a href="tel:+923224645667"
+                                class="hover:text-brand-700 transition-colors">+92-322-4645667</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium">
+                <p>&copy; 2025 Dr. Wasim Ahmad Khan with <span class="text-brand-600 font-bold">Academic
+                        Excellence</span>. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="privacy.html" class="hover:text-brand-600 transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-brand-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Service Inquiry Modal (Redesigned) -->
+    <div id="serviceModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="relative w-full min-h-screen flex items-center justify-center p-4">
+            <div
+                class="bg-white rounded-xl shadow-2xl relative w-full max-w-2xl overflow-hidden transform transition-all border border-slate-100 flex flex-col max-h-[90vh]">
+
+                <!-- Modal Header -->
+                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Inquire Service</h2>
+                        <p class="text-slate-500 text-sm mt-1">We'll get back to you within 24 hours.</p>
+                    </div>
+                    <button
+                        class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition-all"
+                        id="closeModal">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body (Scrollable) -->
+                <div class="p-8 overflow-y-auto custom-scrollbar">
+                    <form class="space-y-6">
+
+                        <!-- Row 1: Name & Email -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Name Field -->
+                            <div class="space-y-2">
+                                <label for="fullName"
+                                    class="text-xs font-bold text-slate-700 uppercase tracking-wider">Full Name</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fas fa-user text-sm"></i>
+                                    </div>
+                                    <input type="text" id="fullName" placeholder="John Doe" required
+                                        class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 hover:border-slate-300">
+                                </div>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="space-y-2">
+                                <label for="email"
+                                    class="text-xs font-bold text-slate-700 uppercase tracking-wider">Email
+                                    Address</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fas fa-envelope text-sm"></i>
+                                    </div>
+                                    <input type="email" id="email" placeholder="john.doe@company.com" required
+                                        class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 hover:border-slate-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service Field (Readonly) -->
+                        <div class="space-y-2">
+                            <label for="serviceInput"
+                                class="text-xs font-bold text-slate-700 uppercase tracking-wider">Interested In</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brand-600">
+                                    <i class="fas fa-tag text-sm"></i>
+                                </div>
+                                <input type="text" id="serviceInput" readonly
+                                    class="w-full pl-10 pr-4 py-3 bg-brand-50/50 border border-brand-200 rounded-lg text-brand-700 font-bold text-sm cursor-not-allowed outline-none select-none">
+                            </div>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div class="space-y-2">
+                            <label for="message"
+                                class="text-xs font-bold text-slate-700 uppercase tracking-wider">Project Details <span
+                                    class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                            <div class="relative">
+                                <div
+                                    class="absolute top-3.5 left-0 pl-3 flex items-start pointer-events-none text-slate-400">
+                                    <i class="fas fa-comment-dots text-sm"></i>
+                                </div>
+                                <textarea id="message" rows="4"
+                                    placeholder="Describe your project requirements or questions..."
+                                    class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 resize-none hover:border-slate-300"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 mt-8">
+                            <button type="submit"
+                                class="w-full py-3.5 bg-brand-600 text-white font-bold rounded-lg shadow-lg shadow-brand-500/30 hover:bg-brand-700 hover:shadow-brand-500/50 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group">
+                                <span class="tracking-wide">Submit Inquiry</span>
+                                <i
+                                    class="fas fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </button>
+                            <p class="text-center text-xs text-slate-400 mt-4">
+                                By submitting, you agree to our <a href="#"
+                                    class="text-brand-600 hover:underline">Terms</a> and <a href="#"
+                                    class="text-brand-600 hover:underline">Privacy Policy</a>.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.querySelector('button.md\\:hidden');
+        const menu = document.createElement('div');
+        menu.className = 'fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 space-y-6';
+        menu.innerHTML = `
+            <a href="../index.html" class="text-lg font-medium text-slate-600">Home</a>
+            <a href="teaching.html" class="text-lg font-medium text-slate-600">Teaching</a>
+            <a href="research.html" class="text-lg font-medium text-slate-600">Research</a>
+            <a href="publications.html" class="text-lg font-medium text-slate-600">Publications</a>
+            <a href="projects.html" class="text-lg font-medium text-slate-600">Projects</a>
+            <a href="about.html" class="text-lg font-medium text-slate-600">About</a>
+            <a href="services.html" class="text-lg font-bold text-brand-600">Services</a>
+            <a href="contact.html" class="text-lg font-medium text-slate-600">Contact</a>
+            <button class="absolute top-6 right-6 p-2 text-slate-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        `;
+        document.body.appendChild(menu);
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+        });
+
+        menu.querySelector('button').addEventListener('click', () => {
+            menu.classList.add('translate-x-full');
+        });
+    </script>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('serviceModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const serviceInput = document.getElementById('serviceInput');
+
+        document.querySelectorAll('.open-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const service = btn.getAttribute('data-service');
+                serviceInput.value = service;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex'); // Enable flex layout
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        });
+
+        function hideModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = ''; // Restore background scrolling
+        }
+
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // Click outside to close
+        modal.addEventListener('click', (e) => {
+            // Check if click is on the backdrop (the outermost div of the modal)
+            if (e.target === modal || e.target.classList.contains('absolute')) {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

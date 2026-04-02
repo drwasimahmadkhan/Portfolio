@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Dr. Wasim Ahmad Khan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    },
+                    boxShadow: {
+                        '3d': '0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3)',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Custom Utilities - From Home Page */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body class="font-sans text-slate-900 antialiased selection:bg-brand-500 selection:text-white relative bg-slate-50">
+
+    <!-- GLOBAL AMBIENT BACKGROUND -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-200/40 rounded-full blur-[100px] animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-200/40 rounded-full blur-[100px] animate-blob animation-delay-2000">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 border-b border-white/50 shadow-sm bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
+        id="navbar">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Identity Core -->
+                <a href="../index.html" class="flex items-center gap-3 group shrink-0">
+                    <div class="relative w-10 h-10">
+                        <div
+                            class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 group-hover:rotate-6 transition-transform duration-300 opacity-20 blur-sm">
+                        </div>
+                        <div
+                            class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100 group-hover:ring-brand-200 transition-all">
+                            <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col hidden lg:flex">
+                        <span class="text-base font-bold text-slate-900 leading-tight tracking-tight font-display">Dr.
+                            Wasim A. Khan</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Research
+                            Laboratory</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation: Horizon Layout -->
+                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <!-- Home -->
+                    <a href="../index.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Home
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="teaching.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Teaching
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="research.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Research
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="publications.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Publications
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="projects.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Projects
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- About (Active) -->
+                    <a href="about.html"
+                        class="relative px-3 py-2 text-sm font-semibold text-brand-700 bg-brand-50/80 rounded-[7px] border border-brand-100/50 hover:bg-brand-100 hover:border-brand-200 transition-all shadow-sm">
+                        About
+                    </a>
+
+                    <a href="services.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Services
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+                    <!-- Contact CTA -->
+                    <a href="contact.html"
+                        class="px-6 py-2.5 rounded-[7px] bg-brand-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-brand-500/20 hover:bg-brand-700 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        Contact <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden p-2 rounded-[7px] text-slate-600 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: Biography Design (Reference Adapted to Light Theme) -->
+    <section
+        class="min-h-[calc(100vh-80px)] relative flex items-center justify-center pt-24 pb-12 overflow-hidden bg-slate-50"
+        id="about-hero">
+
+        <!-- Ambient Background Glows -->
+        <!-- TECH GRID & GLOW BACKGROUND -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+
+
+            <!-- Animated Orbs -->
+            <div
+                class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-brand-500/20 rounded-full blur-[120px] animate-blob">
+            </div>
+            <div
+                class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[120px] animate-blob animation-delay-2000">
+            </div>
+            <div class="absolute top-[40%] right-[20%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-blob"
+                style="animation-delay: 4s"></div>
+
+            <!-- Noise Texture -->
+            <div
+                class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+
+                <!-- LEFT COLUMN: Professor Portrait (Card Style) -->
+                <div class="relative order-1 lg:order-2 flex justify-center">
+                    <!-- Image Card Container (Compacted Size) -->
+                    <div
+                        class="relative rounded-[10px] border-4 border-white overflow-hidden shadow-2xl shadow-brand-900/10 bg-slate-200 w-full max-w-[380px] aspect-[4/5] mx-auto lg:mx-0">
+                        <img src="../assets/images/profileimage.jpeg" alt="Dr. Wasim Profile"
+                            class="w-full h-full object-cover">
+
+                        <!-- Optional Overlay/Gradient for Depth -->
+                    </div>
+
+
+                </div>
+
+                <!-- RIGHT COLUMN: Biography Content -->
+                <div class="text-left space-y-4 order-2 lg:order-1 lg:pl-0 lg:pr-10">
+
+                    <!-- Label -->
+                    <div>
+                        <span
+                            class="text-brand-600 font-bold tracking-widest uppercase text-xs mb-2 block">Biography</span>
+                        <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 font-display leading-tight">
+                            A Journey in <br>
+                            <span class="text-brand-600">Academia</span>
+                        </h1>
+                    </div>
+
+                    <!-- Bio Text -->
+                    <div class="space-y-4 text-slate-600 text-base lg:text-lg leading-relaxed max-w-lg">
+                        <p>
+                            Dr. Wasim Ahmad Khan is a distinguished Associate Professor of Computer Science. With a
+                            career spanning over a decade, his research has focused on the intersection of <span
+                                class="font-semibold text-slate-900">Cloud Robotics</span> and <span
+                                class="font-semibold text-slate-900">Cognitive Artificial Intelligence</span>.
+                        </p>
+                        <p>
+                            After receiving his Ph.D. from NCBA&E in 2020, he joined the faculty at leading
+                            institutions. His work is widely cited in top-tier journals, and he has served as a keynote
+                            speaker at numerous international conferences.
+                        </p>
+                    </div>
+
+                    <!-- Stats Cards Row REMOVED to match reference view -->
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE: Creative Timeline -->
+    <section id="experience" class="py-24 relative z-10 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-[10%] left-[5%] w-96 h-96 bg-brand-200/20 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-[10%] right-[5%] w-96 h-96 bg-cyan-200/20 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20">
+                <span
+                    class="inline-block py-1 px-3 rounded-[7px] bg-brand-50 border border-brand-100 text-brand-600 font-bold tracking-widest text-xs uppercase mb-4 shadow-sm">
+                    Career Trajectory
+                </span>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    Professional <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-cyan-500">Experience</span>
+                </h2>
+            </div>
+
+            <!-- Central Timeline Container -->
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div
+                    class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-500 via-cyan-400 to-slate-200 md:-translate-x-1/2">
+                </div>
+
+                <div class="space-y-16">
+                    <!-- Role 1 (Right) -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <!-- Spacer for Left Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-brand-500 shadow-lg shadow-brand-500/20 z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-brand-600"></div>
+                        </div>
+
+                        <!-- Card (Right) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group-hover:border-brand-200 relative z-10">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-brand-50 text-brand-700 text-xs font-bold border border-brand-100">
+                                        <i class="fas fa-calendar-alt"></i> May 2025 - Present
+                                    </div>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-slate-900 leading-tight mb-2 group-hover:text-brand-600 transition-colors">
+                                    Research Fellow</h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                    <i class="fas fa-building text-brand-400"></i> INTI International University
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Leading collaborative research in emerging artificial intelligence technologies
+                                    and supervising postgraduate research initiatives.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 2 (Left) -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center justify-between group">
+                        <!-- Spacer for Right Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-cyan-500 shadow-lg shadow-cyan-500/20 z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-cyan-600"></div>
+                        </div>
+
+                        <!-- Card (Left) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group-hover:border-cyan-200 md:text-right">
+                                <div class="flex items-center justify-start md:justify-end mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-cyan-50 text-cyan-700 text-xs font-bold border border-cyan-100">
+                                        <i class="fas fa-calendar-alt"></i> Mar 2025 - Present
+                                    </div>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-slate-900 leading-tight mb-2 group-hover:text-cyan-600 transition-colors">
+                                    Associate Professor</h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center justify-start md:justify-end gap-2">
+                                    Institute for Art and Culture <i class="fas fa-university text-cyan-400"></i>
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    School of Informatics & Robotics. Designing and delivering advanced curriculum
+                                    in Data Structures, Algorithms, and AI.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 3 (Right) -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <!-- Spacer for Left Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-300 shadow-lg z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+                        </div>
+
+                        <!-- Card (Right) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 md:text-left">
+                                <div class="flex items-center justify-start mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                                        <i class="fas fa-calendar-check"></i> Jul 2024 - Mar 2025
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-2">Assistant Professor
+                                </h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                    <i class="fas fa-chalkboard-teacher text-slate-400"></i> Govt. Baba Guru Nanak
+                                    University
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Department of CS & IT. Instructed foundational courses and contributed to
+                                    curriculum refinement. BPS-19 Faculty Member.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 4 (Left) -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center justify-between group">
+                        <!-- Spacer for Right Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-300 shadow-lg z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+                        </div>
+
+                        <!-- Card (Left) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 md:text-right">
+                                <div class="flex items-center justify-start md:justify-end mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                                        <i class="fas fa-history"></i> Oct 2023 - Jul 2024
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-2">Machine Learning
+                                    Engineer</h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center justify-start md:justify-end gap-2">
+                                    TECHTICS.AI, Lahore <i class="fas fa-laptop-code text-slate-400"></i>
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Engineered edge-AI healthcare solutions. Reduced report processing time by 90%
+                                    using TensorFlow Lite.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 5 (Right) - NCBA&E -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <!-- Spacer for Left Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-300 shadow-lg z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+                        </div>
+
+                        <!-- Card (Right) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 md:text-left">
+                                <div class="flex items-center justify-start mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                                        <i class="fas fa-calendar-alt"></i> Sep 2016 - Oct 2023
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-2">Associate Professor &
+                                    Head</h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                    <i class="fas fa-university text-slate-400"></i> NCBA&E, Lahore
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Department of Computer Science. Led the department (2019-2023), supervised research,
+                                    and taught advanced CS courses.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 6 (Left) - PUCIT -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center justify-between group">
+                        <!-- Spacer for Right Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-300 shadow-lg z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+                        </div>
+
+                        <!-- Card (Left) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 md:text-right">
+                                <div class="flex items-center justify-start md:justify-end mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                                        <i class="fas fa-history"></i> Oct 2014 - Present
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-2">Adjunct Faculty</h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center justify-start md:justify-end gap-2">
+                                    PUCIT, Lahore <i class="fas fa-university text-slate-400"></i>
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Punjab University College of Information Technology. Specializing in Mobile
+                                    Computing, Enterprise App Development, and Web Engineering.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role 7 (Right) - EICONIX -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <!-- Spacer for Left Side -->
+                        <div class="hidden md:block w-5/12"></div>
+
+                        <!-- Timeline Dot -->
+                        <div
+                            class="absolute left-4 md:left-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-300 shadow-lg z-20 -translate-x-1/2 md:translate-x-[-50%] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-400"></div>
+                        </div>
+
+                        <!-- Card (Right) -->
+                        <div class="ml-12 md:ml-0 md:w-5/12 relative">
+                            <div
+                                class="bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 md:text-left">
+                                <div class="flex items-center justify-start mb-4">
+                                    <div
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-[7px] bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+                                        <i class="fas fa-code"></i> Jul 2011 - Sep 2016
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-2">Senior Software Engineer
+                                </h3>
+                                <div
+                                    class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                    <i class="fas fa-laptop-code text-slate-400"></i> EICONIX (Pvt) Ltd
+                                </div>
+                                <p class="text-slate-600 leading-relaxed text-sm border-t border-slate-100 pt-4 mt-4">
+                                    Led high-priority web development projects, managed teams, and specialized in
+                                    PHP/Android development.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECOGNITION SECTION: Light & Creative -->
+    <section class="py-24 relative z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="relative bg-white/60 backdrop-blur-3xl rounded-[30px] p-8 md:p-16 border border-white shadow-2xl overflow-hidden group">
+                <!-- Decorative Gradients -->
+                <div
+                    class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-brand-50 to-cyan-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/2">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-indigo-50 to-white rounded-full blur-3xl opacity-60 translate-y-1/2 -translate-x-1/2">
+                </div>
+
+                <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="text-left space-y-6">
+                        <span
+                            class="inline-block px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-bold tracking-widest uppercase">Honors
+                            & Awards</span>
+                        <h2 class="text-4xl font-extrabold text-slate-900 leading-tight">
+                            Global <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-cyan-600">Recognition</span>
+                        </h2>
+                        <p class="text-lg text-slate-600 leading-relaxed">
+                            Acknowledged by international bodies for pioneering contributions to <span
+                                class="text-slate-900 font-semibold">Educational Innovation</span> and <span
+                                class="text-slate-900 font-semibold">Technological Design</span>.
+                        </p>
+
+                        <!-- Stats/Badges -->
+                        <div class="flex gap-4 pt-4">
+                            <div class="flex flex-col">
+                                <span class="text-3xl font-bold text-slate-900">20+</span>
+                                <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Intl.
+                                    Citations</span>
+                            </div>
+                            <div class="w-px h-12 bg-slate-200"></div>
+                            <div class="flex flex-col">
+                                <span class="text-3xl font-bold text-slate-900">Top 1%</span>
+                                <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Peer
+                                    Reviewer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Award Card 1 -->
+                        <div
+                            class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 flex items-center gap-5 hover:shadow-lg hover:border-amber-200 hover:-translate-y-1 transition-all duration-300">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 text-2xl shadow-sm shrink-0">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-lg">QS Reimagine Education Awards</h3>
+                                <p class="text-sm text-slate-500 font-medium mt-1">Judge & Evaluator <span
+                                        class="text-brand-300 mx-1">•</span> London, UK 2025</p>
+                            </div>
+                        </div>
+
+                        <!-- Award Card 2: Gyro-Hit -->
+                        <div
+                            class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 flex items-center gap-5 hover:shadow-lg hover:border-cyan-200 hover:-translate-y-1 transition-all duration-300">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 text-2xl shadow-sm shrink-0">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-lg">Design Patent: Gyro-Hit</h3>
+                                <p class="text-sm text-slate-500 font-medium mt-1">IPO Pakistan <span
+                                        class="text-brand-300 mx-1">•</span> VRDTS Technology (2018)</p>
+                            </div>
+                        </div>
+
+                        <!-- Award Card 3: XAI Research -->
+                        <div
+                            class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 flex items-center gap-5 hover:shadow-lg hover:border-brand-200 hover:-translate-y-1 transition-all duration-300">
+                            <div
+                                class="w-14 h-14 rounded-[7px] bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-500 text-2xl shadow-sm shrink-0">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-lg">Excellence in XAI Research</h3>
+                                <p class="text-sm text-slate-500 font-medium mt-1">Nature Portfolio <span
+                                        class="text-brand-300 mx-1">•</span> Scientific Reports (2024)</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <!-- EDUCATION SECTION: Degree Grid -->
+    <section class="py-24 relative z-10 bg-white/50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span
+                    class="inline-block py-1 px-3 rounded-[7px] bg-slate-100 border border-slate-200 text-slate-500 font-bold tracking-widest text-xs uppercase mb-4">
+                    Academic Foundation
+                </span>
+                <h2 class="text-4xl font-extrabold text-slate-900">Educational Milestones</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- PhD Card -->
+                <div class="group h-full">
+                    <div
+                        class="relative h-full bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-lg flex flex-col items-center text-center">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-brand-600 rounded-t-xl opacity-80">
+                        </div>
+                        <div
+                            class="w-16 h-16 bg-brand-50 rounded-[7px] flex items-center justify-center mb-6 border border-brand-100 shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fas fa-graduation-cap text-2xl text-brand-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Ph.D. Computer Science</h3>
+                        <div
+                            class="text-xs font-bold text-brand-600 uppercase tracking-widest mb-6 border-b border-brand-100 pb-1">
+                            NCBA&E
+                            (2020)</div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 italic">
+                            "Knowledge Sharing for Task Planning in Cloud Robotics"
+                        </p>
+                        <div class="mt-auto w-full pt-4 border-t border-slate-100">
+                            <span
+                                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Specialization</span>
+                            <div class="text-slate-900 font-bold mt-1 text-sm">Cloud Robotics & AI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MPhil Card -->
+                <div class="group h-full">
+                    <div
+                        class="relative h-full bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-lg flex flex-col items-center text-center">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-400 to-slate-500 rounded-t-xl opacity-80">
+                        </div>
+                        <div
+                            class="w-16 h-16 bg-slate-50 rounded-[7px] flex items-center justify-center mb-6 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fas fa-book-open text-2xl text-slate-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">M.Phil. Computer Science</h3>
+                        <div
+                            class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 border-b border-slate-200 pb-1">
+                            NCBA&E
+                            (2015)</div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 italic">
+                            "Attention Regulatory System for Agents"
+                        </p>
+                        <div class="mt-auto w-full pt-4 border-t border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Focus</span>
+                            <div class="text-slate-900 font-bold mt-1 text-sm">Cognitive Architectures</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MSc Card -->
+                <div class="group h-full">
+                    <div
+                        class="relative h-full bg-white p-8 rounded-[7px] border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-lg flex flex-col items-center text-center">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-400 to-slate-500 rounded-t-xl opacity-80">
+                        </div>
+                        <div
+                            class="w-16 h-16 bg-slate-50 rounded-[7px] flex items-center justify-center mb-6 border border-slate-200 shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fas fa-scroll text-2xl text-slate-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">M.Sc. Info Technology</h3>
+                        <div
+                            class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 border-b border-slate-200 pb-1">
+                            PUCIT (2011)
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 italic">
+                            Enterprise Class Development
+                        </p>
+                        <div class="mt-auto w-full pt-4 border-t border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Focus</span>
+                            <div class="text-slate-900 font-bold mt-1 text-sm">Software Engineering</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNICAL MASTERY: Creative Grid -->
+    <section class="py-24 relative z-10 overflow-hidden">
+        <!-- Background Decoration -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div
+                class="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-slate-100/50 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-start">
+                <!-- Left: Header & Text -->
+                <div class="lg:col-span-4 lg:sticky lg:top-32">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-brand-50 border border-brand-100 text-brand-600 font-bold tracking-widest text-xs uppercase mb-4">
+                        Technical Arsenal
+                    </span>
+                    <h2 class="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+                        Command & <br> <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-cyan-500">Control</span>
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed mb-8">
+                        A comprehensive suite of advanced tools and frameworks utilized to architect intelligent
+                        systems and cognitive agents.
+                    </p>
+
+                    <a href="projects.html"
+                        class="inline-flex items-center gap-2 font-bold text-brand-600 hover:text-brand-700 transition-colors group">
+                        View Applied Projects <i
+                            class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Right: Skills Grid -->
+                <div class="lg:col-span-8 grid md:grid-cols-2 gap-6">
+                    <!-- Category 1: AI & ML -->
+                    <div
+                        class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 hover:shadow-lg hover:border-brand-200 transition-all duration-300 group">
+                        <div
+                            class="w-12 h-12 bg-brand-50 rounded-[7px] flex items-center justify-center text-brand-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">AI & Machine Learning</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">TensorFlow</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">PyTorch</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">Scikit-learn</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">Keras</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">YOLO</span>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: Cognitive Architectures -->
+                    <div
+                        class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 hover:shadow-lg hover:border-cyan-200 transition-all duration-300 group">
+                        <div
+                            class="w-12 h-12 bg-cyan-50 rounded-[7px] flex items-center justify-center text-cyan-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Cognitive Architectures</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">LIDA</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">SOAR</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">ACT-R</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">CLARION</span>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: Robotics -->
+                    <div
+                        class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 hover:shadow-lg hover:border-slate-300 transition-all duration-300 group">
+                        <div
+                            class="w-12 h-12 bg-slate-100 rounded-[7px] flex items-center justify-center text-slate-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Cloud Robotics</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">ROS
+                                / ROS2</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">Gazebo</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">AWS
+                                RoboMaker</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">SLAM</span>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: Development -->
+                    <div
+                        class="bg-white p-6 rounded-[7px] shadow-sm border border-slate-100 hover:shadow-lg hover:border-brand-200 transition-all duration-300 group">
+                        <div
+                            class="w-12 h-12 bg-indigo-50 rounded-[7px] flex items-center justify-center text-indigo-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Development</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">Python</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">C++</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">MATLAB</span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-[7px] border border-slate-200">Latex</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-brand-200 pt-16 pb-8 relative overflow-hidden">
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Identity -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <div
+                                class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 transition-transform duration-300 opacity-20 blur-sm">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100">
+                                <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight">Dr. Wasim A. Khan</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed border-l-2 border-brand-200 pl-3">
+                        Associate Professor & Research Fellow specializing in <span
+                            class="text-brand-700 font-semibold">Cognitive Robotics</span> and <span
+                            class="text-brand-700 font-semibold">Generative AI</span>. Bridging the gap between
+                        theory
+                        and industrial application.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <!-- Socials -->
+                        <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fas fa-graduation-cap"></i></a>
+                        <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Quick Navigation
+                    </h4>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li><a href="../index.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Home</a></li>
+                        <li><a href="about.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                About Laboratory</a></li>
+                        <li><a href="research.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Research & Pubs</a></li>
+                        <li><a href="teaching.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Academic Teaching</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Research Focus -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Research Domains
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Cognitive
+                            Robotics</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Generative
+                            AI</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">LLM
+                            Agents</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">MLOps</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">HRI</a>
+                    </div>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Contact</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="mt-1 w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-map-marker-alt text-xs"></i>
+                            </div>
+                            <span>Lahore, Pakistan<br><span class="text-xs text-slate-400">Available for Global
+                                    Remote
+                                    Collaboration</span></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-envelope text-xs"></i>
+                            </div>
+                            <a href="mailto:drwasimahmadkhan@gmail.com"
+                                class="hover:text-brand-700 transition-colors">drwasimahmadkhan@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-phone text-xs"></i>
+                            </div>
+                            <a href="tel:+923224645667"
+                                class="hover:text-brand-700 transition-colors">+92-322-4645667</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium">
+                <p>&copy; 2025 Dr. Wasim Ahmad Khan with <span class="text-brand-600 font-bold">Academic
+                        Excellence</span>. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="privacy.html" class="hover:text-brand-600 transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-brand-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.querySelector('button.md\\:hidden');
+        const menu = document.createElement('div');
+        menu.className = 'fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 space-y-6';
+        menu.innerHTML = `
+            <a href="../index.html" class="text-lg font-medium text-slate-600">Home</a>
+            <a href="teaching.html" class="text-lg font-medium text-slate-600">Teaching</a>
+            <a href="research.html" class="text-lg font-medium text-slate-600">Research</a>
+            <a href="publications.html" class="text-lg font-medium text-slate-600">Publications</a>
+            <a href="projects.html" class="text-lg font-medium text-slate-600">Projects</a>
+            <a href="about.html" class="text-lg font-bold text-brand-600">About</a>
+            <a href="services.html" class="text-lg font-medium text-slate-600">Services</a>
+            <a href="contact.html" class="text-lg font-medium text-slate-600">Contact</a>
+            <button class="absolute top-6 right-6 p-2 text-slate-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        `;
+        document.body.appendChild(menu);
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+        });
+
+        menu.querySelector('button').addEventListener('click', () => {
+            menu.classList.add('translate-x-full');
+        });
+    </script>
+</body>
+
+</html>

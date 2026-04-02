@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Dr. Wasim Ahmad Khan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Script -->
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body class="font-sans text-slate-900 antialiased selection:bg-brand-500 selection:text-white relative bg-slate-50">
+
+    <!-- GLOBAL AMBIENT BACKGROUND -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-200/40 rounded-full blur-[100px] animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-200/40 rounded-full blur-[100px] animate-blob animation-delay-2000">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 border-b border-white/50 shadow-sm bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
+        id="navbar">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Identity Core -->
+                <a href="../index.html" class="flex items-center gap-3 group shrink-0">
+                    <div class="relative w-10 h-10">
+                        <div
+                            class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 group-hover:rotate-6 transition-transform duration-300 opacity-20 blur-sm">
+                        </div>
+                        <div
+                            class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100 group-hover:ring-brand-200 transition-all">
+                            <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col hidden lg:flex">
+                        <span class="text-base font-bold text-slate-900 leading-tight tracking-tight font-display">Dr.
+                            Wasim A. Khan</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Research
+                            Laboratory</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation: Horizon Layout -->
+                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <!-- Home -->
+                    <a href="../index.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Home
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="teaching.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Teaching
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="research.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Research
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="publications.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Publications
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="projects.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Projects
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="about.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        About
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="services.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Services
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+                    <!-- Contact CTA -->
+                    <a href="contact.html"
+                        class="px-6 py-2.5 rounded-[7px] bg-brand-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-brand-500/20 hover:bg-brand-700 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        Contact <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden p-2 rounded-[7px] text-slate-600 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: Modern Cinematic -->
+    <section class="relative pt-40 pb-20 overflow-hidden">
+        <!-- Spotlight Effect -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fade-in-up">
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-[7px] bg-white/50 backdrop-blur-md border border-brand-100 shadow-sm mb-8 hover:shadow-md transition-all duration-300 group cursor-default">
+                <span class="text-xs font-bold tracking-widest text-brand-600 uppercase">Get in Touch</span>
+            </div>
+
+            <!-- Modern Heading -->
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tight leading-tight">
+                Contact <br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-purple-600 to-brand-600 bg-300% animate-gradient">Us</span>
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                Whether you have a question about research, collaboration, or just want to say hello, I'd love to <span
+                    class="font-medium text-slate-900">Hear From You</span>.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <main class="pt-10 pb-20 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+
+            <!-- Main Content Grid -->
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+
+                <!-- LEFT COLUMN: Contact Info & Map (Autofill Height) -->
+                <div class="flex flex-col space-y-6 h-full">
+
+                    <!-- Contact Information Card -->
+                    <div class="glass-card p-6 rounded-[7px] shadow-sm">
+                        <div class="flex justify-between items-start mb-6">
+                            <h2 class="text-xl font-bold text-slate-900">Keep in Touch</h2>
+                            <!-- Social Icons (Moved here to save space) -->
+                            <div class="flex gap-3">
+                                <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                                    class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                        class="fab fa-linkedin-in"></i></a>
+                                <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                                    class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                        class="fas fa-graduation-cap"></i></a>
+                                <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                                    class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                        class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Phone -->
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-10 h-10 rounded-[7px] bg-brand-50 text-brand-600 flex items-center justify-center text-lg shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Phone</p>
+                                    <p class="text-sm text-slate-600 font-mono">+92-322-4645667</p>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-10 h-10 rounded-[7px] bg-brand-50 text-brand-600 flex items-center justify-center text-lg shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Email</p>
+                                    <a href="mailto:drwasimahmadkhan@gmail.com"
+                                        class="text-sm text-slate-600 hover:text-brand-600 transition-colors">drwasimahmadkhan@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-10 h-10 rounded-[7px] bg-brand-50 text-brand-600 flex items-center justify-center text-lg shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-all duration-300">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Location</p>
+                                    <p class="text-sm text-slate-600">Lahore, Pakistan
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map (Fills Remaining Space) -->
+                    <div
+                        class="glass-card p-1.5 rounded-[7px] shadow-sm w-full map-container relative group overflow-hidden h-64 lg:h-auto lg:flex-1">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108819.34094917409!2d74.27801362095318!3d31.54972260211117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0xc20bef33d3c5e31e!2sLahore%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1652787890123!5m2!1sen!2s"
+                            style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade" class="w-full h-full rounded-[7px]">
+                        </iframe>
+                        <a href="https://goo.gl/maps/LahorePakistan" target="_blank"
+                            class="absolute bottom-2 right-2 bg-white/90 backdrop-blur text-slate-700 text-[10px] font-bold px-2 py-1.5 rounded-[5px] shadow-md hover:bg-brand-600 hover:text-white transition-all transform hover:-translate-y-1 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 duration-300">
+                            <i class="fas fa-external-link-alt"></i> View Map
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT COLUMN: Contact Form (Standard Height) -->
+                <div
+                    class="glass-card p-8 rounded-[7px] shadow-lg border-t-4 border-brand-500 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-[100px] -z-10"></div>
+
+                    <h2 class="text-2xl font-bold text-slate-900 mb-2">Send a Message</h2>
+                    <p class="text-slate-500 mb-6 text-sm">Fill out the form below and I'll get back to you shortly.</p>
+
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Name Field -->
+                            <div class="relative group">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                                    <i class="fas fa-user text-sm"></i>
+                                </div>
+                                <input type="text" id="name" required
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[7px] focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all placeholder:text-transparent peer text-sm font-medium text-slate-900"
+                                    placeholder="Full Name">
+                                <label for="name"
+                                    class="absolute left-10 top-3 text-slate-500 text-xs transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:top-1 peer-focus:text-xs peer-focus:text-brand-600 pointer-events-none font-bold uppercase tracking-wide bg-slate-50 peer-focus:bg-transparent -mt-5 peer-focus:mt-0 peer-placeholder-shown:mt-0">
+                                    Full Name
+                                </label>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="relative group">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                                    <i class="fas fa-envelope text-sm"></i>
+                                </div>
+                                <input type="email" id="email" required
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[7px] focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all placeholder:text-transparent peer text-sm font-medium text-slate-900"
+                                    placeholder="Email Address">
+                                <label for="email"
+                                    class="absolute left-10 top-3 text-slate-500 text-xs transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:top-1 peer-focus:text-xs peer-focus:text-brand-600 pointer-events-none font-bold uppercase tracking-wide bg-slate-50 peer-focus:bg-transparent -mt-5 peer-focus:mt-0 peer-placeholder-shown:mt-0">
+                                    Email Address
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Phone Field -->
+                            <div class="relative group">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                                    <i class="fas fa-phone text-sm"></i>
+                                </div>
+                                <input type="tel" id="phone"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[7px] focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all placeholder:text-transparent peer text-sm font-medium text-slate-900"
+                                    placeholder="Phone Number (Optional)">
+                                <label for="phone"
+                                    class="absolute left-10 top-3 text-slate-500 text-xs transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:top-1 peer-focus:text-xs peer-focus:text-brand-600 pointer-events-none font-bold uppercase tracking-wide bg-slate-50 peer-focus:bg-transparent -mt-5 peer-focus:mt-0 peer-placeholder-shown:mt-0">
+                                    Phone (Optional)
+                                </label>
+                            </div>
+
+                            <!-- Subject Field -->
+                            <div class="relative group">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                                    <i class="fas fa-tag text-sm"></i>
+                                </div>
+                                <input type="text" id="subject" required
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[7px] focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all placeholder:text-transparent peer text-sm font-medium text-slate-900"
+                                    placeholder="Subject">
+                                <label for="subject"
+                                    class="absolute left-10 top-3 text-slate-500 text-xs transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:top-1 peer-focus:text-xs peer-focus:text-brand-600 pointer-events-none font-bold uppercase tracking-wide bg-slate-50 peer-focus:bg-transparent -mt-5 peer-focus:mt-0 peer-placeholder-shown:mt-0">
+                                    Subject
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div class="relative group">
+                            <div
+                                class="absolute top-3.5 left-0 pl-3 flex items-start pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                                <i class="fas fa-comment-dots text-sm"></i>
+                            </div>
+                            <textarea id="message" rows="5" required
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[7px] focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all placeholder:text-transparent peer text-sm font-medium text-slate-900 resize-none"
+                                placeholder="Your Message"></textarea>
+                            <label for="message"
+                                class="absolute left-10 top-3 text-slate-500 text-xs transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:top-1 peer-focus:text-xs peer-focus:text-brand-600 pointer-events-none font-bold uppercase tracking-wide bg-slate-50 peer-focus:bg-transparent -mt-5 peer-focus:mt-0 peer-placeholder-shown:mt-0">
+                                Your Message
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submitBtn"
+                            class="w-full py-4 bg-gradient-to-r from-brand-600 to-brand-700 text-white font-bold rounded-[7px] shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:to-brand-600 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 group disabled:opacity-70 disabled:cursor-not-allowed">
+                            <span id="btnText" class="tracking-wide">Send Inquiry</span>
+                            <i id="btnIcon"
+                                class="fas fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                            <!-- Loading Spinner (Hidden by default) -->
+                            <div id="btnSpinner"
+                                class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin">
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-brand-200 pt-16 pb-8 relative overflow-hidden">
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Identity -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <div
+                                class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 transition-transform duration-300 opacity-20 blur-sm">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100">
+                                <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight">Dr. Wasim A. Khan</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed border-l-2 border-brand-200 pl-3">
+                        Associate Professor & Research Fellow specializing in <span
+                            class="text-brand-700 font-semibold">Cognitive Robotics</span> and <span
+                            class="text-brand-700 font-semibold">Generative AI</span>. Bridging the gap between theory
+                        and industrial application.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <!-- Socials -->
+                        <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fas fa-graduation-cap"></i></a>
+                        <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li><a href="../index.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Home</a></li>
+                        <li><a href="about.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                About Laboratory</a></li>
+                        <li><a href="research.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Research & Pubs</a></li>
+                        <li><a href="teaching.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Academic Teaching</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Research Focus -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Research Domains</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Cognitive
+                            Robotics</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Generative
+                            AI</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">LLM
+                            Agents</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">MLOps</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">HRI</a>
+                    </div>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Contact</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="mt-1 w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-map-marker-alt text-xs"></i>
+                            </div>
+                            <span>Lahore, Pakistan<br><span class="text-xs text-slate-400">Available for Global Remote
+                                    Collaboration</span></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-envelope text-xs"></i>
+                            </div>
+                            <a href="mailto:drwasimahmadkhan@gmail.com"
+                                class="hover:text-brand-700 transition-colors">drwasimahmadkhan@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-phone text-xs"></i>
+                            </div>
+                            <a href="tel:+923224645667"
+                                class="hover:text-brand-700 transition-colors">+92-322-4645667</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium">
+                <p>&copy; 2025 Dr. Wasim Ahmad Khan with <span class="text-brand-600 font-bold">Academic
+                        Excellence</span>. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="privacy.html" class="hover:text-brand-600 transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-brand-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.querySelector('button.md\\:hidden');
+        const menu = document.createElement('div');
+        menu.className = 'fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 space-y-6';
+        menu.innerHTML = `
+            <a href="../index.html" class="text-lg font-medium text-slate-600">Home</a>
+            <a href="teaching.html" class="text-lg font-medium text-slate-600">Teaching</a>
+            <a href="research.html" class="text-lg font-medium text-slate-600">Research</a>
+            <a href="publications.html" class="text-lg font-medium text-slate-600">Publications</a>
+            <a href="projects.html" class="text-lg font-medium text-slate-600">Projects</a>
+            <a href="about.html" class="text-lg font-medium text-slate-600">About</a>
+            <a href="services.html" class="text-lg font-medium text-slate-600">Services</a>
+            <a href="contact.html" class="text-lg font-medium text-slate-600">Contact</a>
+            <button class="absolute top-6 right-6 p-2 text-slate-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        `;
+        document.body.appendChild(menu);
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+        });
+
+        menu.querySelector('button').addEventListener('click', () => {
+            menu.classList.add('translate-x-full');
+        });
+
+        // Contact Form Handling
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Set Loading State
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            btnIcon.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+
+            // Simulate Network Request
+            setTimeout(() => {
+                // Success State
+                submitBtn.disabled = false;
+                btnText.textContent = 'Message Sent!';
+                btnSpinner.classList.add('hidden');
+
+                // Show Toast
+                showToast('Message sent successfully! We will contact you soon.', 'success');
+
+                // Reset Button after 3 seconds
+                setTimeout(() => {
+                    btnText.textContent = 'Send Inquiry';
+                    btnIcon.classList.remove('hidden');
+                    form.reset();
+                }, 3000);
+            }, 2000);
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-5 right-5 z-50 px-6 py-4 rounded-[7px] shadow-lg transform transition-all duration-300 translate-y-10 opacity-0 flex items-center gap-3 ${type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`;
+
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span class="font-medium text-sm">${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Animate In
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            });
+
+            // Remove after 4 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+    </script>
+</body>
+
+</html>

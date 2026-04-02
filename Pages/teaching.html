@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching | Dr. Wasim Ahmad Khan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .hero-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Modal Styles to approximate original functionality with Tailwind classes */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body class="font-sans text-slate-900 antialiased selection:bg-brand-500 selection:text-white relative">
+
+    <!-- GLOBAL AMBIENT BACKGROUND -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-slate-50">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-brand-500/20 rounded-full blur-[100px] animate-blob">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/20 rounded-full blur-[100px] animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute top-[30%] right-[10%] w-[50%] h-[50%] bg-purple-500/20 rounded-full blur-[120px] animate-blob animation-delay-4000">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 brightness-100 contrast-150 mix-blend-overlay">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 border-b border-white/50 shadow-sm bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"
+        id="navbar">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Identity Core -->
+                <a href="../index.html" class="flex items-center gap-3 group shrink-0">
+                    <div class="relative w-10 h-10">
+                        <div
+                            class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 group-hover:rotate-6 transition-transform duration-300 opacity-20 blur-sm">
+                        </div>
+                        <div
+                            class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100 group-hover:ring-brand-200 transition-all">
+                            <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col hidden lg:flex">
+                        <span class="text-base font-bold text-slate-900 leading-tight tracking-tight font-display">Dr.
+                            Wasim A. Khan</span>
+                        <span class="text-[9px] uppercase tracking-widest text-brand-600 font-bold">Research
+                            Laboratory</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation: Horizon Layout -->
+                <div class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <!-- Home -->
+                    <a href="../index.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Home
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Teaching (Active) -->
+                    <a href="teaching.html"
+                        class="relative px-3 py-2 text-sm font-semibold text-brand-700 bg-brand-50/80 rounded-[7px] border border-brand-100/50 hover:bg-brand-100 hover:border-brand-200 transition-all shadow-sm">
+                        Teaching
+                    </a>
+
+                    <a href="research.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Research
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="publications.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Publications
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="projects.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Projects
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="about.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        About
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <a href="services.html"
+                        class="group relative px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors rounded-[7px] hover:bg-slate-50">
+                        Services
+                        <span
+                            class="absolute bottom-1 left-2 right-2 h-0.5 bg-brand-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-center rounded-full opacity-60"></span>
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="w-px h-5 bg-slate-200 mx-1"></div>
+
+                    <!-- Contact CTA -->
+                    <a href="contact.html"
+                        class="px-6 py-2.5 rounded-[7px] bg-brand-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-brand-500/20 hover:bg-brand-700 hover:shadow-brand-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        Contact <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="md:hidden p-2 rounded-[7px] text-slate-600 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: Modern Cinematic -->
+    <section class="relative pt-40 pb-20 overflow-hidden">
+        <!-- Spotlight Effect -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 animate-fade-in-up">
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-[7px] bg-white/50 backdrop-blur-md border border-brand-100 shadow-sm mb-8 hover:shadow-md transition-all duration-300 group cursor-default">
+                <span class="text-xs font-bold tracking-widest text-brand-600 uppercase">Academic Excellence</span>
+            </div>
+
+            <!-- Modern Heading -->
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tight leading-tight">
+                Teaching & <br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-purple-600 to-brand-600 bg-300% animate-gradient">Courses</span>
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                Providing comprehensive <span class="font-medium text-slate-900">Computer Science Education</span> to
+                mentor the <span class="font-medium text-slate-900">Next Generation</span> of tech leaders.
+            </p>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section class="py-12 bg-transparent mb-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800"
+                            alt="DSA"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur text-brand-700 rounded-[7px] shadow-sm">Undergraduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Data Structures and Algorithms (DSA)</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Master the fundamental data structures and
+                            algorithms essential for computer science. Learn about arrays, linked lists, trees, graphs,
+                            sorting, and searching.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800"
+                            alt="Automata"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur text-brand-700 rounded-[7px] shadow-sm">Undergraduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Theory of Automata</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Explore formal languages, finite automata,
+                            pushdown automata, and Turing machines. Understand the theoretical foundations of
+                            computation.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800"
+                            alt="ICT"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur text-brand-700 rounded-[7px] shadow-sm">Undergraduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Introduction to ICT</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Introduction to Information and
+                            Communication Technology. Learn the basics of computing systems, networking fundamentals,
+                            and digital communication.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&q=80&w=800"
+                            alt="PF"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur text-brand-700 rounded-[7px] shadow-sm">Undergraduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Programming Fundamentals</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Build a strong foundation in programming
+                            concepts, syntax, control structures, functions, and problem-solving techniques.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+                            alt="OOP"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur text-brand-700 rounded-[7px] shadow-sm">Undergraduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Object-Oriented Programming (OOP)</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Learn object-oriented programming principles
+                            including classes, objects, inheritance, polymorphism, encapsulation, and design patterns.
+                        </p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&q=80&w=800"
+                            alt="Web Eng"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-slate-900/90 backdrop-blur text-white rounded-[7px] shadow-sm">Undergrad/Grad</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Web Engineering</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Comprehensive course covering front-end
+                            technologies (HTML, CSS, JavaScript), back-end development (JAVA, JSP), and best practices.
+                        </p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=800"
+                            alt="ML"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-slate-900/90 backdrop-blur text-white rounded-[7px] shadow-sm">Graduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Machine Learning</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Advanced machine learning algorithms, deep
+                            learning, neural networks, and practical applications using TensorFlow and PyTorch.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800"
+                            alt="Mobile"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-slate-900/90 backdrop-blur text-white rounded-[7px] shadow-sm">Graduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Mobile Computing</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Learn Android development with Java, mobile
+                            app architecture, UI/UX design, and modern mobile computing paradigms.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 9 -->
+                <div
+                    class="course-card group bg-white/70 backdrop-blur-md rounded-[7px] border border-white/50 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:shadow-brand-500/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
+                            alt="EAD"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="px-3 py-1 text-xs font-semibold bg-slate-900/90 backdrop-blur text-white rounded-[7px] shadow-sm">Graduate</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3
+                            class="course-title text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">
+                            Enterprise Application Development</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">Master enterprise-level application
+                            development using C# and ASP.NET, focusing on scalable, secure, and maintainable software
+                            solutions.</p>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button
+                                class="btn-enroll w-full py-2.5 bg-brand-50 text-brand-700 font-semibold rounded-[7px] hover:bg-brand-100 hover:text-brand-800 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-user-graduate"></i> Enroll Now
+                            </button>
+                            <button
+                                class="btn-view-notes w-full py-2.5 bg-white border border-slate-200 text-slate-600 font-semibold rounded-[7px] hover:border-brand-500 hover:text-brand-600 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-book-open"></i> View Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal (Redesigned with Tailwind, keeping ID active) -->
+    <!-- Enrollment Modal (Professional Redesign) -->
+    <!-- Enrollment Modal (Professional Redesign) -->
+    <div id="enrollmentModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" id="modalBackdrop"></div>
+
+        <div class="relative w-full min-h-screen flex items-center justify-center p-4">
+            <div
+                class="bg-white rounded-xl shadow-2xl relative w-full max-w-2xl overflow-hidden transform transition-all border border-slate-100 flex flex-col max-h-[90vh]">
+
+                <!-- Modal Header -->
+                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Enrollment Application</h2>
+                        <p class="text-slate-500 text-sm mt-1">Please fill out the details below to join the course.</p>
+                    </div>
+                    <button
+                        class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition-all"
+                        id="closeModalBtn">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body (Scrollable) -->
+                <div class="p-8 overflow-y-auto custom-scrollbar">
+                    <form id="enrollmentForm" class="space-y-6">
+
+                        <!-- Row 1: Name Fields -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- First Name -->
+                            <div class="space-y-2">
+                                <label for="firstName"
+                                    class="text-xs font-bold text-slate-700 uppercase tracking-wider">First Name</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fas fa-user text-sm"></i>
+                                    </div>
+                                    <input type="text" id="firstName" placeholder="John" required
+                                        class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 hover:border-slate-300">
+                                </div>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="space-y-2">
+                                <label for="lastName"
+                                    class="text-xs font-bold text-slate-700 uppercase tracking-wider">Last Name</label>
+                                <div class="relative">
+                                    <div
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fas fa-user text-sm"></i>
+                                    </div>
+                                    <input type="text" id="lastName" placeholder="Doe" required
+                                        class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 hover:border-slate-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="space-y-2">
+                            <label for="email" class="text-xs font-bold text-slate-700 uppercase tracking-wider">Email
+                                Address</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fas fa-envelope text-sm"></i>
+                                </div>
+                                <input type="email" id="email" placeholder="john.doe@university.edu" required
+                                    class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 hover:border-slate-300">
+                            </div>
+                        </div>
+
+                        <!-- Selected Course -->
+                        <div class="space-y-2">
+                            <label for="courseInput"
+                                class="text-xs font-bold text-slate-700 uppercase tracking-wider">Selected
+                                Course</label>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brand-600">
+                                    <i class="fas fa-graduation-cap text-sm"></i>
+                                </div>
+                                <input type="text" id="courseInput" readonly
+                                    class="w-full pl-10 pr-4 py-3 bg-brand-50/50 border border-brand-200 rounded-lg text-brand-700 font-bold text-sm cursor-not-allowed outline-none select-none">
+                            </div>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div class="space-y-2">
+                            <label for="message"
+                                class="text-xs font-bold text-slate-700 uppercase tracking-wider">Statement of Purpose
+                                <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                            <div class="relative">
+                                <div
+                                    class="absolute top-3.5 left-0 pl-3 flex items-start pointer-events-none text-slate-400">
+                                    <i class="fas fa-comment-dots text-sm"></i>
+                                </div>
+                                <textarea id="message" rows="4"
+                                    placeholder="Briefly describe your background and why you want to join this course..."
+                                    class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all text-sm font-medium text-slate-900 placeholder:text-slate-300 resize-none hover:border-slate-300"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 mt-8">
+                            <button type="submit"
+                                class="w-full py-3.5 bg-brand-600 text-white font-bold rounded-lg shadow-lg shadow-brand-500/30 hover:bg-brand-700 hover:shadow-brand-500/50 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group">
+                                <span>Submit Application</span>
+                                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                            <p class="text-center text-xs text-slate-400 mt-4">
+                                By submitting, you agree to our <a href="#"
+                                    class="text-brand-600 hover:underline">Terms</a> and <a href="#"
+                                    class="text-brand-600 hover:underline">Privacy Policy</a>.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTES COMING SOON MODAL -->
+    <div id="notesModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" id="notesModalBackdrop"></div>
+
+        <div class="relative w-full min-h-screen flex items-center justify-center p-4">
+            <div
+                class="bg-white rounded-xl shadow-2xl relative w-full max-w-md overflow-hidden transform transition-all border border-slate-100 flex flex-col animate-bounce-in">
+
+                <!-- Modal Content -->
+                <div class="p-8 text-center">
+                    <div
+                        class="w-16 h-16 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-brand-100">
+                        <i class="fas fa-clock text-3xl text-brand-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-2">Notes Coming Soon</h2>
+                    <p class="text-slate-600 leading-relaxed mb-8">
+                        We are currently curating and formatting high-quality lecture notes for this course. Please
+                        check back
+                        shortly!
+                    </p>
+                    <button id="closeNotesModalBtn"
+                        class="w-full py-3 bg-brand-600 text-white font-bold rounded-lg shadow-lg shadow-brand-500/30 hover:bg-brand-700 hover:shadow-brand-500/40 transition-all duration-300">
+                        Got it!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-brand-200 pt-16 pb-8 relative overflow-hidden">
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Identity -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-10 h-10">
+                            <div
+                                class="absolute inset-0 bg-brand-600 rounded-[7px] rotate-3 transition-transform duration-300 opacity-20 blur-sm">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-white rounded-[7px] border border-white/50 shadow-md flex items-center justify-center ring-1 ring-slate-100">
+                                <i class="fas fa-graduation-cap text-brand-600 text-lg"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight">Dr. Wasim A. Khan</span>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed border-l-2 border-brand-200 pl-3">
+                        Associate Professor & Research Fellow specializing in <span
+                            class="text-brand-700 font-semibold">Cognitive Robotics</span> and <span
+                            class="text-brand-700 font-semibold">Generative AI</span>. Bridging the gap between theory
+                        and industrial application.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <!-- Socials -->
+                        <a href="https://www.linkedin.com/in/wasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://scholar.google.com/citations?user=v9ERPtQAAAAJ&hl=en" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fas fa-graduation-cap"></i></a>
+                        <a href="https://github.com/drwasimahmadkhan/" target="_blank"
+                            class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all transform hover:-translate-y-1 shadow-sm"><i
+                                class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li><a href="../index.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Home</a></li>
+                        <li><a href="about.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                About Laboratory</a></li>
+                        <li><a href="research.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Research & Pubs</a></li>
+                        <li><a href="teaching.html"
+                                class="hover:text-brand-600 transition-colors flex items-center gap-2 group"><i
+                                    class="fas fa-chevron-right text-[10px] text-slate-400 group-hover:text-brand-500 transition-colors"></i>
+                                Academic Teaching</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Research Focus -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Research Domains</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Cognitive
+                            Robotics</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">Generative
+                            AI</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">LLM
+                            Agents</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">MLOps</a>
+                        <a href="research.html"
+                            class="px-3 py-1 bg-white text-slate-600 text-xs rounded-full border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition-colors shadow-sm">HRI</a>
+                    </div>
+                </div>
+
+                <!-- Col 4: Contact -->
+                <div>
+                    <h4 class="text-slate-900 font-bold mb-6 border-l-2 border-brand-500 pl-3">Contact</h4>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <div
+                                class="mt-1 w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-map-marker-alt text-xs"></i>
+                            </div>
+                            <span>Institute for Art and Culture, Lahore, Pakistan<br><span
+                                    class="text-xs text-slate-400">Available for Global Remote
+                                    Collaboration</span></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-envelope text-xs"></i>
+                            </div>
+                            <a href="mailto:drwasimahmadkhan@gmail.com"
+                                class="hover:text-brand-700 transition-colors">drwasimahmadkhan@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div
+                                class="w-6 h-6 rounded bg-brand-50 flex items-center justify-center text-brand-600 shrink-0 border border-brand-100">
+                                <i class="fas fa-phone text-xs"></i>
+                            </div>
+                            <a href="tel:+923224645667"
+                                class="hover:text-brand-700 transition-colors">+92-322-4645667</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-medium">
+                <p>&copy; 2025 Dr. Wasim Ahmad Khan with <span class="text-brand-600 font-bold">Academic
+                        Excellence</span>. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="privacy.html" class="hover:text-brand-600 transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-brand-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.querySelector('button.md\\:hidden');
+        const menu = document.createElement('div');
+        menu.className = 'fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 space-y-6';
+        menu.innerHTML = `
+            <a href="../index.html" class="text-lg font-medium text-slate-600">Home</a>
+            <a href="teaching.html" class="text-lg font-bold text-brand-600">Teaching</a>
+            <a href="research.html" class="text-lg font-medium text-slate-600">Research</a>
+            <a href="publications.html" class="text-lg font-medium text-slate-600">Publications</a>
+            <a href="projects.html" class="text-lg font-medium text-slate-600">Projects</a>
+            <a href="about.html" class="text-lg font-medium text-slate-600">About</a>
+            <a href="services.html" class="text-lg font-medium text-slate-600">Services</a>
+            <a href="contact.html" class="text-lg font-medium text-slate-600">Contact</a>
+            <button class="absolute top-6 right-6 p-2 text-slate-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        `;
+        document.body.appendChild(menu);
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+        });
+
+        menu.querySelector('button').addEventListener('click', () => {
+            menu.classList.add('translate-x-full');
+        });
+
+        // Enrollment Modal Logic
+        const modal = document.getElementById('enrollmentModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const courseInput = document.getElementById('courseInput');
+
+        // Open Modal logic
+        document.querySelectorAll('.btn-enroll').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Find column title in the specific card text
+                // Go up to card, then find h3
+                const card = this.closest('.course-card');
+                const courseName = card.querySelector('.course-title').textContent.trim();
+
+                courseInput.value = courseName;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // Lock Body Scroll
+            });
+        });
+
+        function hideModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = ''; // Unlock Body Scroll
+        }
+
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // Click outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('absolute')) { // backdrop check
+                hideModal();
+            }
+        });
+
+        // --- Notes Modal Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const notesModal = document.getElementById('notesModal');
+            const closeNotesBtn = document.getElementById('closeNotesModalBtn');
+            const notesBackdrop = document.getElementById('notesModalBackdrop');
+            const viewNotesBtns = document.querySelectorAll('.btn-view-notes');
+
+            const openNotesModal = (e) => {
+                e.preventDefault();
+                notesModal.classList.remove('hidden');
+                notesModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeNotesModal = () => {
+                notesModal.classList.add('hidden');
+                notesModal.classList.remove('flex');
+                document.body.style.overflow = '';
+            };
+
+            viewNotesBtns.forEach(btn => {
+                btn.addEventListener('click', openNotesModal);
+            });
+
+            closeNotesBtn.addEventListener('click', closeNotesModal);
+            notesBackdrop.addEventListener('click', closeNotesModal);
+        });
+    </script>
+    <!-- Keeping existing main.js for potential shared logic, though we might eventually phase it out -->
+    <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
