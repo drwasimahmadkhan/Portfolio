@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Sort - Interactive Workbench</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #64748b;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-page: #f8fafc;
+            --bg-panel: #ffffff;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+
+            /* Trace Log Colors */
+            --trace-bg: #f3f4f6;
+            --trace-hl-yellow: #fde047;
+            --trace-hl-green: #86efac;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+
+
+        /* --- MAIN LAYOUT --- */
+        .workbench {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* --- THEORY AREA --- */
+        .theory-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 600px) {
+            .theory-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .details-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .panel-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .scenario-content {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        /* Code Block */
+        .code-container {
+            background: var(--code-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .code-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 8px 10px;
+            border-bottom: 1px solid #334155;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .code-tabs,
+        .view-mode-tabs {
+            display: flex;
+            gap: 2px;
+        }
+
+        .tab,
+        .view-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .tab:hover,
+        .view-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab.active {
+            background: #334155;
+            color: white;
+        }
+
+        .view-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .code-editor {
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        .code-line {
+            padding: 2px 10px;
+            border-radius: 4px;
+            white-space: pre;
+        }
+
+        .code-line.active-line {
+            background: rgba(251, 191, 36, 0.2);
+            border-left: 3px solid var(--warning);
+            color: #fbbf24;
+        }
+
+        .comment-time {
+            color: #f59e0b;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .comment-space {
+            color: #3b82f6;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .comment-std {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* --- UPDATED LOGIC LIST STYLES (Numbered & Aligned) --- */
+        .logic-list ol {
+            list-style: none;
+            /* Remove default marker */
+            counter-reset: logic-counter;
+            /* Initialize counter */
+            padding: 0;
+            margin: 0;
+        }
+
+        .logic-list li {
+            display: flex;
+            /* Use flex to align number and text */
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .logic-list li::before {
+            counter-increment: logic-counter;
+            content: counter(logic-counter) ".";
+            color: var(--primary);
+            font-weight: 700;
+            min-width: 25px;
+            /* Fixed width for the number column */
+            margin-right: 5px;
+        }
+
+        /* --- VISUAL SECTION --- */
+        .visual-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stage-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            /* Fixed height for stability */
+            height: 600px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stage-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* --- SPLIT LAYOUT (50/50 EXACTLY) --- */
+        .visual-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            /* Prevents outer scroll */
+        }
+
+        /* LEFT: Graph (50%) */
+        .canvas-wrapper {
+            flex: 1;
+            /* Takes 50% */
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 40px 20px 60px 20px;
+            gap: 12px;
+            background-color: #304356;
+            border-right: 1px solid var(--border);
+        }
+
+        /* RIGHT: Trace Log (50%) */
+        .trace-wrapper {
+            flex: 1;
+            /* Takes 50% */
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: 100%;
+            /* Fill remaining height */
+            overflow: hidden;
+        }
+
+        /* --- IMAGE-STYLE BARS WITH SELECTION MOVEMENT --- */
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            width: 50px;
+            position: relative;
+            /* Transition for the "Move Down" effect */
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* The class that moves selected grid down */
+        .bar-container.selected-grid {
+            transform: translateY(20px);
+        }
+
+        /* Optional: Dim unselected ones slightly to enhance focus */
+        .bar-container.unselected-grid {
+            opacity: 0.5;
+            filter: grayscale(60%);
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease, background-color 0.3s;
+            display: flex;
+            align-items: flex-end;
+            /* Text at bottom of bar */
+            justify-content: center;
+            padding-bottom: 5px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .bar-value {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1e293b;
+            /* Dark text for contrast */
+            margin-bottom: 10px;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .bar-index {
+            position: absolute;
+            bottom: -35px;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* --- LOG STYLES --- */
+        .trace-header {
+            padding: 10px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .trace-log-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-family: 'Fira Code', monospace;
+            scroll-behavior: smooth;
+        }
+
+        .trace-log-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .trace-log-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .trace-log-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        .trace-log-container::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+
+        .trace-step {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-info {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .step-msg {
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .array-state {
+            background: var(--trace-bg);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #475569;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* --- CONTROLS (Exact Selection Sort Alignment) --- */
+        .controls-toolbar {
+            background: white;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-right: 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .control-group:last-child {
+            border: none;
+        }
+
+        button.btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+        }
+
+        button.btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        button.btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        button.btn-primary:hover {
+            background: #2563eb;
+        }
+
+        button.btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* Pause button active state */
+        button.btn#btnPause.active {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+
+        button.btn-danger {
+            color: var(--danger);
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            width: 200px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Dropdown CSS */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            z-index: 50;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #334155;
+            display: block;
+            border-bottom: 1px solid #f1f5f9;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+
+
+        /* --- COMPLEXITY SECTION --- */
+        .complexity-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .complexity-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .complexity-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            vertical-align: top;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .badge-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-green {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-yellow {
+            background: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="workbench">
+
+
+        <main class="visual-area">
+            <div class="stage-container">
+                <div class="stage-header">
+                    <div class="panel-title" style="margin:0; font-size: 1.1rem;">👀 Visual Example</div>
+                    <div class="header-controls">
+                        <div class="status-badge" id="statusText">Ready to Sort</div>
+                    </div>
+                </div>
+
+                <div class="visual-body">
+                    <div class="canvas-wrapper" id="barContainer"></div>
+
+                    <div class="trace-wrapper">
+                        <div class="trace-header">
+                            <span>Step Log</span>
+                            <button onclick="clearLog()"
+                                style="border:none; background:none; cursor:pointer; color:#94a3b8;"
+                                title="Clear Log">🗑️</button>
+                        </div>
+                        <div class="trace-log-container" id="traceLog">
+                            <div style="color:#9ca3af; text-align:center; margin-top:50px; font-size:0.9rem;">
+                                Press Play to see the sort trace...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls-toolbar">
+                    <div class="control-group">
+                        <input type="text" id="customInput" placeholder="e.g. 50, 20, 10, 40">
+                        <button class="btn" onclick="initCustom()">Load</button>
+
+                        <div class="dropdown">
+                            <button class="btn">Generate ▾</button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-item" onclick="initBest()">Best Case (Sorted)</div>
+                                <div class="dropdown-item" onclick="initRandom()">Average (Random)</div>
+                                <div class="dropdown-item" onclick="initWorst()">Worst Case</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <button class="btn btn-primary" id="btnPlay" onclick="startSort()">Play ▶</button>
+                        <button class="btn" id="btnPause" onclick="pauseSort()" disabled>Pause ⏸</button>
+                        <button class="btn" id="btnStep" onclick="stepSort()">Step ⏭</button>
+                        <button class="btn btn-danger" onclick="reset()">Reset ↺</button>
+                    </div>
+
+                    <div class="control-group" style="border:none">
+                        <label for="speedRange"
+                            style="font-size:0.85rem; font-weight:600; margin-right:8px;">Speed:</label>
+                        <input type="range" id="speedRange" min="50" max="1000" value="500" style="width:100px;">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <section class="theory-area">
+            <div class="details-panel">
+                <div class="panel-title"><span>🎯 Real World Scenario</span></div>
+                <div class="scenario-content">
+                    Merging two stacks of exam papers: You split the pile into two halves, sort each half recursively,
+                    and then "Zip" them together. To zip, you look at the top paper of each pile, pick the smaller
+                    number, and place it in the new pile.
+                </div>
+                <div class="panel-title"><span>⚙️ How It Works</span></div>
+                <div class="logic-list">
+                    <ol>
+                        <li><strong>Divide</strong> the array into two halves until each sub-array has only 1 element.
+                        </li>
+                        <li><strong>Compare</strong> the smallest available elements from the Left and Right sub-arrays.
+                        </li>
+                        <li><strong>Pick</strong> the smaller value and place it into the main array (overwriting).</li>
+                        <li>Repeat until one sub-array is empty, then copy the rest.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="details-panel">
+                <div class="panel-title"><span>💻 Code Implementation</span></div>
+                <div class="code-container">
+                    <div class="code-header-row">
+                        <div class="code-tabs">
+                            <button class="tab active" onclick="setLang('python')">Python</button>
+                            <button class="tab" onclick="setLang('cpp')">C++</button>
+                            <button class="tab" onclick="setLang('js')">JS</button>
+                        </div>
+                        <div class="view-mode-tabs">
+                            <button class="view-btn active" id="btn-standard"
+                                onclick="setViewMode('standard')">Code</button>
+                            <button class="view-btn" id="btn-time" onclick="setViewMode('time')">⏱ Time</button>
+                            <button class="view-btn" id="btn-space" onclick="setViewMode('space')">💾 Space</button>
+                        </div>
+                    </div>
+                    <div class="code-editor" id="codeDisplay"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="complexity-section">
+            <div class="panel-title">📊 Elaborated Complexity Analysis</div>
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th width="15%">Metric</th>
+                        <th width="15%">Complexity</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Worst Case</strong></td>
+                        <td><span class="badge badge-green">O(n log n)</span></td>
+                        <td>Merge Sort always divides the array in half (log n levels) and iterates linearly to merge (n
+                            operations per level). This is consistent for Best, Average, and Worst cases.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best Case</strong></td>
+                        <td><span class="badge badge-green">O(n log n)</span></td>
+                        <td>Even if the array is sorted, it still performs the full split and merge process.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average Case</strong></td>
+                        <td><span class="badge badge-green">O(n log n)</span></td>
+                        <td>Highly reliable for large datasets, though slower for small arrays compared to Insertion
+                            Sort due to overhead.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Space</strong></td>
+                        <td><span class="badge badge-red">O(n)</span></td>
+                        <td><strong>Not In-Place.</strong> Requires auxiliary arrays (or one large temp array) to store
+                            elements during the merge process before overwriting the original.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // --- DATA & STATE ---
+        const codeSnippets = {
+            python: {
+                standard: ["def merge_sort(arr):", "    if len(arr) > 1:", "        mid = len(arr) // 2", "        L = arr[:mid]", "        R = arr[mid:]", "        merge_sort(L)", "        merge_sort(R)", "        i = j = k = 0", "        while i < len(L) and j < len(R):", "            if L[i] < R[j]:", "                arr[k] = L[i]; i += 1", "            else:", "                arr[k] = R[j]; j += 1", "            k += 1", "        # Check for remaining elements", "        while i < len(L): arr[k] = L[i]; i+=1; k+=1", "        while j < len(R): arr[k] = R[j]; j+=1; k+=1"],
+                time: ["# TIME COMPLEXITY: O(n log n)", "def merge_sort(arr):", "    # Recursion divides array: log(n) depth", "    if len(arr) > 1:", "        mid = len(arr) // 2", "        merge_sort(L)", "        merge_sort(R)", "", "        # Merging takes linear time O(n)", "        while i < len(L) and j < len(R):", "            # Constant time comparisons", "            ...", "# Total = Depth * Work per depth = O(n log n)"],
+                space: ["# SPACE COMPLEXITY: O(n)", "def merge_sort(arr):", "    if len(arr) > 1:", "        # Allocating new lists L and R", "        L = arr[:mid]", "        R = arr[mid:]", "        # The sum of lengths of these temp arrays", "        # across the algorithm is proportional to n.", "# Therefore space is O(n)."]
+            },
+            cpp: {
+                standard: ["void merge(vector<int>& arr, int l, int m, int r) {", "    // Create temp arrays L[] and R[]", "    // Merge back into arr[l..r]", "}", "void mergeSort(vector<int>& arr, int l, int r) {", "    if (l >= r) return;", "    int m = l + (r - l) / 2;", "    mergeSort(arr, l, m);", "    mergeSort(arr, m + 1, r);", "    merge(arr, l, m, r);", "}"],
+                time: ["// TIME COMPLEXITY: O(n log n)", "void mergeSort(vector<int>& arr, int l, int r) {", "    if (l >= r) return;", "    int m = l + (r - l) / 2;", "    mergeSort(arr, l, m);     // T(n/2)", "    mergeSort(arr, m + 1, r); // T(n/2)", "    merge(arr, l, m, r);      // O(n)", "}", "// Recurrence: T(n) = 2T(n/2) + n"],
+                space: ["// SPACE COMPLEXITY: O(n)", "void merge(...) {", "    // Temp vectors created here", "    vector<int> L(n1), R(n2);", "    // Copy data...", "    // Total extra space is linear O(n)", "}"]
+            },
+            js: {
+                standard: ["async function merge(arr, l, m, r) {", "    let n1 = m - l + 1, n2 = r - m;", "    let L = new Array(n1), R = new Array(n2);", "    // Copy data to L and R...", "    while (i < n1 && j < n2) {", "        if (L[i] <= R[j]) { arr[k] = L[i]; i++; }", "        else { arr[k] = R[j]; j++; }", "        k++;", "    }", "}", "async function mergeSort(arr, l, r) {", "    if (l >= r) return;", "    let m = l + parseInt((r - l) / 2);", "    await mergeSort(arr, l, m);", "    await mergeSort(arr, m + 1, r);", "    await merge(arr, l, m, r);", "}"],
+                time: ["// TIME COMPLEXITY: O(n log n)", "async function mergeSort(arr, l, r) {", "    if (l >= r) return;", "    let m = l + parseInt((r - l) / 2);", "    // Recursive calls split the problem", "    await mergeSort(arr, l, m);", "    await mergeSort(arr, m + 1, r);", "    // Merge iterates through n elements", "    await merge(arr, l, m, r);", "}"],
+                space: ["// SPACE COMPLEXITY: O(n)", "async function merge(...) {", "    // Temporary Arrays L and R consume space", "    let L = new Array(n1);", "    let R = new Array(n2);", "    // This makes Merge Sort NOT in-place.", "}"]
+            }
+        };
+
+        let currentData = [50, 20, 90, 10, 80, 30, 70, 40, 60, 100];
+        let sorting = false;
+        let paused = false;
+        let abort = false;
+        let resolveStep = null;
+        let currentLang = 'python';
+        let currentMode = 'standard';
+        let stepCount = 0;
+
+        window.onload = () => { renderCode(); initRandom(); };
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.code-tabs .tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCode();
+        }
+
+        function setViewMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.view-mode-tabs .view-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${mode}`).classList.add('active');
+            renderCode();
+        }
+
+        function renderCode() {
+            const container = document.getElementById('codeDisplay');
+            container.innerHTML = '';
+            codeSnippets[currentLang][currentMode].forEach((line, idx) => {
+                const div = document.createElement('div');
+                div.className = 'code-line'; div.id = `line-${idx}`;
+                if (currentMode !== 'standard' && (line.includes('//') || line.includes('#'))) {
+                    const cls = currentMode === 'time' ? 'comment-time' : 'comment-space';
+                    div.innerHTML = line.replace(/(\/\/|#)(.*)/, `<span class="${cls}">$1$2</span>`);
+                } else if (currentMode === 'standard' && (line.includes('//') || line.includes('#'))) {
+                    div.innerHTML = line.replace(/(\/\/|#)(.*)/, `<span class="comment-std">$1$2</span>`);
+                } else div.innerText = line;
+                container.appendChild(div);
+            });
+        }
+
+        function highlightLine(lineIndex) {
+            document.querySelectorAll('.code-line').forEach(l => l.classList.remove('active-line'));
+            const el = document.getElementById(`line-${lineIndex}`);
+            if (el) el.classList.add('active-line');
+        }
+
+        // --- DRAWING LOGIC (HSL COLOR MAPPING + SELECTION MOVEMENT) ---
+        function getHslColor(value, max) {
+            const hue = (value / max) * 280;
+            return `hsl(${hue}, 90%, 55%)`;
+        }
+
+        // Range info is used to identify the "Selected Grid" and move it down
+        function drawBars(range = null) {
+            const container = document.getElementById('barContainer');
+            container.innerHTML = '';
+            const maxVal = Math.max(...currentData, 100);
+
+            currentData.forEach((val, idx) => {
+                const wrapper = document.createElement('div');
+
+                // Add Movement Class based on selection state
+                if (range) {
+                    if (idx >= range.start && idx <= range.end) {
+                        wrapper.className = 'bar-container selected-grid';
+                    } else {
+                        wrapper.className = 'bar-container unselected-grid';
+                    }
+                } else {
+                    wrapper.className = 'bar-container'; // No selection, everything normal
+                }
+
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                // Height based on value
+                bar.style.height = `${(val / maxVal) * 250}px`;
+                // Color based on value (Rainbow gradient effect)
+                bar.style.backgroundColor = getHslColor(val, maxVal);
+
+                const valLabel = document.createElement('span');
+                valLabel.className = 'bar-value';
+                valLabel.innerText = val;
+
+                const idxLabel = document.createElement('span');
+                idxLabel.className = 'bar-index';
+                idxLabel.innerText = idx;
+
+                bar.appendChild(valLabel);
+                wrapper.appendChild(bar);
+                wrapper.appendChild(idxLabel);
+                container.appendChild(wrapper);
+            });
+        }
+
+        // --- LOGIC: LOGS & CONTROL ---
+        function addLog(title, msg, arrState) {
+            stepCount++;
+            const container = document.getElementById('traceLog');
+
+            if (container.children.length > 0 && container.children[0].innerText.includes('Press Play')) {
+                container.innerHTML = '';
+            }
+
+            const stepDiv = document.createElement('div');
+            stepDiv.className = `trace-step`;
+            stepDiv.innerHTML = `
+                <div style="display:flex; justify-content:space-between;">
+                    <span class="step-info">STEP ${stepCount}: ${title}</span>
+                </div>
+                <div class="step-msg">${msg}</div>
+                ${arrState ? `<div class="array-state">[ ${arrState.join(', ')} ]</div>` : ''}
+            `;
+            container.appendChild(stepDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('traceLog').innerHTML = '<div style="color:#9ca3af; text-align:center; margin-top:50px; font-size:0.9rem;">Log Cleared</div>';
+            stepCount = 0;
+        }
+
+        function initRandom() { reset(); currentData = Array.from({ length: 10 }, () => Math.floor(Math.random() * 90) + 10); drawBars(); updateStatus("Ready (Random)"); }
+        function initBest() { reset(); currentData = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; drawBars(); updateStatus("Ready (Sorted)"); }
+        function initWorst() { reset(); currentData = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]; drawBars(); updateStatus("Ready (Reverse)"); }
+        function initCustom() {
+            const input = document.getElementById('customInput').value;
+            if (!input) return;
+            const arr = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+            if (arr.length > 0) { reset(); currentData = arr; drawBars(); }
+        }
+
+        function reset() {
+            abort = true; sorting = false; paused = false;
+            stepCount = 0;
+            if (resolveStep) resolveStep();
+            updateStatus("Ready"); enableControls(true); highlightLine(-1);
+            drawBars();
+            document.getElementById('traceLog').innerHTML = '<div style="color:#9ca3af; text-align:center; margin-top:50px; font-size:0.9rem;">Press Play...</div>';
+            document.getElementById('btnPause').classList.remove('active');
+        }
+
+        // --- FIXED CONTROL LOGIC ---
+        async function startSort() {
+            // Case 1: Resume from Pause
+            if (paused) {
+                paused = false;
+                document.getElementById('btnPause').classList.remove('active');
+                if (resolveStep) resolveStep();
+                updateStatus("Resuming...");
+                return;
+            }
+            // Case 2: Already sorting
+            if (sorting) return;
+
+            // Case 3: Start New
+            sorting = true; abort = false; enableControls(false);
+            stepCount = 0;
+            document.getElementById('traceLog').innerHTML = '';
+
+            await mergeSortRec(0, currentData.length - 1);
+
+            if (!abort) {
+                drawBars(); // Full reset (no selection down)
+                document.getElementById('statusText').innerText = "Sorted!";
+                addLog("COMPLETE", "The array is now fully sorted.", currentData);
+                updateStatus("Sorting Complete! 🎉");
+            }
+            sorting = false; enableControls(true); highlightLine(-1);
+            document.getElementById('btnPause').classList.remove('active');
+        }
+
+        function pauseSort() {
+            if (!sorting || paused) return; // Ignore if not sorting or already paused
+            paused = true;
+            updateStatus("Paused");
+            document.getElementById('btnPause').classList.add('active');
+        }
+
+        function stepSort() {
+            if (!sorting) { startSort(); paused = true; document.getElementById('btnPause').classList.add('active'); return; }
+            paused = false;
+            if (resolveStep) resolveStep();
+            paused = true;
+            document.getElementById('btnPause').classList.add('active');
+        }
+
+        function enableControls(enabled) {
+            document.getElementById('btnPlay').disabled = !enabled;
+            document.getElementById('btnPause').disabled = enabled;
+            document.getElementById('customInput').disabled = !enabled;
+        }
+
+        function updateStatus(msg) { document.getElementById('statusText').innerText = msg; }
+
+        async function wait() {
+            if (abort) return Promise.reject("Aborted");
+            const rawSpeed = document.getElementById('speedRange').value;
+            const delay = 1050 - rawSpeed;
+            if (paused) await new Promise(resolve => { resolveStep = resolve; });
+            else await new Promise(resolve => setTimeout(resolve, delay));
+        }
+
+        // --- MERGE SORT LOGIC ---
+
+        async function mergeSortRec(l, r) {
+            if (l >= r) return;
+            if (abort) return;
+
+            highlightLine(0);
+            const m = l + Math.floor((r - l) / 2);
+
+            // Visual: Show range being split by moving it down ("Selected Grid")
+            drawBars({ start: l, end: r });
+            updateStatus(`Splitting [${l}...${r}]`);
+            await wait();
+
+            highlightLine(5);
+            await mergeSortRec(l, m);
+            highlightLine(6);
+            await mergeSortRec(m + 1, r);
+
+            await merge(l, m, r);
+        }
+
+        async function merge(l, m, r) {
+            if (abort) return;
+
+            const n1 = m - l + 1;
+            const n2 = r - m;
+            let L = new Array(n1);
+            let R = new Array(n2);
+
+            for (let i = 0; i < n1; i++) L[i] = currentData[l + i];
+            for (let j = 0; j < n2; j++) R[j] = currentData[m + 1 + j];
+
+            updateStatus(`Merging [${l}-${m}] & [${m + 1}-${r}]`);
+            addLog("MERGE START", `Merging subarrays indices ${l}-${m} and ${m + 1}-${r}.`, [...L, ...R]);
+
+            // Highlight current working area by moving it down
+            drawBars({ start: l, end: r });
+            await wait();
+
+            let i = 0, j = 0, k = l;
+
+            highlightLine(8); // While loop
+
+            while (i < n1 && j < n2) {
+                if (abort) return;
+
+                if (L[i] <= R[j]) {
+                    highlightLine(10);
+                    currentData[k] = L[i];
+                    addLog("COMPARE & PLACE", `${L[i]} <= ${R[j]}. Placing ${L[i]} at index ${k}.`, currentData);
+                    i++;
+                } else {
+                    highlightLine(12);
+                    currentData[k] = R[j];
+                    addLog("COMPARE & PLACE", `${R[j]} < ${L[i]}. Placing ${R[j]} at index ${k}.`, currentData);
+                    j++;
+                }
+
+                // Re-draw to show update (keep them moved down)
+                drawBars({ start: l, end: r });
+                await wait();
+                k++;
+            }
+
+            while (i < n1) {
+                if (abort) return;
+                highlightLine(14);
+                currentData[k] = L[i];
+                addLog("CLEANUP LEFT", `Placing remaining ${L[i]} at index ${k}.`, currentData);
+                drawBars({ start: l, end: r });
+                await wait();
+                i++; k++;
+            }
+
+            while (j < n2) {
+                if (abort) return;
+                highlightLine(15);
+                currentData[k] = R[j];
+                addLog("CLEANUP RIGHT", `Placing remaining ${R[j]} at index ${k}.`, currentData);
+                drawBars({ start: l, end: r });
+                await wait();
+                j++; k++;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithms Workbench</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            padding-top: 0;
+        }
+
+        /* --- PROFESSIONAL TOP BAR --- */
+        .rag-top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: #2563eb;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-home-btn {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 7px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            /* Ensure pointer for buttons */
+        }
+
+        .back-home-btn:hover {
+            color: #2563eb;
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Landing Page */
+        #landing {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 1100px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .emoji-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tag-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-green {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .tag-gray {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        /* Algorithm Pages */
+        .algo-page {
+            display: none;
+            min-height: 100vh;
+            background: #f8fafc;
+            /* Ensure background consistency */
+        }
+
+        .algo-page.active {
+            display: block;
+        }
+
+        /* Removed unused .back-btn styles */
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LANDING PAGE -->
+    <div id="landing">
+
+        <div class="hero">
+            <h1>Algorithm Workbench</h1>
+            <p>Interactive visualizations to help you master sorting algorithms.<br>Explore complexity, trace execution,
+                and understand the logic step-by-step.</p>
+        </div>
+
+        <div class="container">
+            <div class="grid">
+                <div class="card" onclick="showAlgo('bubble')">
+                    <div class="card-header">
+                        <div class="emoji-box">📊</div>
+                        <h2 class="card-title">Bubble Sort</h2>
+                    </div>
+                    <p class="card-desc">The simplest sorting algorithm that repeatedly swaps adjacent elements if they
+                        are in the wrong order.</p>
+                    <div class="tags">
+                        <span class="tag tag-red">O(N²)</span>
+                        <span class="tag tag-gray">SIMPLE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('selection')">
+                    <div class="card-header">
+                        <div class="emoji-box">🔍</div>
+                        <h2 class="card-title">Selection Sort</h2>
+                    </div>
+                    <p class="card-desc">Sorts an array by repeatedly finding the minimum element from the unsorted part
+                        and putting it at the beginning.</p>
+                    <div class="tags">
+                        <span class="tag tag-red">O(N²)</span>
+                        <span class="tag tag-gray">IN-PLACE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('insertion')">
+                    <div class="card-header">
+                        <div class="emoji-box">🃏</div>
+                        <h2 class="card-title">Insertion Sort</h2>
+                    </div>
+                    <p class="card-desc">Builds the sorted array one item at a time by inserting each element into its
+                        correct position.</p>
+                    <div class="tags">
+                        <span class="tag tag-red">O(N²)</span>
+                        <span class="tag tag-gray">ADAPTIVE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('merge')">
+                    <div class="card-header">
+                        <div class="emoji-box">🔗</div>
+                        <h2 class="card-title">Merge Sort</h2>
+                    </div>
+                    <p class="card-desc">Divides the array into halves, sorts them recursively, and merges the sorted
+                        halves back together.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(N LOG N)</span>
+                        <span class="tag tag-gray">STABLE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('quick')">
+                    <div class="card-header">
+                        <div class="emoji-box">⚡</div>
+                        <h2 class="card-title">Quick Sort</h2>
+                    </div>
+                    <p class="card-desc">Picks a pivot element and partitions the array around it, then recursively
+                        sorts the sub-arrays.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(N LOG N)</span>
+                        <span class="tag tag-gray">DIVIDE & CONQUER</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('heap')">
+                    <div class="card-header">
+                        <div class="emoji-box">🌲</div>
+                        <h2 class="card-title">Heap Sort</h2>
+                    </div>
+                    <p class="card-desc">Uses a binary heap data structure to sort elements by repeatedly extracting the
+                        maximum element.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(N LOG N)</span>
+                        <span class="tag tag-gray">IN-PLACE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('counting')">
+                    <div class="card-header">
+                        <div class="emoji-box">🔢</div>
+                        <h2 class="card-title">Counting Sort</h2>
+                    </div>
+                    <p class="card-desc">Counts the frequency of each element and uses arithmetic to determine positions
+                        in the sorted array.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(N + K)</span>
+                        <span class="tag tag-gray">NON-COMPARISON</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('radix')">
+                    <div class="card-header">
+                        <div class="emoji-box">🔢</div>
+                        <h2 class="card-title">Radix Sort</h2>
+                    </div>
+                    <p class="card-desc">Sorts numbers digit by digit starting from the least significant digit to the
+                        most significant digit.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(NK)</span>
+                        <span class="tag tag-gray">STABLE</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showAlgo('shell')">
+                    <div class="card-header">
+                        <div class="emoji-box">🐚</div>
+                        <h2 class="card-title">Shell Sort</h2>
+                    </div>
+                    <p class="card-desc">Improves insertion sort by comparing elements separated by a gap, which
+                        decreases with each iteration.</p>
+                    <div class="tags">
+                        <span class="tag tag-green">O(N LOG N)</span>
+                        <span class="tag tag-gray">GAP-BASED</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Interactive Sorting Algorithms • Built for Learning</p>
+        </footer>
+    </div>
+
+    <!-- ALGORITHM PAGES -->
+    <!-- ALGORITHM PAGES -->
+    <div id="bubble" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="BubbleSortFinal.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="selection" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="SelectionSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="insertion" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="InsertionSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="merge" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="MergeSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="quick" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="QuickSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="heap" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="HeapSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="counting" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="CountingSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="radix" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="RadixSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <div id="shell" class="algo-page">
+        <div class="rag-top-bar">
+            <button class="back-home-btn" onclick="backToMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 16px; height: 16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Menu
+            </button>
+        </div>
+        <iframe src="SellSort.html" style="height: 100vh;"></iframe>
+    </div>
+
+    <script>
+        function showAlgo(algo) {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById(algo).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function backToMenu() {
+            document.querySelectorAll('.algo-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('landing').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+
+</html>

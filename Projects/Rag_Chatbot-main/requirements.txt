@@ -1,0 +1,32 @@
+# Core RAG stack
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-chroma>=0.1.0
+chromadb>=0.5.0
+
+# Dependencies used in code
+pypdf>=4.0.0
+loguru>=0.7.0
+langchain-huggingface>=0.0.3
+
+# Embeddings (choose one or more depending on provider)
+openai>=1.0.0
+tiktoken>=0.7.0
+sentence-transformers>=2.2.2
+
+# Vector math + performance
+numpy>=1.24.0
+scipy>=1.11.0
+
+# API serving
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+
+# Environment + config
+python-dotenv>=1.0.0
+pydantic>=2.7.0
+
+# LLM Provider
+groq>=0.9.0
+langchain-groq>=0.1.0

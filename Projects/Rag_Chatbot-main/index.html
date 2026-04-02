@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Chatbot</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            /* Light Theme Palette */
+            --bg-body: #f8fafc;
+            /* Light Gray Background */
+            --bg-card: #ffffff;
+            /* White Card */
+            --text-main: #1e293b;
+            /* Dark Slate Text */
+            --text-muted: #64748b;
+            /* Muted Text */
+
+            --primary: #2563eb;
+            /* Blue */
+            --secondary: #475569;
+            /* Slate */
+            --accent-purple: #7c3aed;
+            /* LangChain */
+            --accent-green: #059669;
+            /* Chroma */
+            --accent-orange: #ea580c;
+            /* Groq */
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* --- SLIDE CONTAINER --- */
+        .slide-deck {
+            position: relative;
+            width: 100%;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            padding: 60px 15% 100px 15%;
+            /* Adjusted padding */
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: var(--bg-body);
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Scrollbar Styling */
+        .slide::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+
+        .slide::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* IDE Window Scrollbar Styling (Dark Theme) */
+        #code-langchain::-webkit-scrollbar,
+        #code-chroma::-webkit-scrollbar,
+        #code-fastapi::-webkit-scrollbar,
+        #code-groq::-webkit-scrollbar,
+        #simOutput::-webkit-scrollbar,
+        #chromaOutput::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #code-langchain::-webkit-scrollbar-track,
+        #code-chroma::-webkit-scrollbar-track,
+        #code-fastapi::-webkit-scrollbar-track,
+        #code-groq::-webkit-scrollbar-track,
+        #simOutput::-webkit-scrollbar-track,
+        #chromaOutput::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            /* Match IDE background */
+        }
+
+        #code-langchain::-webkit-scrollbar-thumb,
+        #code-chroma::-webkit-scrollbar-thumb,
+        #code-fastapi::-webkit-scrollbar-thumb,
+        #code-groq::-webkit-scrollbar-thumb,
+        #simOutput::-webkit-scrollbar-thumb,
+        #chromaOutput::-webkit-scrollbar-thumb {
+            background: #4B4B4B;
+            /* Darker Slate */
+            border-radius: 4px;
+        }
+
+        #code-langchain::-webkit-scrollbar-thumb:hover,
+        #code-chroma::-webkit-scrollbar-thumb:hover,
+        #code-fastapi::-webkit-scrollbar-thumb:hover,
+        #code-groq::-webkit-scrollbar-thumb:hover,
+        #simOutput::-webkit-scrollbar-thumb:hover,
+        #chromaOutput::-webkit-scrollbar-thumb:hover {
+            background: #6e6e6e;
+            /* Lighter on hover */
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
+            font-family: var(--font-head);
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        h2 {
+            font-family: var(--font-head);
+            font-size: 42px;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+        /* --- VERTICAL ARCHITECTURE DIAGRAM --- */
+        .arch-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        .arch-node {
+            background: var(--bg-card);
+            padding: 15px 30px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            font-weight: 600;
+            width: 280px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .arch-arrow {
+            color: var(--text-muted);
+            font-size: 20px;
+            height: 20px;
+            /* Spacing */
+        }
+
+        .phase-box {
+            border: 2px dashed #cbd5e1;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            gap: 15px;
+        }
+
+        .phase-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-body);
+            padding: 0 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Specific Node Colors */
+        .node-user {
+            background: #eff6ff;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .node-langchain {
+            border-left: 5px solid var(--accent-purple);
+        }
+
+        .node-chroma {
+            border-left: 5px solid var(--accent-green);
+        }
+
+        .node-groq {
+            border-left: 5px solid var(--accent-orange);
+        }
+
+        .node-fastapi {
+            border-left: 5px solid var(--primary);
+        }
+
+        .node-final {
+            background: #ecfdf5;
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* --- CODE BOX --- */
+        .code-box {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* --- TOP NAV ICONS --- */
+        /* --- TOP NAV ICONS --- */
+        .top-nav {
+            position: fixed;
+            top: 25px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            /* Ensure on top */
+        }
+
+        .icon-btn {
+            background: white;
+            /* Solid background to avoid artifacts */
+            border: 1px solid #e2e8f0;
+            color: var(--secondary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .icon-btn:hover {
+            background: #f8fafc;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-body);
+            width: 80%;
+            max-width: 1200px;
+            max-height: 90vh;
+            border-radius: 20px;
+            padding: 40px;
+            overflow: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Modal Scrollbar Styling */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Close helper text */
+        .close-hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR CONTAINER -->
+
+
+    <style>
+        .rag-top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: var(--primary);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-home-btn {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 7px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .back-home-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <div class="top-nav">
+        <!-- Code Setup Icon -->
+        <button class="icon-btn" onclick="window.open('Code_Setup.html', '_blank')" title="Code Setup">
+            <i class="fa-solid fa-code"></i>
+        </button>
+
+        <!-- Architecture Icon -->
+        <button class="icon-btn" id="archBtn" title="Architecture Diagram">
+            <i class="fa-solid fa-sitemap"></i>
+        </button>
+    </div>
+
+    <!-- MODAL (Architecture Popup) -->
+    <div id="archModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="close-hint">Click outside to close</div>
+            <h2 style="font-size: 28px;">Architecture Reference</h2>
+            <!-- Cloned Architecture Content -->
+            <div class="arch-container" style="padding-bottom: 0;">
+                <!-- START -->
+                <div class="arch-node node-user"><i class="fa-solid fa-user"></i> User</div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- Frontend Form -->
+                <div class="arch-node node-fastapi" style="width: 320px; border-left: 5px solid #ec4899;">
+                    <i class="fa-solid fa-file-invoice"></i> Frontend Form<br>
+                    <small style="color:var(--text-muted)">Input: Query + Data (PDF/Txt/Md)</small>
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- FastAPI Gateway -->
+                <div class="arch-node node-fastapi" style="width: 320px;">
+                    <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
+                    <small style="color:var(--text-muted)">Route: /upload & /query</small>
+                </div>
+
+                <div class="arch-arrow"
+                    style="height: 60px; display: flex; justify-content: center; align-items: center;">
+                    <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main Stem -->
+                        <path d="M40 0 V20" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+                        <!-- Left Branch -->
+                        <path d="M40 20 C40 35, 10 20, 10 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M5 32 L10 42 L18 34" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <!-- Right Branch -->
+                        <path d="M40 20 C40 35, 70 20, 70 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M62 34 L70 42 L75 32" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <div style="display: flex; gap: 40px; width: 100%; justify-content: center;">
+                    <!-- PHASE 1 -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-purple);">
+                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest</div>
+                            <div class="arch-node node-langchain"><i class="fa-solid fa-scissors"></i>
+                                LangChain<br><small style="color:var(--text-muted)">Chunking</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-chroma"><i class="fa-solid fa-database"></i> Chroma DB<br><small
+                                    style="color:var(--text-muted)">Save Vectors</small></div>
+                        </div>
+                    </div>
+                    <!-- PHASE 2 -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-orange);">
+                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query</div>
+                            <div class="arch-node node-groq"><i class="fa-solid fa-wand-magic-sparkles"></i> Groq
+                                API<br><small style="color:var(--text-muted)">Refine</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-chroma"><i class="fa-solid fa-magnifying-glass"></i> Chroma
+                                DB<br><small style="color:var(--text-muted)">Top Chunks</small></div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="arch-node node-groq"><i class="fa-solid fa-robot"></i> Groq API<br><small
+                                    style="color:var(--text-muted)">Answer</small></div>
+                        </div>
+                        <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                        <div class="arch-node node-final"><i class="fa-solid fa-check-circle"></i> Final Answer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-deck">
+
+        <!-- SLIDE 1: Title -->
+        <div class="slide active" style="justify-content: center;">
+            <div
+                style="width: 100px; height: 100px; background: #eff6ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
+                <i class="fa-solid fa-robot" style="font-size: 40px; color: var(--primary);"></i>
+            </div>
+            <h1>RAG Chatbot</h1>
+            <p style="font-size: 22px; color: var(--primary);">Retrieval-Augmented Generation System</p>
+
+        </div>
+
+
+
+        <!-- SLIDE 3: What is RAG? -->
+        <div class="slide" style="justify-content: center; padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>What is a RAG Chatbot?</h2>
+
+            <!-- New RAG Process Flow -->
+            <div
+                style="display: flex; align-items: stretch; gap: 20px; margin-bottom: 40px; width: 100%; max-width: 100%;">
+
+                <!-- Step 1: Retrieve -->
+                <div
+                    style="flex: 1; background: white; padding: 25px 20px; border-radius: 16px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 4px solid var(--primary);">
+                    <div
+                        style="width: 60px; height: 60px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: var(--primary); font-size: 24px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h3 style="font-size: 20px; color: var(--primary); margin-bottom: 10px;">Retrieve</h3>
+                    <p style="font-size: 16px; line-height: 1.4; color: var(--secondary); margin: 0;">
+                        Finds relevant info from files (PDFs, CSVs, docs)
+                    </p>
+                </div>
+
+                <!-- Arrow 1 -->
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-arrow-right" style="color: #cbd5e1; font-size: 24px;"></i>
+                </div>
+
+                <!-- Step 2: Augment -->
+                <div
+                    style="flex: 1; background: white; padding: 25px 20px; border-radius: 16px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 4px solid var(--accent-orange);">
+                    <div
+                        style="width: 60px; height: 60px; background: #fff7ed; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: var(--accent-orange); font-size: 24px;">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                    <h3 style="font-size: 20px; color: var(--accent-orange); margin-bottom: 10px;">Augment</h3>
+                    <p style="font-size: 16px; line-height: 1.4; color: var(--secondary); margin: 0;">
+                        Adds that info to the prompt
+                    </p>
+                </div>
+
+                <!-- Arrow 2 -->
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-arrow-right" style="color: #cbd5e1; font-size: 24px;"></i>
+                </div>
+
+                <!-- Step 3: Generate -->
+                <div
+                    style="flex: 1; background: white; padding: 25px 20px; border-radius: 16px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 4px solid var(--accent-green);">
+                    <div
+                        style="width: 60px; height: 60px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: var(--accent-green); font-size: 24px;">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 style="font-size: 20px; color: var(--accent-green); margin-bottom: 10px;">Generate</h3>
+                    <p style="font-size: 16px; line-height: 1.4; color: var(--secondary); margin: 0;">
+                        AI gives an accurate answer
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Definition Card -->
+            <div
+                style="background: white; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; max-width: 900px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); position: relative;">
+
+                <p style="font-size: 20px; line-height: 1.7; text-align: center; color: #334155; margin: 0;">
+                    A RAG chatbot (Retrieval-Augmented Generation chatbot) is an AI chatbot that first <strong
+                        style="color: var(--primary);">retrieves relevant information</strong> from external sources
+                    like documents, PDFs, databases, or files and then uses that retrieved information to <strong
+                        style="color: var(--accent-green);">generate an accurate and context-aware response</strong>,
+                    instead of relying only on its built-in knowledge, which helps <strong
+                        style="color: #ef4444;">reduce wrong answers</strong> and allows the chatbot to answer questions
+                    based on <strong style="color: var(--accent-orange);">your own or up-to-date data</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Why do we need it? -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>Why do we need RAG?</h2>
+            <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; max-width: 100%; margin-top: 20px;">
+
+                <div
+                    style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--primary); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-user-shield"
+                        style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h3>Private Data</h3>
+                    <p>Standard AIs don't know your private emails or company PDFs. RAG allows you to chat with your own
+                        private files safely.</p>
+                </div>
+
+                <div
+                    style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid #ef4444; box-shadow: var(--shadow-sm); background: white;">
+                    <i class="fa-solid fa-check-double"
+                        style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
+                    <h3>Accuracy</h3>
+                    <p>AI often "hallucinates" (lies). By forcing it to read from a document first, RAG drastically
+                        reduces fake answers.</p>
+                </div>
+
+                <div
+                    style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--accent-green); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-arrows-rotate"
+                        style="font-size: 30px; color: var(--accent-green); margin-bottom: 15px;"></i>
+                    <h3>Up-to-Date</h3>
+                    <p>Retraining AI models takes months. With RAG, you just upload a new PDF, and the bot knows the new
+                        info instantly.</p>
+                </div>
+
+                <div
+                    style="background: white; padding: 30px; border-radius: 12px; border-left: 5px solid var(--accent-orange); box-shadow: var(--shadow-sm);">
+                    <i class="fa-solid fa-tag"
+                        style="font-size: 30px; color: var(--accent-orange); margin-bottom: 15px;"></i>
+                    <h3>Cost Effective</h3>
+                    <p>It is much cheaper to run a RAG system than to fine-tune a massive custom model.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 5a: The Prompts (Part 1) -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>Controlling the AI (The Prompts)</h2>
+            <div style="width: 100%; max-width: 100%;">
+                <p style="margin-bottom: 30px; text-align: center; max-width: 100%;">We use specific instructions in the
+                    code to control how the AI behaves. Here are the 4 main prompts used in <code>main.py</code>.</p>
+
+                <!-- Prompt 1 -->
+                <h3 style="margin-top: 30px; color: var(--primary); text-align: left;">1. System Prompt (The Persona)
+                </h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">SYSTEM_PROMPT</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"You are a precise, pragmatic assistant.
+                            You refine user queries to maximize retrieval quality, maintain factual
+                            grounding..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This sets the personality. We
+                    tell it to be "precise" and "pragmatic" so it doesn't act silly.</p>
+
+                <!-- Prompt 2 -->
+                <h3 style="margin-top: 20px; color: var(--primary); text-align: left;">2. Developer Prompt (The Rules)
+                </h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">DEVELOPER_PROMPT</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"First, refine the user’s raw query...
+                            Then answer using only the retrieved chunks. Prefer technical clarity..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This gives strict rules. "Use
+                    only retrieved chunks" ensures it doesn't make things up.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 5b: The Prompts (Part 2) -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>Controlling the AI (The Prompts)</h2>
+            <div style="width: 100%; max-width: 100%;">
+                <p style="margin-bottom: 30px; text-align: center; max-width: 100%;">We use specific instructions in the
+                    code to control how the AI behaves. Here are the 4 main prompts used in <code>main.py</code>.</p>
+
+                <!-- Prompt 3 -->
+                <h3 style="margin-top: 30px; color: var(--primary); text-align: left;">3. Refine Template (The
+                    Optimizer)</h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">REFINE_TEMPLATE</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"Refine the following query to maximize
+                            retrieval quality from a technical corpus...\nRaw Query:\n{query}"</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This asks the AI to rewrite a
+                    bad question (e.g., "it broken") into a good search query (e.g., "System error troubleshooting").
+                </p>
+
+                <!-- Prompt 4 -->
+                <h3 style="margin-top: 20px; color: var(--primary); text-align: left;">4. Answer Template (The Final
+                    Assembly)</h3>
+                <div
+                    style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 10px; border: 1px solid #333;">
+                    <div
+                        style="background: #252526; padding: 8px 15px; display: flex; align-items: center; border-bottom: 1px solid #333; gap: 8px;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    </div>
+                    <div
+                        style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5;">
+                        <span style="color: #9cdcfe;">ANSWER_TEMPLATE</span> = (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ce9178;">"User Query: {query}\nRefined Query:
+                            {refined}\nContext Chunks:\n{context}\nTask: Provide a direct answer..."</span><br>
+                        )
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 30px;"><strong>Meaning:</strong> This pastes the user's
+                    question AND the data found in the database together, telling the AI to combine them.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: LangChain (Simulated IDE) -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <div
+                style="width: 80px; height: 80px; background: #f3e8ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-link" style="font-size: 40px; color: var(--accent-purple);"></i>
+            </div>
+            <h2>LangChain: The Data Splitter</h2>
+
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+                <!-- Left: Theory -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3 style="margin-bottom: 15px;">What is LangChain?</h3>
+                    <p style="font-size: 18px; line-height: 1.6; color: var(--secondary);">
+                        <strong style="color: var(--accent-purple);"></strong>LangChain</strong> is a tool that helps
+                        you build AI applications by <strong style="color: var(--text-main);">connecting an AI model
+                            with your data</strong>, such as PDFs, text files, or databases. Since AI models cannot read
+                        very large files at once because of their <strong style="color: var(--text-main);">limited
+                            context window</strong>, LangChain <strong style="color: var(--accent-purple);">splits big
+                            documents</strong> into <strong style="color: var(--accent-purple);">small pieces
+                            (chunks)</strong> so the AI can read and understand them step by step and answer questions
+                        correctly.
+                    </p>
+
+                    <!-- Terminal Window -->
+                    <div class="terminal-window"
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 240px; display: flex; flex-direction: column;">
+                        <!-- Terminal Header -->
+                        <div
+                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                            <span
+                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                        </div>
+
+                        <!-- Terminal Content -->
+                        <div id="simOutput"
+                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Simulated IDE -->
+                <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column; gap: 15px;">
+
+                    <!-- Code Window -->
+                    <div
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 506px; display: flex; flex-direction: column;">
+                        <!-- Header / Toolbar -->
+                        <div
+                            style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                                <span
+                                    style="font-family: monospace; color: #ccccc7; font-size: 13px;">langchain_demo.py</span>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="copyCode('code-langchain', this)"
+                                    style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                    title="Copy Code">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                                <button onclick="runSimulatedDemo()"
+                                    style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fa-solid fa-play"></i> Run
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Code Content -->
+                        <div id="code-langchain"
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> pathlib <span
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">Path</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_community.document_loaders <span
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">PyPDFLoader</span>,
+                            <span style="color: #4ec9b0;">TextLoader</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_text_splitters <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span><br><br>
+                            <span style="color: #6a9955;"># Ensure you have your environment variables set or load them
+                                here</span><br>
+                            <span style="color: #6a9955;"># from dotenv import load_dotenv</span><br>
+                            <span style="color: #6a9955;"># load_dotenv()</span><br><br>
+                            <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"--- LangChain Educational Demo: Loader & Splitter
+                                ---"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Get input file path from
+                                user</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;file_path_str = <span style="color: #dcdcaa;">input</span>(<span
+                                style="color: #ce9178;">"Enter the absolute path to your file (PDF or TXT):
+                                "</span>).<span style="color: #dcdcaa;">strip</span>()<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Remove quotes if user added
+                                them</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span> file_path_str.<span
+                                style="color: #dcdcaa;">startswith</span>(<span style="color: #ce9178;">'"'</span>)
+                            <span style="color: #c586c0;">and</span> file_path_str.<span
+                                style="color: #dcdcaa;">endswith</span>(<span style="color: #ce9178;">'"'</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_path_str = file_path_str[<span
+                                style="color: #b5cea8;">1</span>:-<span style="color: #b5cea8;">1</span>]<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;file_path = <span
+                                style="color: #4ec9b0;">Path</span>(file_path_str)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> file_path.<span
+                                style="color: #dcdcaa;">exists</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Error: File not
+                                found at {file_path}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Load the document</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Loading file: {file_path.name}..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;docs = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            file_path.suffix.<span style="color: #dcdcaa;">lower</span>() == <span
+                                style="color: #ce9178;">".pdf"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loader = <span
+                                style="color: #4ec9b0;">PyPDFLoader</span>(<span
+                                style="color: #dcdcaa;">str</span>(file_path))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;docs.<span
+                                style="color: #dcdcaa;">extend</span>(loader.<span
+                                style="color: #dcdcaa;">load</span>())<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">elif</span>
+                            file_path.suffix.<span style="color: #dcdcaa;">lower</span>() <span
+                                style="color: #c586c0;">in</span> [<span style="color: #ce9178;">".txt"</span>, <span
+                                style="color: #ce9178;">".md"</span>, <span style="color: #ce9178;">".log"</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loader = <span
+                                style="color: #4ec9b0;">TextLoader</span>(<span
+                                style="color: #dcdcaa;">str</span>(file_path), encoding=<span
+                                style="color: #ce9178;">"utf-8"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;docs.<span
+                                style="color: #dcdcaa;">extend</span>(loader.<span
+                                style="color: #dcdcaa;">load</span>())<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Error: Unsupported
+                                file type. Please use .pdf, .txt, .md, or .log"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">except</span> <span
+                                style="color: #4ec9b0;">Exception</span> <span style="color: #c586c0;">as</span> e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Error loading file:
+                                {e}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">" -> Successfully loaded {len(docs)}
+                                page(s)/document(s)."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 3. Split the document
+                                (Chunking)</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Splitting text into chunks..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;splitter = <span
+                                style="color: #4ec9b0;">RecursiveCharacterTextSplitter</span>(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk_size=<span
+                                style="color: #b5cea8;">1000</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chunk_overlap=<span
+                                style="color: #b5cea8;">150</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;separators=[<span
+                                style="color: #ce9178;">"\n\n"</span>, <span style="color: #ce9178;">"\n"</span>, <span
+                                style="color: #ce9178;">" "</span>, <span style="color: #ce9178;">""</span>]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;chunks = splitter.<span
+                                style="color: #dcdcaa;">split_documents</span>(docs)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">" -> Created {len(chunks)} chunks."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 4. Print Chunks</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[3] Printing Chunks (Preview first 3):"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"="</span>*<span style="color: #b5cea8;">60</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">for</span> i, chunk <span
+                                style="color: #c586c0;">in</span> <span
+                                style="color: #dcdcaa;">enumerate</span>(chunks[:<span
+                                style="color: #b5cea8;">3</span>]):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"CHUNK
+                                {i+1}:"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Metadata:
+                                {chunk.metadata}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Content Length:
+                                {len(chunk.page_content)}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"-"</span> * <span
+                                style="color: #b5cea8;">20</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(chunk.page_content[:<span
+                                style="color: #b5cea8;">500</span>] + <span style="color: #ce9178;">"..."</span> <span
+                                style="color: #c586c0;">if</span> <span
+                                style="color: #dcdcaa;">len</span>(chunk.page_content) > <span
+                                style="color: #b5cea8;">500</span> <span style="color: #c586c0;">else</span>
+                            chunk.page_content)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"="</span>*<span
+                                style="color: #b5cea8;">60</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span> <span
+                                style="color: #dcdcaa;">len</span>(chunks) > <span style="color: #b5cea8;">3</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"... and
+                                {len(chunks) - 3} more chunks."</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function runSimulatedDemo() {
+                const outputDiv = document.getElementById('simOutput');
+                outputDiv.innerHTML = ""; // Clear
+
+                const lines = [
+                    { text: "PS D:\\Github Repos\\Rag_Chatbot> python langchain_demo.py", delay: 0 },
+                    { text: "--- LangChain Educational Demo: Loader & Splitter ---", delay: 500, color: "#a5f3fc" },
+                    { text: "Enter the absolute path to your file (PDF or TXT): data\\Request Form Table.pdf", delay: 1000 },
+                    { text: "", delay: 1200 },
+                    { text: "[1] Loading file: Request Form Table.pdf...", delay: 1500, color: "#fcd34d" },
+                    { text: "    -> Successfully loaded 1 page(s)/document(s).", delay: 2500, color: "#86efac" },
+                    { text: "", delay: 2700 },
+                    { text: "[2] Splitting text into chunks...", delay: 3000, color: "#fcd34d" },
+                    { text: "    -> Created 2 chunks.", delay: 4000, color: "#86efac" },
+                    { text: "", delay: 4200 },
+                    { text: "[3] Printing Chunks (Preview first 3):", delay: 4500, color: "#c084fc" },
+                    { text: "============================================================", delay: 4600 },
+                    { text: "CHUNK 1:", delay: 4700, color: "#93c5fd", bold: true },
+                    { text: "Metadata: {'producer': 'LuaTeX-1.22.0', 'creator': 'TeX', 'creationdate': '2025-12-12T18:51:52+00:00', 'moddate': '2025-12-12T18:51:52+00:00', 'trapped': '/False', 'ptex.fullbanner': 'This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)', 'source': 'data\\\\Request Form Table.pdf', 'total_pages': 1, 'page': 0, 'page_label': '1'}", delay: 4800, color: "#9ca3af" },
+                    { text: "Content Length: 970", delay: 4900 },
+                    { text: "--------------------", delay: 5000 },
+                    { text: "Request Form\nField Name Input Type Requirements & Logic\n1. Request Type Dropdown Select Mandatory Field (*)\nUsed to categorize the AI’s domain expertise.\nOptions: Price Strategy, Growth & Marketing, Hir-\ning & Operations, Customer & Revenue, Strategic\nDecisions, Other .\n2. Your Question Text Area Mandatory Field (*)\nValidation: Max 2000 characters.\nPurpose: The primary user query for the AI.\nPlaceholders: “Should I raise prices?”, “Optimal\npricing tier structure?”, “Yearly plan revenue im-\npact?...", delay: 5100 },
+                    { text: "============================================================", delay: 5500 },
+                    { text: "CHUNK 2:", delay: 5600, color: "#93c5fd", bold: true },
+                    { text: "Metadata: {'producer': 'LuaTeX-1.22.0', 'creator': 'TeX', 'creationdate': '2025-12-12T18:51:52+00:00', 'moddate': '2025-12-12T18:51:52+00:00', 'trapped': '/False', 'ptex.fullbanner': 'This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)', 'source': 'data\\\\Request Form Table.pdf', 'total_pages': 1, 'page': 0, 'page_label': '1'}", delay: 5700, color: "#9ca3af" },
+                    { text: "Content Length: 276", delay: 5800 },
+                    { text: "--------------------", delay: 5900 },
+                    { text: "simulations...”\nAI Impact: Triggers a more detailed, simulation-\nbased chain-of-thought in the Agent.\n6. Attach Files File Upload Optional\nFormats: CSV, Spreadsheet, Document.\nAI Impact: Agent must have RAG (Retrieval-\nAugmented Generation) capabilities to read these\nfiles.\n1", delay: 6000 },
+                    { text: "============================================================", delay: 6400 },
+                    { text: "(venv) PS D:\\Github Repos\\Rag_Chatbot> ", delay: 6500 }
+                ];
+
+                let totalDelay = 0;
+
+                lines.forEach(line => {
+                    setTimeout(() => {
+                        const div = document.createElement('div');
+                        div.style.marginBottom = "4px";
+                        if (line.color) div.style.color = line.color;
+                        if (line.bold) div.style.fontWeight = "bold";
+                        div.innerText = line.text;
+                        outputDiv.appendChild(div);
+                        outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
+                    }, line.delay);
+                });
+            }
+        </script>
+
+
+        <!-- SLIDE 7: Chroma DB (Simulated IDE) -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <div
+                style="width: 80px; height: 80px; background: #ecfdf5; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-database" style="font-size: 40px; color: var(--accent-green);"></i>
+            </div>
+            <h2>Chroma DB: The Semantic Search</h2>
+
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+                <!-- Left: Theory -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3 style="margin-bottom: 15px;">What is ChromaDB?</h3>
+                    <p style="font-size: 15px; line-height: 1.6; color: var(--secondary); margin-bottom: 20px;">
+                        <strong style="color: var(--accent-green);">ChromaDB</strong> is a <strong
+                            style="color: var(--text-main);">vector database</strong> used to <strong
+                            style="color: var(--text-main);">store and search text by meaning</strong>, not by exact
+                        words, which helps AI systems quickly find the most relevant pieces of information when
+                        answering questions.
+                    </p>
+                    <p style="font-size: 15px; line-height: 1.6; color: var(--secondary);">
+                        <strong style="color: var(--text-main);">In simple terms:</strong><br>
+                        ChromaDB saves your document chunks as <strong style="color: var(--accent-green);">embeddings
+                            (numbers)</strong> and, when you ask a question, it <strong
+                            style="color: var(--accent-green);">finds the most similar chunks</strong> so the AI can use
+                        them to give an accurate answer.
+                    </p>
+
+                    <!-- Terminal Window -->
+                    <div class="terminal-window"
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 250px; display: flex; flex-direction: column;">
+                        <!-- Terminal Header -->
+                        <div
+                            style="background: #2d2d2d; padding: 10px 15px; display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                            <span
+                                style="margin-left: 10px; font-family: monospace; color: #9ca3af; font-size: 12px;">Terminal</span>
+                        </div>
+
+                        <!-- Terminal Content -->
+                        <div id="chromaOutput"
+                            style="padding: 15px; color: #f0f0f0; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.5; overflow-y: auto; flex: 1; white-space: pre-wrap;">
+                            <span style="color: #6b7280;">Ready... Click "Run" code above.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Simulated IDE -->
+                <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column; gap: 15px;">
+
+                    <!-- Code Window -->
+                    <div
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 504px; display: flex; flex-direction: column;">
+                        <!-- Header / Toolbar -->
+                        <div
+                            style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                                <span
+                                    style="font-family: monospace; color: #ccccc7; font-size: 13px;">chroma_demo.py</span>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="copyCode('code-chroma', this)"
+                                    style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                    title="Copy Code">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                                <button onclick="runChromaDemo()"
+                                    style="background: #27c93f; border: none; border-radius: 4px; color: black; padding: 4px 12px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fa-solid fa-play"></i> Run
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Code Content -->
+                        <div id="code-chroma"
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> dotenv <span style="color: #c586c0;">import</span>
+                            load_dotenv<br>
+                            <span style="color: #c586c0;">from</span> langchain_chroma <span
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">Chroma</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_community.embeddings <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">SentenceTransformerEmbeddings</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_core.documents <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">Document</span><br><br>
+                            <span style="color: #6a9955;"># Load env for proper setup if needed, though local embeddings
+                                might not need API keys</span><br>
+                            <span style="color: #dcdcaa;">load_dotenv</span>()<br><br>
+                            <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"--- ChromaDB Educational Demo: Embedding & Search
+                                ---"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"(Note: This runs in-memory and does NOT save to
+                                disk)"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Setup Embedding Model</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model_name = <span
+                                style="color: #ce9178;">"sentence-transformers/all-MiniLM-L6-v2"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Initializing Embedding Model
+                                ({model_name})..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;embeddings = <span
+                                style="color: #4ec9b0;">SentenceTransformerEmbeddings</span>(model_name=model_name)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Initialize ephemeral Chroma (no
+                                persist_directory)</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore = <span style="color: #4ec9b0;">Chroma</span>(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collection_name=<span
+                                style="color: #ce9178;">"demo_collection"</span>,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;embedding_function=embeddings,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;">#
+                                persist_directory=None # Passing None typically implies in-memory/ephemeral in newer
+                                versions or default</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Get Data Input</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Enter texts to add to the database (type 'DONE' on a new
+                                line to finish):"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;texts_to_add = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line = <span
+                                style="color: #dcdcaa;">input</span>(f<span style="color: #ce9178;">"Text
+                                {len(texts_to_add)+1}: "</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            line.<span style="color: #dcdcaa;">strip</span>().<span
+                                style="color: #dcdcaa;">upper</span>() == <span
+                                style="color: #ce9178;">'DONE'</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            line.<span style="color: #dcdcaa;">strip</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texts_to_add.<span
+                                style="color: #dcdcaa;">append</span>(line)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> texts_to_add:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"No text provided.
+                                Exiting."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 3. Embed and Add to
+                                Chroma</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[3] Embedding and adding {len(texts_to_add)} texts to Vector
+                                Store..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Wrap in Document objects as typical
+                                RAG would</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;docs = [<span
+                                style="color: #4ec9b0;">Document</span>(page_content=t, metadata={<span
+                                style="color: #ce9178;">"id"</span>: i}) <span style="color: #c586c0;">for</span> i, t
+                            <span style="color: #c586c0;">in</span> <span
+                                style="color: #dcdcaa;">enumerate</span>(texts_to_add)]<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;vectorstore.<span
+                                style="color: #dcdcaa;">add_documents</span>(docs)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">" -> Done."</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 4. Search</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query = <span
+                                style="color: #dcdcaa;">input</span>(<span style="color: #ce9178;">"\n[4] Enter a query
+                                to search (or 'quit' to exit): "</span>).<span
+                                style="color: #dcdcaa;">strip</span>()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            query.<span style="color: #dcdcaa;">lower</span>() <span style="color: #c586c0;">in</span>
+                            [<span style="color: #ce9178;">'quit'</span>, <span
+                                style="color: #ce9178;">'exit'</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" Searching for:
+                                '{query}'"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># Perform
+                                similarity search</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;results = vectorstore.<span
+                                style="color: #dcdcaa;">similarity_search_with_score</span>(query, k=<span
+                                style="color: #b5cea8;">2</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" -> Found
+                                {len(results)} matches:\n"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">for</span>
+                            doc, score <span style="color: #c586c0;">in</span> results:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" * Score:
+                                {score:.4f}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">" * Content:
+                                {doc.page_content}"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">" "</span> + <span
+                                style="color: #ce9178;">"-"</span>*<span style="color: #b5cea8;">30</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function runChromaDemo() {
+                const outputDiv = document.getElementById('chromaOutput');
+                outputDiv.innerHTML = ""; // Clear
+
+                const lines = [
+                    { text: "PS D:\\Github Repos\\Rag_Chatbot> python chroma_demo.py", delay: 0 },
+                    { text: "--- ChromaDB Educational Demo: Embedding & Search ---", delay: 500, color: "#a5f3fc" },
+                    { text: "(Note: This runs in-memory and does NOT save to disk)", delay: 700, color: "#9ca3af" },
+                    { text: "", delay: 900 },
+                    { text: "[1] Initializing Embedding Model (sentence-transformers/all-MiniLM-L6-v2)...", delay: 1200, color: "#fcd34d" },
+                    { text: "D:\\Github Repos\\Rag_Chatbot\\chroma_demo.py:18: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated...", delay: 2000, color: "#ef4444" },
+                    { text: "  embeddings = SentenceTransformerEmbeddings(model_name=model_name)", delay: 2100, color: "#ef4444" },
+                    { text: "", delay: 2300 },
+                    { text: "[2] Enter texts to add to the database (type 'DONE' on a new line to finish):", delay: 2500, color: "#c084fc" },
+                    { text: "Text 1: hi", delay: 3000 },
+                    { text: "Text 2: hello", delay: 3500 },
+                    { text: "Text 3: DONE", delay: 4000 },
+                    { text: "", delay: 4200 },
+                    { text: "[3] Embedding and adding 2 texts to Vector Store...", delay: 4500, color: "#fcd34d" },
+                    { text: "    -> Done.", delay: 5500, color: "#86efac" },
+                    { text: "", delay: 5700 },
+                    { text: "[4] Enter a query to search (or 'quit' to exit): How are you guys?", delay: 6500, color: "#fdf4ff" },
+                    { text: "    Searching for: 'How are you guys?'", delay: 7000 },
+                    { text: "    -> Found 2 matches:", delay: 8000, color: "#a5f3fc" },
+                    { text: "", delay: 8200 },
+                    { text: "    * Score: 1.2280", delay: 8400, color: "#86efac" },
+                    { text: "    * Content: hello", delay: 8500, bold: true },
+                    { text: "    ------------------------------", delay: 8600 },
+                    { text: "    * Score: 1.3995", delay: 8800, color: "#86efac" },
+                    { text: "    * Content: hi", delay: 8900, bold: true },
+                    { text: "    ------------------------------", delay: 9000 },
+                    { text: "", delay: 9200 },
+                    { text: "[4] Enter a query to search (or 'quit' to exit): quit", delay: 9500 },
+                    { text: "(venv) PS D:\\Github Repos\\Rag_Chatbot>", delay: 9700 }
+                ];
+
+                lines.forEach(line => {
+                    setTimeout(() => {
+                        const div = document.createElement('div');
+                        div.style.marginBottom = "4px";
+                        if (line.color) div.style.color = line.color;
+                        if (line.bold) div.style.fontWeight = "bold";
+                        div.innerText = line.text;
+                        outputDiv.appendChild(div);
+                        outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
+                    }, line.delay);
+                });
+            }
+        </script>
+
+        <!-- SLIDE 8: FastAPI (Simulated IDE - Code Only) -->
+        <div class="slide" style="padding-top: 25px; padding-left: 5%; padding-right: 5%;">
+            <div
+                style="width: 80px; height: 80px; background: #eff6ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-brands fa-python" style="font-size: 40px; color: var(--primary);"></i>
+            </div>
+            <h2>FastAPI: The Data Doorway</h2>
+
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+                <!-- Left: Theory -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p style="font-size: 20px;">FastAPI is a tool for building websites and APIs. It creates the "Doors"
+                        (Endpoints) that allow
+                        users
+                        to send files or messages to our Python code.</p>
+
+                    <h4 style="margin-top: 15px; color: var(--primary);">How Code uses it?</h4>
+                    <p style="font-size: 20px;">It defines the <code>/upload</code> door (for PDFs) and the
+                        <code>/query</code> door (for questions). It also handles errors.
+                    </p>
+                </div>
+
+                <!-- Right: Simulated IDE (Code Only) -->
+                <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column;">
+
+                    <!-- Code Window -->
+                    <div
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 350px; display: flex; flex-direction: column;">
+                        <!-- Header / Toolbar -->
+                        <div
+                            style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                                <span style="font-family: monospace; color: #ccccc7; font-size: 13px;">main.py
+                                    (FastAPI)</span>
+                            </div>
+                            <button onclick="copyCode('code-fastapi', this)"
+                                style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                title="Copy Code">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <!-- Code Content -->
+                        <div id="code-fastapi"
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">from</span> fastapi <span
+                                style="color: #c586c0;">import</span>
+                            FastAPI, UploadFile<br><br>
+                            app = <span style="color: #4ec9b0;">FastAPI</span>()<br><br>
+                            <span style="color: #6a9955;"># Endpoint 1: File Upload</span><br>
+                            <span style="color: #569cd6;">@app.post</span>(<span
+                                style="color: #ce9178;">"/upload"</span>)<br>
+                            <span style="color: #569cd6;">async def</span> <span
+                                style="color: #dcdcaa;">upload_file</span>(file: UploadFile):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">return</span> {<span
+                                style="color: #ce9178;">"filename"</span>: file.filename, <span
+                                style="color: #ce9178;">"status"</span>: <span
+                                style="color: #ce9178;">"Ingested"</span>}<br><br>
+                            <span style="color: #6a9955;"># Endpoint 2: Query</span><br>
+                            <span style="color: #569cd6;">@app.post</span>(<span
+                                style="color: #ce9178;">"/query"</span>)<br>
+                            <span style="color: #569cd6;">async def</span> <span
+                                style="color: #dcdcaa;">query_endpoint</span>(payload: QueryRequest):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;answer = rag_system.ask(payload.question)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">return</span> {<span
+                                style="color: #ce9178;">"answer"</span>: answer}<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Groq API (Simulated IDE - Code Only) -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <div
+                style="width: 80px; height: 80px; background: #fff7ed; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--accent-orange);"></i>
+            </div>
+            <h2>Groq API: The Speed Engine</h2>
+
+            <div style="display:flex; gap: 40px; flex-wrap: wrap; margin-top: 20px; height: 100%;">
+
+                <!-- Left: Theory -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>What is it?</h3>
+                    <p style="font-size: 20px;">Groq is the <strong>Engine</strong>. It runs the smart AI model
+                        (Llama-3). It is famous for being
+                        incredibly fast.</p>
+
+                    <h4 style="margin-top: 15px; color: var(--accent-orange);">How Code uses it?</h4>
+                    <p style="font-size: 20px;">We use it to <strong>Generate</strong> the final answer by sending the
+                        user's question + the best chunks from ChromaDB.</p>
+                </div>
+
+                <!-- Right: Simulated IDE (Code Only) -->
+                <div style="flex: 1.2; min-width: 350px; display: flex; flex-direction: column;">
+
+                    <!-- Code Window -->
+                    <div
+                        style="background: #1e1e1e; border-radius: 8px; box-shadow: var(--shadow-md); overflow: hidden; height: 505px; display: flex; flex-direction: column;">
+                        <!-- Header / Toolbar -->
+                        <div
+                            style="background: #252526; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <i class="fa-brands fa-python" style="color: #4B8BBE;"></i>
+                                <span
+                                    style="font-family: monospace; color: #ccccc7; font-size: 13px;">groq_demo.py</span>
+                            </div>
+                            <button onclick="copyCode('code-groq', this)"
+                                style="background: transparent; border: 1px solid #4B4B4B; border-radius: 4px; color: #ccccc7; padding: 4px 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
+                                title="Copy Code">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <!-- Code Content -->
+                        <div id="code-groq"
+                            style="padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; color: #d4d4d4; line-height: 1.5; overflow-y: auto;">
+                            <span style="color: #c586c0;">import</span> os<br>
+                            <span style="color: #c586c0;">import</span> sys<br>
+                            <span style="color: #c586c0;">from</span> dotenv <span style="color: #c586c0;">import</span>
+                            load_dotenv<br>
+                            <span style="color: #c586c0;">from</span> langchain_groq <span
+                                style="color: #c586c0;">import</span> <span style="color: #4ec9b0;">ChatGroq</span><br>
+                            <span style="color: #c586c0;">from</span> langchain_core.prompts <span
+                                style="color: #c586c0;">import</span> <span
+                                style="color: #4ec9b0;">ChatPromptTemplate</span><br><br>
+                            <span style="color: #dcdcaa;">load_dotenv</span>()<br><br>
+                            <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">main</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"--- Groq API Educational Demo: LLM Interaction
+                                ---"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;api_key = os.getenv(<span
+                                style="color: #ce9178;">"GROQ_API_KEY"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span> api_key:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Error: GROQ_API_KEY
+                                not found in .env file."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">return</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model_name = os.getenv(<span
+                                style="color: #ce9178;">"GROQ_MODEL"</span>, <span
+                                style="color: #ce9178;">"llama-3.3-70b-versatile"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 1. Initialize ChatGroq</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(f<span
+                                style="color: #ce9178;">"\n[1] Initializing Groq Client (Model:
+                                {model_name})..."</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;llm = <span style="color: #4ec9b0;">ChatGroq</span>(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_key=api_key,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model=model_name,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temperature=<span
+                                style="color: #b5cea8;">0.7</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># 2. Interactive Loop</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">print</span>(<span
+                                style="color: #ce9178;">"\n[2] Start Chatting (type 'quit' to exit)"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #6a9955;"># We can use a simple prompt
+                                template</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;system_prompt = <span style="color: #ce9178;">"You are a helpful
+                                assistant explaining concepts clearly."</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">while True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_input = <span
+                                style="color: #dcdcaa;">input</span>(<span style="color: #ce9178;">"\nYou:
+                                "</span>).<span style="color: #dcdcaa;">strip</span>()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if</span>
+                            user_input.<span style="color: #dcdcaa;">lower</span>() <span
+                                style="color: #c586c0;">in</span> [<span style="color: #ce9178;">'quit'</span>, <span
+                                style="color: #ce9178;">'exit'</span>]:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">break</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">if not</span>
+                            user_input:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">continue</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">"Groq: Generating
+                                response..."</span>, end=<span style="color: #ce9178;">"\r"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #c586c0;">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6a9955;"># invocating the model</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messages = [<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span
+                                style="color: #ce9178;">"system"</span>, system_prompt),<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span
+                                style="color: #ce9178;">"human"</span>, user_input),<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response = llm.<span
+                                style="color: #dcdcaa;">invoke</span>(messages)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #6a9955;"># Clear the loading line</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(<span style="color: #ce9178;">" "</span> * <span
+                                style="color: #b5cea8;">30</span>, end=<span style="color: #ce9178;">"\r"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"Groq:
+                                {response.content}"</span>)<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #c586c0;">except</span>
+                            <span style="color: #4ec9b0;">Exception</span> <span style="color: #c586c0;">as</span>
+                            e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                style="color: #dcdcaa;">print</span>(f<span style="color: #ce9178;">"\nError interacting
+                                with Groq: {e}"</span>)<br><br>
+                            <span style="color: #c586c0;">if</span> __name__ == <span
+                                style="color: #ce9178;">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #dcdcaa;">main</span>()<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function copyCode(elementId, btnElement) {
+                // Get the text content from the div
+                const codeDiv = document.getElementById(elementId);
+                // We need to replace <br> with newlines for copying
+                let textToCopy = codeDiv.innerText;
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Visual feedback
+                    const originalIcon = btnElement.innerHTML;
+                    btnElement.innerHTML = '<i class="fa-solid fa-check" style="color: #27c93f;"></i>';
+                    setTimeout(() => {
+                        btnElement.innerHTML = originalIcon;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        </script>
+
+        <!-- SLIDE 10: Limitations -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>Limitations of RAG</h2>
+            <p>Even though RAG is powerful, it is not perfect.</p>
+
+            <div
+                style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 100%; margin-top: 30px;">
+
+                <div
+                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-trash" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Garbage In, Garbage Out</h3>
+                        <p style="margin: 0; font-size: 16px;">If your uploaded PDF is blurry, confusing, or wrong,
+                            the
+                            AI's answer will also be wrong. It cannot fix bad data.</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-hourglass-half" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Latency</h3>
+                        <p style="margin: 0; font-size: 16px;">Because it has to Search Database -> Refine ->
+                            Generate,
+                            it is slower than just asking standard ChatGPT.</p>
+                    </div>
+                </div>
+
+                <div
+                    style="background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 20px; align-items: flex-start;">
+                    <div style="background: #fee2e2; padding: 10px; border-radius: 8px;">
+                        <i class="fa-solid fa-layer-group" style="color: #ef4444;"></i>
+                    </div>
+                    <div>
+                        <h3>Context Limits</h3>
+                        <p style="margin: 0; font-size: 16px;">We can only feed a few chunks (Top 3) to the AI. If
+                            the
+                            answer requires reading the entire book at once, RAG might miss it.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- SLIDE 2: Vertical Architecture -->
+        <div class="slide" style="padding-top: 40px; padding-left: 5%; padding-right: 5%;">
+            <h2>System Architecture</h2>
+            <div class="arch-container">
+
+                <!-- START -->
+                <div class="arch-node node-user">
+                    <i class="fa-solid fa-user"></i> User
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- FRONTEND FORM -->
+                <div class="arch-node node-fastapi" style="width: 320px; border-left: 5px solid #ec4899;">
+                    <i class="fa-solid fa-file-invoice"></i> Frontend Form<br>
+                    <small style="color:var(--text-muted)">Input: Query + Data (PDF/Txt/Md)</small>
+                </div>
+
+                <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                <!-- FASTAPI GATEWAY -->
+                <div class="arch-node node-fastapi" style="width: 320px;">
+                    <i class="fa-brands fa-python"></i> FastAPI Gateway<br>
+                    <small style="color:var(--text-muted)">Route: /upload & /query</small>
+                </div>
+
+                <div class="arch-arrow"
+                    style="height: 60px; display: flex; justify-content: center; align-items: center;">
+                    <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main Stem -->
+                        <path d="M40 0 V20" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+                        <!-- Left Branch -->
+                        <path d="M40 20 C40 35, 10 20, 10 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M5 32 L10 42 L18 34" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <!-- Right Branch -->
+                        <path d="M40 20 C40 35, 70 20, 70 40" stroke="#94a3b8" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M62 34 L70 42 L75 32" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <div style="display: flex; gap: 40px; width: 100%; justify-content: center;">
+
+                    <!-- PHASE 1 BRANCH -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-purple);">
+                            <div class="phase-label" style="color: var(--accent-purple);">Phase 1: Ingest (Data)
+                            </div>
+
+                            <div class="arch-node node-langchain">
+                                <i class="fa-solid fa-scissors"></i> LangChain<br>
+                                <small style="color:var(--text-muted)">Chunking & Splitting</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-chroma">
+                                <i class="fa-solid fa-database"></i> Chroma DB<br>
+                                <small style="color:var(--text-muted)">Save Vectors</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHASE 2 BRANCH -->
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                        <div class="phase-box" style="border-color: var(--accent-orange);">
+                            <div class="phase-label" style="color: var(--accent-orange);">Phase 2: Query (Text)
+                            </div>
+
+                            <div class="arch-node node-groq">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Groq API<br>
+                                <small style="color:var(--text-muted)">Enhance/Refine Query</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-chroma">
+                                <i class="fa-solid fa-magnifying-glass"></i> Chroma DB<br>
+                                <small style="color:var(--text-muted)">Compare & Extract Top Chunks</small>
+                            </div>
+
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                            <div class="arch-node node-groq">
+                                <i class="fa-solid fa-robot"></i> Groq API<br>
+                                <small style="color:var(--text-muted)">Generate Answer (Enhanced Q + Chunks)</small>
+                            </div>
+                        </div>
+
+                        <div class="arch-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+                        <!-- END -->
+                        <div class="arch-node node-final">
+                            <i class="fa-solid fa-check-circle"></i> Final Answer
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Thank You -->
+        <div class="slide" style="justify-content: center;">
+            <div
+                style="width: 120px; height: 120px; background: #ecfdf5; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: var(--shadow-lg);">
+                <i class="fa-solid fa-hands-clapping" style="font-size: 50px; color: var(--accent-green);"></i>
+            </div>
+            <h1>Thank You!</h1>
+            <p style="font-size: 26px; color: var(--secondary);">Any Questions?</p>
+            <div style="margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 30px; text-align: center;">
+                <p style="font-size: 18px; color: var(--text-muted);">Redjet RAG Architecture v1.1.0</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        // Modal Elements
+        const archBtn = document.getElementById('archBtn');
+        const archModal = document.getElementById('archModal');
+
+        function updateUI() {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlide + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                currentSlide = newIndex;
+                updateUI();
+            }
+        }
+
+        // Initialize
+        updateUI();
+
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'Escape') archModal.classList.remove('open');
+        });
+
+        // MODAL LOGIC
+        archBtn.addEventListener('click', () => {
+            archModal.classList.add('open');
+        });
+
+        // Close when clicking outside the modal content
+        archModal.addEventListener('click', (e) => {
+            if (e.target === archModal) {
+                archModal.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>

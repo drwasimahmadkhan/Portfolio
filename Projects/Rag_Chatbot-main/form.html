@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise RAG Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --primary-color: #2563eb;
+            /* Royal Blue */
+            --primary-hover: #1d4ed8;
+            --surface-hover: #f1f5f9;
+            --radius: 10px;
+            /* Requested 10px radius */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+        }
+
+        p.subtitle {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Input styling */
+        textarea,
+        .file-drop-zone {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-color);
+            color: var(--text-primary);
+            font-family: inherit;
+            padding: 0.75rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Professional File Input */
+        .file-drop-zone {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed var(--border-color);
+            background: transparent;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .file-drop-zone:hover {
+            border-color: var(--primary-color);
+            background: var(--surface-hover);
+        }
+
+        .file-drop-zone input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+        }
+
+        .file-msg {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            pointer-events: none;
+            /* Let clicks pass to input */
+        }
+
+        .file-msg strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Button */
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Results & Loading */
+        #results-area {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            display: none;
+        }
+
+        .processing-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .result-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .result-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            background: var(--surface-hover);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Markdown-like simple styling for answer */
+        .result-text p {
+            margin-top: 0;
+        }
+
+        .result-text p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <header>
+                <h1>Knowledge Query</h1>
+                <p class="subtitle">Secure RAG-enhanced document intelligence.</p>
+            </header>
+
+            <form id="ragForm">
+                <div class="form-section">
+                    <div>
+                        <label for="queryInput">Query</label>
+                        <textarea id="queryInput" placeholder="Describe what you are looking for..."
+                            required></textarea>
+                    </div>
+
+                    <div>
+                        <label>Document Context</label>
+                        <div class="file-drop-zone" id="dropZone">
+                            <span class="file-msg" id="fileMsg">
+                                <strong>Click to upload</strong> or drag and drop<br>
+                                <span style="font-size: 0.8em; opacity: 0.8;">PDF, TXT, MD supported</span>
+                            </span>
+                            <input type="file" id="fileInput" accept=".pdf,.txt,.md,.log" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span>Process Query</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="processing-state" id="loader">
+                <div class="spinner"></div>
+                <span>Analyzing corpus & refining query...</span>
+            </div>
+
+            <div id="results-area">
+                <div class="result-block">
+                    <div class="result-title">Refined Query</div>
+                    <div class="result-text" id="resRefined"></div>
+                </div>
+
+                <div class="result-block">
+                    <div class="result-title">System Answer</div>
+                    <div class="result-text" id="resAnswer"
+                        style="background-color: rgba(37, 99, 235, 0.05); border-color: rgba(37, 99, 235, 0.2);"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('ragForm');
+        const fileInput = document.getElementById('fileInput');
+        const fileMsg = document.getElementById('fileMsg');
+        const dropZone = document.getElementById('dropZone');
+        const submitBtn = document.getElementById('submitBtn');
+
+        const loader = document.getElementById('loader');
+        const resultsArea = document.getElementById('results-area');
+        const resRefined = document.getElementById('resRefined');
+        const resAnswer = document.getElementById('resAnswer');
+
+        // Better file input interaction
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const name = fileInput.files[0].name;
+                fileMsg.innerHTML = `<strong>Selected:</strong> ${name}`;
+                dropZone.style.borderColor = 'var(--primary-color)';
+                dropZone.style.background = 'var(--surface-hover)';
+            }
+        });
+
+        // Drag/Drop visual feedback
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = 'var(--primary-color)';
+                dropZone.style.background = 'var(--surface-hover)';
+            }, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                if (!fileInput.files.length) {
+                    dropZone.style.borderColor = 'var(--border-color)';
+                    dropZone.style.background = 'transparent';
+                }
+            }, false);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Set Loading UI
+            resultsArea.style.display = 'none';
+            loader.style.display = 'flex';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Processing...';
+
+            const query = document.getElementById('queryInput').value;
+            const file = fileInput.files[0];
+
+            try {
+                // 1. Upload if file exists
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    const upRes = await fetch('/upload', { method: 'POST', body: formData });
+                    if (!upRes.ok) throw new Error('Upload failed.');
+                }
+
+                // 2. Query
+                const searchRes = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query, top_k: 3 })
+                });
+
+                if (!searchRes.ok) throw new Error('Query failed.');
+                const data = await searchRes.json();
+
+                // 3. Render
+                resRefined.textContent = data.refined_query;
+                resAnswer.innerText = data.answer; // innerText preserves newlines loosely
+
+                loader.style.display = 'none';
+                resultsArea.style.display = 'block';
+
+            } catch (err) {
+                console.error(err);
+                alert(`Error: ${err.message}`);
+                loader.style.display = 'none';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Process Query';
+            }
+        });
+    </script>
+</body>
+
+</html>
