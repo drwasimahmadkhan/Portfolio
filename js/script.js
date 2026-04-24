@@ -154,7 +154,8 @@ if (typeof gsap !== 'undefined') {
 
 // Cursor Particles
 const cCanvas = document.getElementById('cursor-canvas');
-if(cCanvas) {
+// Only initialize custom cursor on devices with a fine pointer (e.g., a mouse)
+if(cCanvas && window.matchMedia('(pointer: fine)').matches) {
     const cCtx = cCanvas.getContext('2d');
     const cParts = [];
     let mx = window.innerWidth/2, my = window.innerHeight/2;

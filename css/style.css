@@ -36,10 +36,16 @@ body {
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
     transition: background-color 0.3s, color 0.3s;
-    cursor: none;
 }
 
-a, button, input, textarea { cursor: none !important; }
+@media (pointer: fine) {
+    body { cursor: none; }
+    a, button, input, textarea { cursor: none !important; }
+}
+
+@media (pointer: coarse), (hover: none) {
+    #cursor-canvas { display: none !important; }
+}
 
 .glass {
     background-color: rgb(var(--glass));
