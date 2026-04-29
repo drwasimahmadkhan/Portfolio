@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Wasim Ahmad Khan - Computer Scientist & Researcher</title>
+    <meta name="description" content="Dr. Wasim Ahmad Khan - PhD Computer Scientist, AI Systems Architect, and Applied AI Researcher specializing in LLMs, RAG, Computer Vision, and Cloud Robotics.">
+    <meta name="keywords" content="Dr. Wasim Ahmad Khan, AI Systems Architect, PhD Computer Scientist, Applied AI Researcher, LLM, RAG, Computer Vision, Cloud Robotics, Machine Learning Consultant">
+    <meta name="author" content="Dr. Wasim Ahmad Khan">
+    <title>Dr. Wasim Ahmad Khan | AI Systems Architect & Researcher</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,9 +40,7 @@
                         'float-1': 'float1 6s ease-in-out infinite',
                         'float-2': 'float2 8s ease-in-out infinite',
                         'float-3': 'float3 7s ease-in-out infinite',
-                        'float-gentle': 'floatGentle 6s ease-in-out infinite',
                         'spin-slow': 'spin 20s linear infinite',
-                        'glow': 'glow 1.5s infinite'
                     },
                     keyframes: {
                         float1: {
@@ -53,11 +54,6 @@
                         float3: {
                             '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
                             '50%': { transform: 'translateY(-15px) rotate(3deg)' },
-                        },
-                        glow: {
-                            '0%': { boxShadow: '0 0 0 0 rgba(79,195,247,0.4)' },
-                            '50%': { boxShadow: '0 0 16px 4px rgba(79,195,247,0.7)' },
-                            '100%': { boxShadow: '0 0 0 0 rgba(79,195,247,0.4)' }
                         }
                     }
                 }
@@ -74,61 +70,31 @@
     <canvas id="three-canvas"></canvas>
     <canvas id="cursor-canvas"></canvas>
 
-    <!-- Video Sidebar Button & Panel -->
-    <button id="video-sidebar-toggle" class="fixed right-4 md:right-6 top-1/2 transform -translate-y-1/2 z-50 glass p-3 md:p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300">
-        <span class="text-xl md:text-2xl">🎥</span>
-    </button>
-
-    <div id="video-sidebar" class="fixed right-0 top-0 h-full w-full sm:w-96 glass border-l border-border z-40 overflow-hidden transform translate-x-full transition-transform duration-500 flex flex-col">
-        <div class="p-6 flex-1 flex flex-col overflow-hidden">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold gradient-text">Video Library</h3>
-                <button id="close-video-sidebar" class="w-8 h-8 glass rounded-full flex items-center justify-center hover:scale-110">✕</button>
-            </div>
-            <div class="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
-                <button class="px-4 py-2 rounded-full text-sm font-medium bg-accent text-secondary whitespace-nowrap">All</button>
-                <button class="px-4 py-2 rounded-full text-sm font-medium glass text-muted hover:text-text whitespace-nowrap">Research</button>
-                <button class="px-4 py-2 rounded-full text-sm font-medium glass text-muted hover:text-text whitespace-nowrap">Education</button>
-            </div>
-            <div class="flex-1 overflow-y-auto space-y-4 pr-2">
-                <div class="glass p-4 rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
-                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=225&fit=crop" class="w-full h-32 object-cover rounded-lg mb-2">
-                    <h4 class="font-semibold text-sm mb-1">AI in Healthcare & Beyond</h4>
-                    <p class="text-xs text-muted">Exploring the transformative potential of artificial intelligence and cognitive agents.</p>
-                </div>
-                <div class="glass p-4 rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
-                    <img src="https://images.unsplash.com/photo-1576091160399-112c8b48a6a8?w=400&h=225&fit=crop" class="w-full h-32 object-cover rounded-lg mb-2">
-                    <h4 class="font-semibold text-sm mb-1">Machine Learning Seminars</h4>
-                    <p class="text-xs text-muted">Deep dive into Q-learning and distributed systems for power generation.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4">
         <div class="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
-            <a href="#" class="text-xl md:text-2xl font-bold gradient-text transition-transform duration-300 hover:scale-105 truncate">
-                Dr. Wasim Ahmad Khan
+            <a href="#" class="flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                <img src="assets/profileimage.jpeg" alt="Dr. Wasim Ahmad Khan" class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-accent object-cover shadow-sm">
+                <span class="text-xl md:text-2xl font-bold gradient-text truncate">Dr. Wasim Ahmad Khan</span>
             </a>
             
             <div class="flex items-center">
                 <!-- Links (Hidden on mobile) -->
                 <div class="hidden md:flex space-x-6 lg:space-x-8 items-center mr-6">
                     <a href="#about" class="nav-link text-sm lg:text-base">About</a>
-                    <a href="#features" class="nav-link text-sm lg:text-base">Research</a>
-                    <a href="#skills" class="nav-link text-sm lg:text-base">Expertise</a>
-                    <a href="#projects" class="nav-link text-sm lg:text-base">Publications</a>
-                    <a href="#gallery" class="nav-link text-sm lg:text-base">Gallery</a>
+                    <a href="#expertise" class="nav-link text-sm lg:text-base">Expertise</a>
+                    <a href="#projects" class="nav-link text-sm lg:text-base">Projects</a>
+                    <a href="#publications" class="nav-link text-sm lg:text-base">Publications</a>
+                    <a href="#services" class="nav-link text-sm lg:text-base">Services</a>
                 </div>
 
-                <!-- Dark Mode Toggle (Always Visible) -->
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800 transition-colors focus:outline-none border border-border mr-2 md:mr-0 flex-shrink-0">
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full glass transition-colors focus:outline-none flex-shrink-0 mr-2 md:mr-0 hover:scale-110" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon text-primary" id="theme-icon"></i>
                 </button>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 transition-transform duration-200 hover:scale-110 active:scale-90 flex-shrink-0">
+                <button id="mobile-menu-btn" class="md:hidden p-2 transition-transform duration-200 hover:scale-110 active:scale-90 flex-shrink-0" aria-label="Open Mobile Menu">
                     <i class="fas fa-bars text-xl md:text-2xl"></i>
                 </button>
             </div>
@@ -137,30 +103,42 @@
         <!-- Mobile Menu Panel -->
         <div id="mobile-menu" class="hidden mt-4 mx-4 md:mx-6 glass p-6 rounded-2xl flex-col space-y-4">
             <a href="#about" class="text-lg font-medium hover:text-accent mobile-link">About</a>
-            <a href="#features" class="text-lg font-medium hover:text-accent mobile-link">Research</a>
-            <a href="#skills" class="text-lg font-medium hover:text-accent mobile-link">Expertise</a>
-            <a href="#projects" class="text-lg font-medium hover:text-accent mobile-link">Publications</a>
-            <a href="#gallery" class="text-lg font-medium hover:text-accent mobile-link">Gallery</a>
+            <a href="#expertise" class="text-lg font-medium hover:text-accent mobile-link">Expertise</a>
+            <a href="#projects" class="text-lg font-medium hover:text-accent mobile-link">Projects</a>
+            <a href="#publications" class="text-lg font-medium hover:text-accent mobile-link">Publications</a>
+            <a href="#services" class="text-lg font-medium hover:text-accent mobile-link">Services</a>
+            <a href="#contact" class="text-lg font-medium hover:text-accent mobile-link">Contact</a>
         </div>
     </nav>
 
     <main class="min-h-screen">
         <!-- Hero Section -->
-        <section class="min-h-screen flex items-center justify-center relative px-4 md:px-6 pt-20 overflow-hidden">
+        <section id="home" class="min-h-screen flex items-center justify-center relative px-4 md:px-6 pt-20 overflow-hidden">
             <div class="floating-card flex items-center justify-center text-4xl md:text-6xl animate-float-1 hidden md:flex left-[5%] lg:left-[10%] top-1/4">🤖</div>
-            <div class="floating-card flex items-center justify-center text-4xl md:text-6xl animate-float-2 hidden md:flex right-[5%] lg:right-[15%] top-[60%]">☁️</div>
-            <div class="floating-card flex items-center justify-center text-4xl md:text-6xl animate-float-3 hidden md:flex left-[10%] lg:left-[20%] bottom-[15%]">🧠</div>
+            <div class="floating-card flex items-center justify-center text-4xl md:text-6xl animate-float-2 hidden md:flex right-[5%] lg:right-[15%] top-[60%]">🧠</div>
+            <div class="floating-card flex items-center justify-center text-4xl md:text-6xl animate-float-3 hidden md:flex left-[10%] lg:left-[20%] bottom-[15%]">☁️</div>
             
-            <div class="max-w-7xl w-full text-center z-20">
-                <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 md:mb-6 gradient-text opacity-0" id="hero-title">
+            <div class="max-w-5xl w-full text-center z-20">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 gradient-text pb-2 opacity-0" id="hero-title">
                     Dr. Wasim Ahmad Khan
                 </h1>
-                <p class="text-lg sm:text-xl md:text-2xl text-muted mb-8 md:mb-12 max-w-2xl mx-auto flex items-center justify-center min-h-[2.5em] opacity-0" id="hero-subtitle">
-                    I am a&nbsp;<span id="typewriter" class="font-bold gradient-text inline-block"></span><span class="cursor-blink ml-1">|</span>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-text mb-6 opacity-0" id="hero-subtitle">
+                    PhD Computer Scientist | AI Systems Architect | Applied AI Researcher
+                </h2>
+                <p class="text-base sm:text-lg md:text-xl text-muted mb-10 max-w-3xl mx-auto opacity-0" id="hero-actions-text">
+                    I design and evaluate intelligent AI systems, including LLM applications, RAG pipelines, computer vision solutions, cognitive agents, and cloud-based AI architectures for academic, enterprise, and real-world impact.
                 </p>
-                <a href="#contact" class="animated-btn inline-block px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold text-base md:text-lg opacity-0" id="hero-cta">
-                    Get In Touch
-                </a>
+                <div class="flex flex-wrap justify-center gap-4 opacity-0" id="hero-actions-btns">
+                    <a href="Dr.%20Wasim%20Ahmad%20Khan%20-%20Resume.pdf" target="_blank" class="animated-btn px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                    <a href="#publications" class="secondary-btn px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg glass flex items-center gap-2">
+                        <i class="fas fa-book-open"></i> View Publications
+                    </a>
+                    <a href="#contact" class="secondary-btn px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg glass flex items-center gap-2">
+                        <i class="fas fa-envelope"></i> Contact Me
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -168,213 +146,411 @@
         <section id="about" class="py-20 md:py-32 px-4 md:px-6">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
                 <div class="gs-reveal-left w-64 h-64 md:w-80 md:h-80 mx-auto relative">
-                    <img src="assets/profileimage.jpeg" alt="Dr. Wasim" class="w-full h-full object-cover rounded-full border-4 border-accent relative z-10" />
-                    <div class="absolute inset-0 rounded-full border-2 border-accent animate-spin-slow"></div>
+                    <img src="assets/profileimage.jpeg" alt="Dr. Wasim Ahmad Khan" class="w-full h-full object-cover rounded-full border-4 border-accent relative z-10 shadow-2xl" />
+                    <div class="absolute inset-0 rounded-full border-2 border-accent/50 animate-spin-slow scale-105"></div>
+                    <div class="absolute inset-0 rounded-full border border-accent/30 animate-spin-slow scale-110" style="animation-direction: reverse;"></div>
                 </div>
                 <div class="gs-reveal-right text-center md:text-left">
-                    <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 gradient-text">Pioneering Cognitive Agents</h3>
-                    <p class="text-base md:text-lg text-muted mb-4 md:mb-6 leading-relaxed">
-                        I am a Computer Scientist and Researcher with a Ph.D. in Computer Science from NCBA&E. My dissertation, "Knowledge Sharing for Task Planning in Cloud Robotics," laid the foundation for my extensive research into how intelligent agents interact, learn, and collaborate.
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-text pb-2">Professional Summary</h2>
+                    <p class="text-base md:text-lg text-muted mb-4 leading-relaxed">
+                        Dr. Wasim Ahmad Khan is a PhD Computer Scientist specializing in Artificial Intelligence, intelligent agents, cloud robotics, NLP, and applied machine learning. His work bridges academic research and deployable AI systems, with experience in research publication, teaching, software architecture, AI solution design, and industry-oriented AI implementation.
                     </p>
                     <p class="text-base md:text-lg text-muted leading-relaxed">
-                        With over 17 peer-reviewed publications and conference presentations globally, my passion lies in bridging Artificial Intelligence with Cloud Robotics, NLP, and Cognitive computing to push the boundaries of what autonomous systems can achieve.
+                        His interests include LLM-based systems, retrieval-augmented generation, computer vision, cognitive agents, cloud AI, and responsible AI adoption. He is dedicated to pushing the boundaries of autonomous systems to create real-world, enterprise-grade impact.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Features (Research Focus) -->
-        <section id="features" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+        <!-- Core Expertise Section -->
+        <section id="expertise" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-16 md:mb-20 gradient-text gs-reveal">Research Focus</h2>
-                <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center justify-center">
-                    
-                    <!-- Feature Showcase Card -->
-                    <div class="w-full lg:flex-1 flex flex-col items-center justify-center min-w-0 md:min-w-[340px] gs-reveal-left">
-                        <div id="feature-card" class="feature-card glass p-6 md:p-10 flex flex-col justify-center items-center border border-accent/40 shadow-xl w-full min-h-[300px] md:min-h-[380px] transition-all duration-500 hover:scale-[1.02] md:hover:scale-105">
-                            <div id="feature-icon" class="text-6xl md:text-8xl mb-4 md:mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">📚</div>
-                            <h3 id="feature-title" class="text-2xl md:text-3xl font-bold mb-2 gradient-text text-center">Cloud Robotics</h3>
-                            <p id="feature-desc" class="text-base md:text-lg text-muted leading-relaxed text-center mb-4 md:mb-6">Task planning and knowledge processing in cloud-based robotic systems.</p>
-                            <div id="feature-stats" class="grid grid-cols-1 gap-2 w-full max-w-xs mx-auto">
-                                <div class="flex items-center space-x-3"><div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div><span class="text-muted text-sm md:text-base">Rapuyta Framework</span></div>
-                                <div class="flex items-center space-x-3"><div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div><span class="text-muted text-sm md:text-base">Load Balancing</span></div>
-                            </div>
-                        </div>
-                        <!-- Dots -->
-                        <div class="flex justify-center mt-6 md:mt-8 space-x-4">
-                            <button onclick="updateFeature(0)" class="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 bg-glass border-muted hover:border-accent feature-dot flex items-center justify-center transition-all"><span class="block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-accent/30"></span></button>
-                            <button onclick="updateFeature(1)" class="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 bg-accent border-accent shadow-accent animate-glow feature-dot flex items-center justify-center transition-all"><span class="block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/90"></span></button>
-                            <button onclick="updateFeature(2)" class="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 bg-glass border-muted hover:border-accent feature-dot flex items-center justify-center transition-all"><span class="block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-accent/30"></span></button>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Stats & Progress -->
-                    <div class="w-full lg:flex-1 space-y-8 gs-reveal-right">
-                        <div class="grid grid-cols-2 gap-4 md:gap-6">
-                            <div class="glass p-4 md:p-6 text-center border border-accent/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform shadow-lg"><div class="text-2xl md:text-3xl mb-2">🎓</div><div class="text-xl md:text-2xl font-bold gradient-text">Ph.D.</div><div class="text-xs md:text-sm text-muted">Computer Science</div></div>
-                            <div class="glass p-4 md:p-6 text-center border border-accent/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform shadow-lg"><div class="text-2xl md:text-3xl mb-2">🧠</div><div class="text-xl md:text-2xl font-bold gradient-text">AGI</div><div class="text-xs md:text-sm text-muted">Cognitive Agents</div></div>
-                            <div class="glass p-4 md:p-6 text-center border border-accent/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform shadow-lg"><div class="text-2xl md:text-3xl mb-2">📄</div><div class="text-xl md:text-2xl font-bold gradient-text">17+</div><div class="text-xs md:text-sm text-muted">Publications</div></div>
-                            <div class="glass p-4 md:p-6 text-center border border-accent/20 hover:-translate-y-1 md:hover:-translate-y-2 transition-transform shadow-lg"><div class="text-2xl md:text-3xl mb-2">🌐</div><div class="text-xl md:text-2xl font-bold gradient-text">IoT</div><div class="text-xs md:text-sm text-muted">Intelligent Networks</div></div>
-                        </div>
-
-                        <div class="space-y-4 md:space-y-6">
-                            <h3 class="text-xl md:text-2xl font-bold gradient-text mb-4 md:mb-6">Technical Expertise</h3>
-                            <div>
-                                <div class="flex justify-between mb-1 md:mb-2"><span class="font-medium text-sm md:text-base">Artificial Intelligence</span><span class="text-accent font-bold text-sm md:text-base">95%</span></div>
-                                <div class="w-full bg-muted/20 rounded-full h-2"><div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 95%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1 md:mb-2"><span class="font-medium text-sm md:text-base">Cloud Robotics</span><span class="text-accent font-bold text-sm md:text-base">92%</span></div>
-                                <div class="w-full bg-muted/20 rounded-full h-2"><div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 92%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1 md:mb-2"><span class="font-medium text-sm md:text-base">Natural Language Processing</span><span class="text-accent font-bold text-sm md:text-base">88%</span></div>
-                                <div class="w-full bg-muted/20 rounded-full h-2"><div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 88%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1 md:mb-2"><span class="font-medium text-sm md:text-base">Internet of Things (IoT)</span><span class="text-accent font-bold text-sm md:text-base">85%</span></div>
-                                <div class="w-full bg-muted/20 rounded-full h-2"><div class="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style="width: 85%"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="py-20 md:py-32 px-4 md:px-6">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-16 md:mb-20 gradient-text gs-reveal">Core Skills</h2>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 gradient-text gs-reveal pb-2">Core Expertise</h2>
                 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">🤖</div><div class="font-semibold text-xs md:text-sm">Artificial Intelligence</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass elegant-card skill-card gs-reveal-up">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-brain"></i></div>
+                        <h3 class="font-bold text-lg mb-2">LLM Applications & RAG Systems</h3>
+                        <p class="text-sm text-muted">Designing scalable retrieval-augmented generation pipelines and fine-tuned LLM architectures.</p>
                     </div>
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up" style="transition-delay: 0.1s">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">☁️</div><div class="font-semibold text-xs md:text-sm">Cloud Robotics</div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.1s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-eye"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Computer Vision & Image Intelligence</h3>
+                        <p class="text-sm text-muted">Developing advanced object detection, segmentation, and visual learning models.</p>
                     </div>
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up" style="transition-delay: 0.2s">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">🧠</div><div class="font-semibold text-xs md:text-sm">Cognitive Agents</div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.2s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-network-wired"></i></div>
+                        <h3 class="font-bold text-lg mb-2">AI System Architecture</h3>
+                        <p class="text-sm text-muted">Architecting robust, end-to-end intelligent systems for enterprise environments.</p>
                     </div>
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up" style="transition-delay: 0.3s">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">📊</div><div class="font-semibold text-xs md:text-sm">Machine Learning</div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.3s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-robot"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Cloud Robotics & Cognitive Agents</h3>
+                        <p class="text-sm text-muted">Task planning, knowledge sharing, and distributed processing for autonomous robots.</p>
                     </div>
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up" style="transition-delay: 0.4s">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">🗣️</div><div class="font-semibold text-xs md:text-sm">NLP & AGI</div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.4s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-language"></i></div>
+                        <h3 class="font-bold text-lg mb-2">NLP & Intelligent Interfaces</h3>
+                        <p class="text-sm text-muted">Building semantic understanding models, sentiment analysis, and conversational agents.</p>
                     </div>
-                    <div class="glass p-4 md:p-6 text-center card-hover gs-reveal-up" style="transition-delay: 0.5s">
-                        <div class="text-3xl md:text-4xl mb-2 md:mb-4">🌐</div><div class="font-semibold text-xs md:text-sm">IoT Networks</div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.5s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-server"></i></div>
+                        <h3 class="font-bold text-lg mb-2">MLOps, FastAPI & Docker</h3>
+                        <p class="text-sm text-muted">Deploying models efficiently using modern cloud infrastructure and containerization.</p>
+                    </div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.6s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-microscope"></i></div>
+                        <h3 class="font-bold text-lg mb-2">AI Research & Publications</h3>
+                        <p class="text-sm text-muted">Conducting rigorous academic research, peer review, and thesis supervision.</p>
+                    </div>
+                    <div class="glass elegant-card skill-card gs-reveal-up" style="transition-delay: 0.7s">
+                        <div class="text-4xl mb-4 text-accent"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Training & AI Literacy</h3>
+                        <p class="text-sm text-muted">Mentoring teams, lecturing, and bridging the gap between technical and business stakeholders.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects / Publications Section -->
-        <section id="projects" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+        <!-- Applied AI / Industry Projects -->
+        <section id="projects" class="py-20 md:py-32 px-4 md:px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-16 md:mb-20 gradient-text gs-reveal">Selected Publications</h2>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 gradient-text gs-reveal pb-2">Applied AI & Research Areas</h2>
                 
-                <div class="grid md:grid-cols-3 gap-6 md:gap-8" style="perspective: 1200px;">
-                    <div class="glass p-6 md:p-8 project-card project-card-left gs-reveal-up shadow-[0_8px_32px_0_rgba(79,195,247,0)]" data-index="0" style="z-index: 1;">
-                        <div class="text-4xl md:text-5xl mb-4 md:mb-6">🤖</div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">Cognitive Architecture</h3>
-                        <p class="text-sm md:text-base text-muted leading-relaxed">Cognitive Architecture to Generate Motivational Feelings: A Way to Improve Visual Learning in Robots.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass elegant-card p-8 gs-reveal-left">
+                        <div class="text-3xl mb-4 text-accent"><i class="fas fa-cogs"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Enterprise RAG Architectures</h3>
+                        <p class="text-muted leading-relaxed mb-4">
+                            Designing custom Retrieval-Augmented Generation (RAG) pipelines for organizations to securely interact with their internal knowledge bases. Utilizing vector databases, embedding models, and orchestration frameworks like LangChain to reduce hallucination and improve data discovery.
+                        </p>
+                    </div>
+                    <div class="glass elegant-card p-8 gs-reveal-right">
+                        <div class="text-3xl mb-4 text-accent"><i class="fas fa-cloud"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Cloud Robotics Frameworks</h3>
+                        <p class="text-muted leading-relaxed mb-4">
+                            Research and implementation of task offloading and knowledge sharing in cloud-based robotic environments. Experience with frameworks like Rapuyta to enable low-latency, distributed computation for resource-constrained physical robots.
+                        </p>
+                    </div>
+                    <div class="glass elegant-card p-8 gs-reveal-left">
+                        <div class="text-3xl mb-4 text-accent"><i class="fas fa-camera"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Vision Intelligence Systems</h3>
+                        <p class="text-muted leading-relaxed mb-4">
+                            Developing computer vision applications for real-time object detection, anomaly recognition, and visual learning architectures. Focusing on deployable models optimized for edge devices and central cloud processing.
+                        </p>
+                    </div>
+                    <div class="glass elegant-card p-8 gs-reveal-right">
+                        <div class="text-3xl mb-4 text-accent"><i class="fas fa-project-diagram"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Cognitive Agent Simulation</h3>
+                        <p class="text-sm text-accent font-semibold mb-2">Ph.D. Dissertation Focus</p>
+                        <p class="text-muted leading-relaxed mb-4">
+                            Creating cognitive architectures that allow software agents to generate motivational feelings, simulate top-down attention, and adapt to complex, unstructured data environments, paving the way for AGI research.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 gradient-text gs-reveal pb-2">Selected Publications</h2>
+                <p class="text-center text-muted mb-16 max-w-2xl mx-auto gs-reveal">A selection of my peer-reviewed academic research spanning over 17 publications in international journals and conferences.</p>
+                
+                <div class="space-y-6">
+                    <!-- Pub 1 -->
+                    <div class="glass elegant-card p-6 md:p-8 gs-reveal-up flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-accent/10 p-4 rounded-xl text-accent text-2xl border border-accent/20">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <span class="bg-primary text-secondary text-xs font-bold px-3 py-1 rounded-full">2018</span>
+                                <span class="text-accent text-sm font-semibold">Cognitive Robotics</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Cognitive Architecture to Generate Motivational Feelings: A Way to Improve Visual Learning in Robots</h3>
+                            <p class="text-sm text-muted mb-4 font-medium"><i class="fas fa-university mr-2"></i>International Journal of Advanced Computer Science and Applications</p>
+                            <a href="#" class="text-accent text-sm font-semibold hover:underline"><i class="fas fa-external-link-alt mr-1"></i> View Publication / DOI</a>
+                        </div>
+                    </div>
+
+                    <!-- Pub 2 -->
+                    <div class="glass elegant-card p-6 md:p-8 gs-reveal-up flex flex-col md:flex-row gap-6 items-start" style="transition-delay: 0.1s">
+                        <div class="flex-shrink-0 bg-accent/10 p-4 rounded-xl text-accent text-2xl border border-accent/20">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <span class="bg-primary text-secondary text-xs font-bold px-3 py-1 rounded-full">2015</span>
+                                <span class="text-accent text-sm font-semibold">Cloud Robotics</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Effective Load Balancing in Cloud Robotics using Rapuyta</h3>
+                            <p class="text-sm text-muted mb-4 font-medium"><i class="fas fa-users mr-2"></i>1st National Conference on Information Technology</p>
+                            <a href="#" class="text-accent text-sm font-semibold hover:underline"><i class="fas fa-external-link-alt mr-1"></i> View Publication / DOI</a>
+                        </div>
+                    </div>
+
+                    <!-- Pub 3 -->
+                    <div class="glass elegant-card p-6 md:p-8 gs-reveal-up flex flex-col md:flex-row gap-6 items-start" style="transition-delay: 0.2s">
+                        <div class="flex-shrink-0 bg-accent/10 p-4 rounded-xl text-accent text-2xl border border-accent/20">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <span class="bg-primary text-secondary text-xs font-bold px-3 py-1 rounded-full">2023</span>
+                                <span class="text-accent text-sm font-semibold">NLP & AGI</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Current State of Natural Language Processing (NLP) and its Evolution Towards Artificial General Intelligence (AGI)</h3>
+                            <p class="text-sm text-muted mb-4 font-medium"><i class="fas fa-globe mr-2"></i>Conference on Artificial Intelligence</p>
+                            <a href="#" class="text-accent text-sm font-semibold hover:underline"><i class="fas fa-external-link-alt mr-1"></i> View Publication / DOI</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teaching & Training -->
+        <section class="py-20 md:py-32 px-4 md:px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="gs-reveal-left order-2 md:order-1">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&h=400&fit=crop" alt="Lecture" class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1544158108-6f10c66063b4?w=500&h=400&fit=crop" alt="Mentoring" class="rounded-xl shadow-lg mt-8 hover:scale-105 transition-transform duration-300">
+                    </div>
+                </div>
+                <div class="gs-reveal-right order-1 md:order-2">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-text pb-2">Teaching & Mentoring</h2>
+                    <p class="text-lg text-muted mb-6 leading-relaxed">
+                        Knowledge sharing is a fundamental pillar of my career. I am dedicated to raising the next generation of AI researchers and practitioners through university lecturing, thesis supervision, and corporate training.
+                    </p>
+                    <ul class="space-y-4 text-muted">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-accent mt-1 mr-3"></i>
+                            <span><strong>University Lecturing:</strong> Designing and delivering advanced coursework in Machine Learning, AI Architecture, and Distributed Systems.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-accent mt-1 mr-3"></i>
+                            <span><strong>Thesis Supervision:</strong> Guiding graduate students through rigorous academic research, methodology design, and publication.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-accent mt-1 mr-3"></i>
+                            <span><strong>Corporate AI Literacy:</strong> Translating complex AI concepts for executive teams to drive strategic enterprise adoption.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Consulting Services -->
+        <section id="services" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 gradient-text gs-reveal pb-2">AI Consulting Services</h2>
+                <p class="text-center text-muted mb-16 max-w-2xl mx-auto gs-reveal">Leveraging academic rigor and applied engineering to help organizations integrate intelligent systems.</p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">AI Strategy & Architecture Review</h3>
+                        <p class="text-sm text-muted">Comprehensive evaluation of your technical stack to map out scalable, secure AI integrations.</p>
                     </div>
                     
-                    <div class="glass p-6 md:p-8 project-card project-card-center gs-reveal-up shadow-[0_8px_32px_0_rgba(79,195,247,0)]" data-index="1" style="transition-delay: 0.15s; z-index: 2;">
-                        <div class="text-4xl md:text-5xl mb-4 md:mb-6">☁️</div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">Cloud Robotics</h3>
-                        <p class="text-sm md:text-base text-muted leading-relaxed">Effective Load Balancing in Cloud Robotics using Rapuyta. 1st National Conference on Information Technology.</p>
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2" style="transition-delay: 0.1s">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">LLM & RAG Application Design</h3>
+                        <p class="text-sm text-muted">End-to-end design of context-aware generative AI applications tailored to your proprietary data.</p>
                     </div>
 
-                    <div class="glass p-6 md:p-8 project-card project-card-right gs-reveal-up shadow-[0_8px_32px_0_rgba(79,195,247,0)]" data-index="2" style="transition-delay: 0.3s; z-index: 1;">
-                        <div class="text-4xl md:text-5xl mb-4 md:mb-6">🗣️</div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">NLP & AGI</h3>
-                        <p class="text-sm md:text-base text-muted leading-relaxed">Current State of Natural Language Processing (NLP) and its Evolution Towards Artificial General Intelligence (AGI).</p>
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2" style="transition-delay: 0.2s">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">Computer Vision Solution Design</h3>
+                        <p class="text-sm text-muted">Developing architectures for visual inspection, tracking, and automated analysis systems.</p>
+                    </div>
+
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2" style="transition-delay: 0.3s">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">Model Evaluation & Benchmarking</h3>
+                        <p class="text-sm text-muted">Rigorous testing methodologies to ensure model accuracy, safety, and performance metrics.</p>
+                    </div>
+
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2" style="transition-delay: 0.4s">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">Research-to-Product Translation</h3>
+                        <p class="text-sm text-muted">Bridging the gap between conceptual AI research papers and production-ready code.</p>
+                    </div>
+
+                    <div class="glass elegant-card p-8 gs-reveal-up text-center hover:-translate-y-2" style="transition-delay: 0.5s">
+                        <div class="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center text-2xl text-accent mb-6 border border-accent/20">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3">Team Training & Technical Mentoring</h3>
+                        <p class="text-sm text-muted">Upskilling engineering teams on modern AI workflows, MLOps, and architecture best practices.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 md:py-32 px-4 md:px-6">
-            <div class="max-w-7xl mx-auto text-center">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-16 md:mb-20 gradient-text gs-reveal">Peer Recognition</h2>
-                <div class="glass p-8 md:p-12 relative overflow-hidden rounded-2xl mx-auto max-w-4xl gs-reveal-up">
-                    <div id="testimonial-slide" class="transition-opacity duration-300">
-                        <div class="flex justify-center items-center mb-4 md:mb-6">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" class="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-accent mr-4">
-                            <div class="text-left">
-                                <h3 class="text-lg md:text-xl font-bold gradient-text">Alex Thompson</h3>
-                                <p class="text-muted text-xs md:text-sm">Data Science Lead</p>
-                            </div>
-                        </div>
-                        <blockquote class="text-lg md:text-xl text-muted italic mb-4 md:mb-6">"Dr. Khan's research on Cognitive Agents and NLP is groundbreaking. His work continues to influence how we approach Artificial General Intelligence."</blockquote>
-                        <div class="text-yellow-400 text-sm md:text-base">⭐⭐⭐⭐⭐</div>
-                    </div>
+                
+                <div class="text-center mt-12 gs-reveal">
+                    <a href="#contact" class="animated-btn inline-block px-8 py-4 rounded-lg font-bold text-lg">Book a Consultation</a>
                 </div>
             </div>
         </section>
 
         <!-- Media Gallery -->
-        <section id="gallery" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+        <section id="gallery" class="py-20 md:py-32 px-4 md:px-6">
             <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-center mb-16 md:mb-20 gradient-text gs-reveal">Media Gallery</h2>
-                <div class="flex justify-center mb-8 md:mb-12 gs-reveal overflow-x-auto scrollbar-hide pb-4">
-                    <div class="flex gap-2 md:gap-4 px-4">
-                        <button class="gallery-filter-btn px-4 md:px-6 py-2 md:py-3 rounded-full font-medium text-sm md:text-base bg-accent text-secondary whitespace-nowrap" data-filter="all">All</button>
-                        <button class="gallery-filter-btn px-4 md:px-6 py-2 md:py-3 rounded-full font-medium text-sm md:text-base glass text-muted hover:text-text whitespace-nowrap" data-filter="conferences">Conferences</button>
-                        <button class="gallery-filter-btn px-4 md:px-6 py-2 md:py-3 rounded-full font-medium text-sm md:text-base glass text-muted hover:text-text whitespace-nowrap" data-filter="research">Research</button>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 gradient-text gs-reveal pb-2">Media & Engagements</h2>
+                <div class="flex justify-center mb-10 gs-reveal overflow-x-auto scrollbar-hide pb-4">
+                    <div class="flex gap-2 px-4">
+                        <button class="gallery-filter-btn px-6 py-2 rounded-full font-medium text-sm bg-accent text-white whitespace-nowrap" data-filter="all">All</button>
+                        <button class="gallery-filter-btn px-6 py-2 rounded-full font-medium text-sm glass text-muted hover:text-text whitespace-nowrap" data-filter="conferences">Conferences</button>
+                        <button class="gallery-filter-btn px-6 py-2 rounded-full font-medium text-sm glass text-muted hover:text-text whitespace-nowrap" data-filter="research">Research</button>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    <!-- Gallery Item 1 -->
-                    <div class="gallery-item glass rounded-xl overflow-hidden cursor-pointer group gs-reveal-up" data-category="conferences">
-                        <div class="relative h-48 md:h-64 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112c8b48a6a8?w=600&h=400&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="gallery-item glass elegant-card overflow-hidden cursor-pointer group gs-reveal-up" data-category="conferences">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112c8b48a6a8?w=600&h=400&fit=crop" alt="Conference" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110">
                         </div>
-                        <div class="p-4 md:p-6">
-                            <h3 class="text-base md:text-lg font-bold mb-2 gradient-text">Conference Presentation</h3>
-                            <p class="text-muted text-xs md:text-sm leading-relaxed">Presenting findings at the International Conference on Cyber Secure Pakistan.</p>
-                        </div>
-                    </div>
-                    <!-- Gallery Item 2 -->
-                    <div class="gallery-item glass rounded-xl overflow-hidden cursor-pointer group gs-reveal-up" style="transition-delay: 0.1s" data-category="research">
-                        <div class="relative h-48 md:h-64 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
-                        </div>
-                        <div class="p-4 md:p-6">
-                            <h3 class="text-base md:text-lg font-bold mb-2 gradient-text">Cloud Robotics Lab</h3>
-                            <p class="text-muted text-xs md:text-sm leading-relaxed">Working on load balancing in Cloud Robotics utilizing the Rapuyta Framework.</p>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-2">Keynote Presentation</h3>
+                            <p class="text-muted text-sm leading-relaxed">Presenting findings on cognitive architectures at the International Conference.</p>
                         </div>
                     </div>
-                    <!-- Gallery Item 3 -->
-                    <div class="gallery-item glass rounded-xl overflow-hidden cursor-pointer group gs-reveal-up" style="transition-delay: 0.2s" data-category="research">
-                        <div class="relative h-48 md:h-64 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110">
+                    <div class="gallery-item glass elegant-card overflow-hidden cursor-pointer group gs-reveal-up" style="transition-delay: 0.1s" data-category="research">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Lab Work" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110">
                         </div>
-                        <div class="p-4 md:p-6">
-                            <h3 class="text-base md:text-lg font-bold mb-2 gradient-text">AI Networks</h3>
-                            <p class="text-muted text-xs md:text-sm leading-relaxed">Developing intelligent agent navigation using Bluetooth based Adhoc Communication.</p>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-2">Cloud Robotics Lab</h3>
+                            <p class="text-muted text-sm leading-relaxed">Working on load balancing utilizing the Rapuyta Framework for physical agents.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item glass elegant-card overflow-hidden cursor-pointer group gs-reveal-up" style="transition-delay: 0.2s" data-category="research">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop" alt="Network" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold mb-2">Intelligent Networks</h3>
+                            <p class="text-muted text-sm leading-relaxed">Developing intelligent agent navigation and ad-hoc communication systems.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section & Footer -->
-        <section id="contact" class="py-20 md:py-32 px-4 md:px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-10 gradient-text gs-reveal">Get In Touch</h2>
-                <form class="glass p-6 md:p-8 rounded-2xl md:rounded-3xl gs-reveal-up" onsubmit="event.preventDefault(); alert('Sent!');">
-                    <input type="text" placeholder="Name" class="w-full p-3 md:p-4 mb-4 glass rounded-lg md:rounded-xl text-sm md:text-base" required>
-                    <textarea placeholder="Message" class="w-full p-3 md:p-4 mb-4 glass rounded-lg md:rounded-xl text-sm md:text-base" rows="4" required></textarea>
-                    <button type="submit" class="animated-btn w-full py-3 md:py-4 rounded-lg md:rounded-xl font-bold text-sm md:text-base">Send Message</button>
-                </form>
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 px-4 md:px-6 bg-glass/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+                    <div class="gs-reveal-left">
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-text pb-2">Let's Collaborate</h2>
+                        <p class="text-lg text-muted mb-8 leading-relaxed">
+                            Whether you're looking for AI architecture consulting, research collaboration, or technical mentoring, I am always open to discussing new opportunities and challenging problems.
+                        </p>
+                        
+                        <div class="space-y-6 mb-10">
+                            <a href="mailto:wasim.ahmad@example.com" class="flex items-center text-muted hover:text-accent transition-colors">
+                                <div class="w-12 h-12 bg-glass rounded-full flex items-center justify-center mr-4 border border-border shadow-sm">
+                                    <i class="fas fa-envelope text-xl"></i>
+                                </div>
+                                <span class="font-medium text-lg text-text">wasim.ahmad@example.com</span>
+                            </a>
+                            <a href="#" class="flex items-center text-muted hover:text-accent transition-colors">
+                                <div class="w-12 h-12 bg-glass rounded-full flex items-center justify-center mr-4 border border-border shadow-sm">
+                                    <i class="fab fa-linkedin-in text-xl"></i>
+                                </div>
+                                <span class="font-medium text-lg text-text">LinkedIn Profile</span>
+                            </a>
+                            <a href="#" class="flex items-center text-muted hover:text-accent transition-colors">
+                                <div class="w-12 h-12 bg-glass rounded-full flex items-center justify-center mr-4 border border-border shadow-sm">
+                                    <i class="fas fa-graduation-cap text-xl"></i>
+                                </div>
+                                <span class="font-medium text-lg text-text">Google Scholar</span>
+                            </a>
+                            <a href="#" class="flex items-center text-muted hover:text-accent transition-colors">
+                                <div class="w-12 h-12 bg-glass rounded-full flex items-center justify-center mr-4 border border-border shadow-sm">
+                                    <i class="fab fa-github text-xl"></i>
+                                </div>
+                                <span class="font-medium text-lg text-text">GitHub</span>
+                            </a>
+                            <a href="#" class="flex items-center text-muted hover:text-accent transition-colors">
+                                <div class="w-12 h-12 bg-glass rounded-full flex items-center justify-center mr-4 border border-border shadow-sm">
+                                    <i class="fab fa-orcid text-xl"></i>
+                                </div>
+                                <span class="font-medium text-lg text-text">ORCID Record</span>
+                            </a>
+                        </div>
+                        
+                        <a href="Dr.%20Wasim%20Ahmad%20Khan%20-%20Resume.pdf" target="_blank" class="animated-btn inline-block px-8 py-4 rounded-lg font-bold text-base flex items-center justify-center max-w-xs">
+                            <i class="fas fa-file-pdf mr-2 text-xl"></i> Download Full CV
+                        </a>
+                    </div>
+                    
+                    <div class="gs-reveal-right">
+                        <form class="glass p-8 md:p-10 rounded-xl shadow-xl" onsubmit="event.preventDefault(); alert('Message Sent Successfully!');">
+                            <h3 class="text-2xl font-bold mb-6">Send a Message</h3>
+                            
+                            <div class="mb-5">
+                                <label class="block text-sm font-medium text-muted mb-2">Your Name</label>
+                                <input type="text" class="w-full p-4 bg-secondary/50 border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all" required>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <label class="block text-sm font-medium text-muted mb-2">Email Address</label>
+                                <input type="email" class="w-full p-4 bg-secondary/50 border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all" required>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-muted mb-2">Subject / Inquiry Type</label>
+                                <select class="w-full p-4 bg-secondary/50 border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all appearance-none" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="consulting">AI Consulting</option>
+                                    <option value="research">Research Collaboration</option>
+                                    <option value="speaking">Speaking Engagement</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <label class="block text-sm font-medium text-muted mb-2">Message</label>
+                                <textarea class="w-full p-4 bg-secondary/50 border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-none" rows="4" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="animated-btn w-full py-4 rounded-lg font-bold text-lg shadow-md">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
         
-        <footer class="glass py-8 md:py-10 text-center px-4"><p class="text-muted text-xs md:text-sm">© 2026 Dr. Wasim Ahmad Khan. All rights reserved.</p></footer>
+        <!-- Footer -->
+        <footer class="glass py-12 px-4 border-t border-border mt-10">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="assets/profileimage.jpeg" alt="Dr. Wasim Ahmad Khan" class="w-10 h-10 rounded-full border-2 border-accent object-cover">
+                    <span class="font-bold text-lg gradient-text">Dr. Wasim Ahmad Khan</span>
+                </div>
+                <div class="text-center md:text-left">
+                    <p class="text-muted text-sm font-medium">© 2026 Dr. Wasim Ahmad Khan. All rights reserved.</p>
+                    <p class="text-muted text-xs mt-1">Designed for Academic & Enterprise Impact.</p>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-muted hover:text-accent hover:-translate-y-1 transition-all"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-muted hover:text-accent hover:-translate-y-1 transition-all"><i class="fas fa-graduation-cap"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-muted hover:text-accent hover:-translate-y-1 transition-all"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </footer>
     </main>
 
     <!-- Scripts -->
