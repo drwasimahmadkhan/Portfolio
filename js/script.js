@@ -85,12 +85,19 @@ function showBookingToast(message) {
   clearTimeout(showBookingToast._timer);
   showBookingToast._timer = setTimeout(() => {
     toast.style.display = 'none';
-  }, 3500);
+  }, 4500);
+}
+
+function ensureHttpServer() {
+  if (typeof window.isPortfolioFileProtocol === 'function' && window.isPortfolioFileProtocol()) {
+    throw new Error(window.getPortfolioServerMessage());
+  }
 }
 
 function clearFormErrors(form) {
   form.querySelectorAll('.booking-input-error').forEach(el => el.classList.remove('booking-input-error'));
   document.querySelectorAll('.catalyst-card.package-error').forEach(card => card.classList.remove('package-error'));
+  document.getElementById('preferred-date-trigger')?.classList.remove('booking-input-error');
 }
 
 function validateBookingForm(form) {
@@ -112,6 +119,12 @@ function validateBookingForm(form) {
     }
   });
 
+  const dateTrigger = document.getElementById('preferred-date-trigger');
+  if (dateTrigger && !form.querySelector('[name="preferred_date"]')?.value.trim()) {
+    valid = false;
+    dateTrigger.classList.add('booking-input-error');
+  }
+
   const emailField = form.querySelector('[name="email"]');
   if (emailField?.value.trim() && !emailField.checkValidity()) {
     valid = false;
@@ -127,27 +140,123 @@ function validateBookingForm(form) {
   return valid;
 }
 
-function updateLiveCanvas(title, duration) {
-  document.querySelectorAll('#live-canvas').forEach(canvas => {
+function updateLiveCanvas(card) {
+  const title = card?.dataset?.title || '';
+  const duration = card?.dataset?.duration || '';
+  const vision = card?.dataset?.vision || '';
+
+  document.querySelectorAll('#live-canvas').forEach((canvas) => {
     const empty = canvas.querySelector('#canvas-empty');
     const filled = canvas.querySelector('#canvas-filled');
     const titleEl = canvas.querySelector('#canvas-title');
     const durationEl = canvas.querySelector('#canvas-duration');
+    const visionEl = canvas.querySelector('#canvas-vision');
 
     if (empty && filled && titleEl && durationEl) {
-      empty.classList.add('hidden');
-      filled.classList.remove('hidden');
+      if (title) {
+        empty.classList.add('hidden');
+        filled.classList.remove('hidden');
+      }
       titleEl.textContent = title;
       durationEl.textContent = duration;
+      if (visionEl) visionEl.textContent = vision;
       return;
     }
 
-    canvas.innerHTML = `
-      <div class="font-medium">${title}</div>
-      <div class="text-xs mt-1 text-muted">${duration}</div>
-    `;
+    if (title) {
+      canvas.innerHTML = `
+        <div class="font-medium">${title}</div>
+        <div class="text-xs mt-1 text-muted">${duration}</div>
+      `;
+    }
   });
+
+  updateSessionTicket();
 }
+
+function setCanvasRow(rowId, valueId, value) {
+  const row = document.getElementById(rowId);
+  const el = document.getElementById(valueId);
+  if (!row || !el) return;
+
+  if (value) {
+    row.classList.remove('hidden');
+    el.textContent = value;
+  } else {
+    row.classList.add('hidden');
+    el.textContent = '';
+  }
+}
+
+function updateSessionTicket() {
+  const form = document.getElementById('booking-form-blueprint');
+  if (!form) return;
+
+  const getValue = (name) => form.querySelector(`[name="${name}"]`)?.value.trim() || '';
+  const packageName = getValue('selected_package');
+  const selectedCard = document.querySelector('.catalyst-card.selected');
+  const duration = selectedCard?.dataset?.duration || '';
+  const vision = selectedCard?.dataset?.vision || getValue('topic');
+
+  const canvas = document.getElementById('live-canvas');
+  const empty = canvas?.querySelector('#canvas-empty');
+  const filled = canvas?.querySelector('#canvas-filled');
+
+  const hasTicketData = Boolean(
+    packageName ||
+    getValue('full_name') ||
+    getValue('organization') ||
+    getValue('email') ||
+    getValue('preferred_date')
+  );
+
+  if (empty && filled) {
+    if (hasTicketData) {
+      empty.classList.add('hidden');
+      filled.classList.remove('hidden');
+    } else {
+      empty.classList.remove('hidden');
+      filled.classList.add('hidden');
+    }
+  }
+
+  const titleEl = document.getElementById('canvas-title');
+  const durationEl = document.getElementById('canvas-duration');
+  const visionEl = document.getElementById('canvas-vision');
+
+  if (titleEl) titleEl.textContent = packageName || 'Your session blueprint';
+  if (durationEl) durationEl.textContent = duration || 'Flexible';
+  if (visionEl) visionEl.textContent = vision || 'Tell us what you want to explore together.';
+
+  const phone = getValue('phone');
+  const email = getValue('email');
+  const contact = [email, phone].filter(Boolean).join(' · ');
+
+  setCanvasRow('canvas-row-name', 'canvas-name', getValue('full_name'));
+  setCanvasRow('canvas-row-org', 'canvas-org', getValue('organization'));
+  setCanvasRow('canvas-row-contact', 'canvas-contact', contact);
+
+  const date = getValue('preferred_date');
+  const time = getValue('preferred_time');
+  let schedule = '';
+  if (date && time) {
+    const displayDate = new Date(`${date}T${time}:00`).toLocaleString(undefined, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+    schedule = displayDate;
+  } else if (date) {
+    schedule = date;
+  }
+  setCanvasRow('canvas-row-schedule', 'canvas-schedule', schedule);
+  setCanvasRow('canvas-row-mode', 'canvas-mode', getValue('mode'));
+}
+
+window.updateSessionTicket = updateSessionTicket;
 
 function populateVoucher(form, ref) {
   const getValue = (name) => form.querySelector(`[name="${name}"]`)?.value.trim() || '';
@@ -164,7 +273,13 @@ function populateVoucher(form, ref) {
   setText('voucher-email', getValue('email'));
   setText('voucher-phone', getValue('phone'));
   setText('voucher-org', getValue('organization'));
-  setText('voucher-date', getValue('preferred_date'));
+  setText('voucher-date', (() => {
+    const date = getValue('preferred_date');
+    const time = getValue('preferred_time');
+    if (!date) return '';
+    if (!time) return date;
+    return new Date(`${date}T${time}:00`).toLocaleString();
+  })());
   setText('voucher-mode', getValue('mode'));
   setText('voucher-topic', getValue('topic'));
 }
@@ -178,14 +293,59 @@ function showVoucher() {
 }
 
 function initBookingForm(form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validateBookingForm(form)) return;
 
-    const ref = 'AT-' + Math.floor(100000 + Math.random() * 900000);
-    populateVoucher(form, ref);
-    showVoucher();
-    showBookingToast('Your session request has been created.');
+    const submitBtn = form.querySelector('[type="submit"]');
+    const originalLabel = submitBtn?.innerHTML;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Scheduling...</span>';
+    }
+
+    const payload = {
+      full_name: form.querySelector('[name="full_name"]')?.value.trim(),
+      email: form.querySelector('[name="email"]')?.value.trim(),
+      phone: form.querySelector('[name="phone"]')?.value.trim(),
+      organization: form.querySelector('[name="organization"]')?.value.trim(),
+      selected_package: form.querySelector('[name="selected_package"]')?.value.trim(),
+      preferred_date: form.querySelector('[name="preferred_date"]')?.value.trim(),
+      preferred_time: form.querySelector('[name="preferred_time"]')?.value.trim(),
+      mode: form.querySelector('[name="mode"]')?.value.trim(),
+      topic: form.querySelector('[name="topic"]')?.value.trim(),
+      participants: form.querySelector('[name="participants"]')?.value.trim(),
+      additional_notes: form.querySelector('[name="additional_notes"]')?.value.trim(),
+      duration_minutes: Number(form.querySelector('[name="duration_minutes"]')?.value || 120),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+
+    try {
+      ensureHttpServer();
+
+      const response = await fetch('api/book.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Unable to book this session.');
+      }
+
+      const ref = data.booking_id || ('AT-' + Math.floor(100000 + Math.random() * 900000));
+      populateVoucher(form, ref);
+      showVoucher();
+      showBookingToast(data.message || 'Your session has been booked.');
+    } catch (error) {
+      showBookingToast(error.message || 'Unable to book this session.');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+      }
+    }
   });
 }
 
@@ -198,19 +358,36 @@ function initAtelier() {
       card.classList.add('selected');
 
       const title = card.dataset.title;
-      const duration = card.dataset.duration;
+      const durationMinutes = card.dataset.durationMinutes || '120';
 
       document.querySelectorAll('[name="selected_package"]').forEach(input => {
         input.value = title;
       });
 
-      updateLiveCanvas(title, duration);
+      const packageIdInput = document.getElementById('selected_package_id');
+      if (packageIdInput) packageIdInput.value = card.dataset.packageId || '';
+
+      const durationInput = document.getElementById('duration_minutes');
+      if (durationInput) durationInput.value = durationMinutes;
+
+      updateLiveCanvas(card);
     });
   });
 
-  document.querySelectorAll('#booking-form, #booking-form-blueprint').forEach(form => {
+  const blueprintForm = document.getElementById('booking-form-blueprint');
+  if (blueprintForm) {
+    initBookingForm(blueprintForm);
+    blueprintForm.querySelectorAll('input, select, textarea').forEach((field) => {
+      field.addEventListener('input', updateSessionTicket);
+      field.addEventListener('change', updateSessionTicket);
+    });
+  }
+
+  document.querySelectorAll('#booking-form').forEach(form => {
     initBookingForm(form);
   });
+
+  updateSessionTicket();
 }
 
 function resetBookingFormAndVoucher() {
@@ -236,10 +413,16 @@ function resetBookingFormAndVoucher() {
     if (empty && filled) {
       empty.classList.remove('hidden');
       filled.classList.add('hidden');
-      return;
     }
-    canvas.innerHTML = '<div id="canvas-empty">Select a format above to begin.</div>';
   });
+
+  const preferredDateLabel = document.getElementById('preferred-date-label');
+  if (preferredDateLabel) {
+    preferredDateLabel.textContent = 'Select date & time';
+    preferredDateLabel.classList.add('text-muted');
+  }
+
+  updateSessionTicket();
 }
 
 function printVoucher() {
