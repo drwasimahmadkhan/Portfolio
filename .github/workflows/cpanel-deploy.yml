@@ -1,0 +1,26 @@
+name: Deploy Portfolio to cPanel
+
+on:
+  push:
+    branches:
+      - main # Your branch is 'main' for this repo
+  workflow_dispatch: # Keeps the manual run button just in case
+
+jobs:
+  web-deploy:
+    name: Deploy via Secure SFTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      - name: Sync files to cPanel via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          local_path: './'
+          # This path drops the files directly into the new portfolio subfolder
+          remote_path: '/home/empowertcl/public_html/scentview.pk/portfolio/'
