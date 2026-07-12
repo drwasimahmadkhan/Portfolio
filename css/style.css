@@ -57,6 +57,94 @@ body {
     line-height: 1.6;
 }
 
+/* Fixed nav — frosted glass so header + mobile menu stay readable */
+#navbar {
+    background-color: rgb(var(--bg-elevated) / 0.82);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid rgb(var(--border) / 0.45);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.12);
+}
+
+#navbar.nav-menu-open {
+    background-color: rgb(var(--bg-elevated) / 0.96);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+
+.mobile-menu-panel {
+    background-color: rgb(var(--bg-elevated) / 0.9);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.mobile-menu-link {
+    display: block;
+    padding: 0.85rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgb(var(--border) / 0.35);
+    transition: color 0.2s;
+}
+
+.mobile-menu-link:last-child {
+    border-bottom: none;
+}
+
+.mobile-menu-link:hover {
+    color: rgb(var(--accent));
+}
+
+.mobile-menu-btn {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(var(--border) / 0.45);
+    border-radius: 9999px;
+    background: rgb(var(--bg-elevated) / 0.35);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.mobile-menu-btn__bar {
+    position: absolute;
+    width: 1.125rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: rgb(var(--text));
+    transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+}
+
+.mobile-menu-btn__bar:nth-child(1) { top: calc(50% - 6px); }
+.mobile-menu-btn__bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.mobile-menu-btn__bar:nth-child(3) { top: calc(50% + 6px); }
+
+.mobile-menu-btn.is-open .mobile-menu-btn__bar:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.mobile-menu-btn.is-open .mobile-menu-btn__bar:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.is-open .mobile-menu-btn__bar:nth-child(3) {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.theme-light #navbar {
+    background-color: rgb(255 255 255 / 0.88);
+    box-shadow: 0 8px 32px rgb(15 23 42 / 0.08);
+}
+
+.theme-light #navbar.nav-menu-open,
+.theme-light .mobile-menu-panel {
+    background-color: rgb(255 255 255 / 0.96);
+}
+
 /* Ensure new glass works with new palette */
 .glass {
   background: rgb(var(--glass));

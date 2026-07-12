@@ -31,8 +31,32 @@ if (themeToggle) {
 // Mobile Menu
 const mobileBtn = document.getElementById('mobile-menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
-if (mobileBtn && mobileMenu) {
-  mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+const navbar = document.getElementById('navbar');
+
+function closeMobileMenu() {
+  if (!mobileMenu || !navbar) return;
+  mobileMenu.classList.add('hidden');
+  navbar.classList.remove('nav-menu-open');
+  if (mobileBtn) {
+    mobileBtn.classList.remove('is-open');
+    mobileBtn.setAttribute('aria-expanded', 'false');
+    mobileBtn.setAttribute('aria-label', 'Open menu');
+  }
+}
+
+if (mobileBtn && mobileMenu && navbar) {
+  mobileBtn.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.toggle('hidden');
+    const isOpen = !isHidden;
+    navbar.classList.toggle('nav-menu-open', isOpen);
+    mobileBtn.classList.toggle('is-open', isOpen);
+    mobileBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
 }
 
 // Gallery Filters

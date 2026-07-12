@@ -107,13 +107,13 @@
     <canvas id="cursor-canvas"></canvas>
 
     <!-- DESIGNER NAV -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6">
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 md:py-6">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
             <a href="#" class="flex items-center gap-4">
                 <img src="assets/favicon.jpeg" alt="Dr. Wasim Ahmad Khan" class="w-9 h-9 rounded-2xl object-cover ring-1 ring-white/20">
                 <div>
                     <div class="font-semibold tracking-tight text-lg">Wasim Ahmad Khan</div>
-                    <div class="text-[10px] -mt-1 tracking-[2px] text-muted">DESIGNER • RESEARCHER</div>
+                    <div class="hidden md:block text-[10px] -mt-1 tracking-[2px] text-muted">DESIGNER • RESEARCHER</div>
                 </div>
             </a>
 
@@ -127,37 +127,41 @@
 
                 <button id="theme-toggle" class="text-sm px-4 py-1.5 border border-border rounded-full hover:border-accent transition">Light</button>
 
-                <button id="mobile-menu-btn" class="md:hidden text-xl">☰</button>
+                <button id="mobile-menu-btn" class="mobile-menu-btn md:hidden" type="button" aria-label="Open menu" aria-expanded="false">
+                    <span class="mobile-menu-btn__bar"></span>
+                    <span class="mobile-menu-btn__bar"></span>
+                    <span class="mobile-menu-btn__bar"></span>
+                </button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden px-6 pt-4 text-sm space-y-3">
-            <a href="#about" class="block">About</a>
-            <a href="#work" class="block">Work</a>
-            <a href="#practice" class="block">Practice</a>
-            <a href="#atelier" class="block">The Atelier</a>
-            <a href="#contact" class="block">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden mobile-menu-panel px-6 pt-4 pb-6 text-sm space-y-1 border-t border-border/40">
+            <a href="#about" class="mobile-menu-link">About</a>
+            <a href="#work" class="mobile-menu-link">Work</a>
+            <a href="#practice" class="mobile-menu-link">Practice</a>
+            <a href="#atelier" class="mobile-menu-link">The Atelier</a>
+            <a href="#contact" class="mobile-menu-link">Contact</a>
         </div>
     </nav>
 
     <main>
         <!-- HERO — Designer Level -->
-        <section class="min-h-screen flex items-center pt-16 px-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="max-w-4xl">
-                    <div class="inline text-sm tracking-[4px] text-accent font-medium">DR. WASIM AHMAD KHAN</div>
+        <section class="min-h-screen flex items-center justify-center pt-28 pb-16 md:pt-16 md:pb-0 px-6 overflow-hidden">
+            <div class="max-w-6xl mx-auto w-full min-w-0">
+                <div class="max-w-4xl min-w-0 mx-auto text-left md:text-center">
+                    <div class="text-xs sm:text-sm tracking-[2px] sm:tracking-[4px] text-accent font-medium">DR. WASIM AHMAD KHAN</div>
                     
-                    <h1 class="mt-6 text-[92px] md:text-[110px] leading-[.9] font-semibold tracking-[-7px]">
+                    <h1 class="mt-5 sm:mt-6 text-[2.75rem] sm:text-6xl md:text-[92px] lg:text-[110px] leading-[1] md:leading-[.9] font-semibold tracking-[-0.03em] md:tracking-[-7px]">
                         I design<br>intelligence<br>with soul.
                     </h1>
 
-                    <div class="mt-8 max-w-lg text-xl text-muted">
+                    <div class="mt-6 sm:mt-8 max-w-lg md:mx-auto text-base sm:text-lg md:text-xl text-muted">
                         AI/ML Lead at Digital Tribe. PhD researcher. I craft AI systems that feel considered, human, and quietly powerful.
                     </div>
 
-                    <div class="mt-10 flex gap-4">
-                        <a href="#atelier" class="px-9 py-4 bg-white text-black rounded-full font-medium text-sm tracking-widest hover:bg-white/90 transition">ENTER THE ATELIER</a>
-                        <a href="#work" class="px-9 py-4 border border-white/30 hover:border-white/60 rounded-full text-sm tracking-widest transition">VIEW SELECTED WORK</a>
+                    <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row md:justify-center gap-3 sm:gap-4">
+                        <a href="#atelier" class="px-6 sm:px-9 py-3.5 sm:py-4 bg-white text-black rounded-full font-medium text-sm tracking-widest hover:bg-white/90 transition text-center">ENTER THE ATELIER</a>
+                        <a href="#work" class="px-6 sm:px-9 py-3.5 sm:py-4 border border-white/30 hover:border-white/60 rounded-full text-sm tracking-widest transition text-center">VIEW SELECTED WORK</a>
                     </div>
                 </div>
             </div>
