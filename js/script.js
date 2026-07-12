@@ -338,6 +338,10 @@ function initBookingForm(form) {
       populateVoucher(form, ref);
       showVoucher();
       showBookingToast(data.message || 'Your session has been booked.');
+
+      if (!data.google_synced && data.sync_error) {
+        console.warn('Google Calendar sync:', data.sync_error);
+      }
     } catch (error) {
       showBookingToast(error.message || 'Unable to book this session.');
     } finally {

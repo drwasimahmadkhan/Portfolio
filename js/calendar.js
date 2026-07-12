@@ -168,10 +168,15 @@ function updateCalendarStatus() {
     return;
   }
 
+  const localCount = calendarState.events.filter((event) => event.source === 'local').length;
+  const googleCount = calendarState.events.filter((event) => event.source === 'google').length;
   const count = calendarState.events.length;
-  statusEl.textContent = count
-    ? `${count} booked session${count === 1 ? '' : 's'} loaded from calendar.`
-    : 'No booked sessions this month. All open slots are available.';
+
+  if (count === 0) {
+    statusEl.textContent = 'No booked sessions this month. All open slots are available.';
+  } else {
+    statusEl.textContent = `${count} booked session${count === 1 ? '' : 's'} loaded (${googleCount} Google, ${localCount} on-site).`;
+  }
   statusEl.classList.remove('hidden');
 }
 

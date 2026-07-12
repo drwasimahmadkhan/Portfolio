@@ -44,6 +44,7 @@ function getCalendarConfig(): array
 
     $calendarId = $env['Calendar_ID'] ?? '';
     $apiKey = $env['Calendar-Key'] ?? ($env['Calendar_Key'] ?? '');
+    $webhook = $env['Calendar_Webhook'] ?? ($env['Calendar-Webhook'] ?? '');
 
     if ($calendarId === '' || $apiKey === '') {
         jsonResponse([
@@ -55,35 +56,49 @@ function getCalendarConfig(): array
     return [
         'calendar_id' => $calendarId,
         'api_key' => $apiKey,
-        'service_account_path' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'service-account.json',
-        'bookings_path' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'bookings.json',
+        'calendar_webhook' => $webhook,
+        'timezone' => $env['Calendar_Timezone'] ?? 'Asia/Karachi',
+        'service_account_path' => __DIR__ . DIRECTORY_SEPARATOR . 'service-account.json',
+        'bookings_path' => __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'bookings.json',
+        'env_path' => $envPath,
     ];
 }
 
-function ensureBookingsStore(string $path): void
+function ensureBookingsStore(string $path): bool
 {
     $dir = dirname($path);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+    if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+        return false;
     }
 
     if (!is_file($path)) {
-        file_put_contents($path, json_encode([], JSON_PRETTY_PRINT));
+        return file_put_contents($path, json_encode([], JSON_PRETTY_PRINT)) !== false;
     }
+
+    return is_writable($path);
 }
 
 function readBookings(string $path): array
 {
-    ensureBookingsStore($path);
+    if (!ensureBookingsStore($path)) {
+        return [];
+    }
+
     $raw = file_get_contents($path);
     $data = json_decode($raw ?: '[]', true);
     return is_array($data) ? $data : [];
 }
 
-function writeBookings(string $path, array $bookings): void
+function writeBookings(string $path, array $bookings): bool
 {
-    ensureBookingsStore($path);
-    file_put_contents($path, json_encode(array_values($bookings), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    if (!ensureBookingsStore($path)) {
+        return false;
+    }
+
+    return file_put_contents(
+        $path,
+        json_encode(array_values($bookings), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+    ) !== false;
 }
 
 function base64UrlEncode(string $value): string
@@ -91,14 +106,19 @@ function base64UrlEncode(string $value): string
     return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
 }
 
-function getServiceAccountAccessToken(string $jsonPath): ?string
+function getServiceAccountAccessToken(?string $jsonPath = null): ?string
 {
-    if (!is_readable($jsonPath)) {
+    $serviceAccount = null;
+
+    if ($jsonPath && is_readable($jsonPath)) {
+        $serviceAccount = json_decode(file_get_contents($jsonPath) ?: '', true);
+    }
+
+    if (!is_array($serviceAccount)) {
         return null;
     }
 
-    $serviceAccount = json_decode(file_get_contents($jsonPath) ?: '', true);
-    if (!is_array($serviceAccount) || empty($serviceAccount['client_email']) || empty($serviceAccount['private_key'])) {
+    if (empty($serviceAccount['client_email']) || empty($serviceAccount['private_key'])) {
         return null;
     }
 
@@ -140,6 +160,70 @@ function getServiceAccountAccessToken(string $jsonPath): ?string
     return $tokenData['access_token'] ?? null;
 }
 
+function createGoogleEventViaWebhook(string $webhookUrl, array $payload): array
+{
+    if ($webhookUrl === '') {
+        return ['ok' => false, 'error' => 'Calendar_Webhook not configured'];
+    }
+
+    $ch = curl_init($webhookUrl);
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_TIMEOUT => 20,
+    ]);
+
+    $response = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    $body = json_decode($response ?: '', true);
+    if ($status >= 200 && $status < 300 && is_array($body) && !empty($body['ok'])) {
+        return ['ok' => true, 'event_id' => $body['eventId'] ?? null];
+    }
+
+    return [
+        'ok' => false,
+        'error' => is_array($body) ? ($body['error'] ?? 'Webhook request failed') : 'Webhook request failed',
+        'status' => $status,
+    ];
+}
+
+function createGoogleEventViaServiceAccount(string $calendarId, string $serviceAccountPath, array $eventBody): array
+{
+    $accessToken = getServiceAccountAccessToken($serviceAccountPath);
+    if (!$accessToken) {
+        return ['ok' => false, 'error' => 'Service account not configured'];
+    }
+
+    $url = 'https://www.googleapis.com/calendar/v3/calendars/' . rawurlencode($calendarId) . '/events';
+    $googleResponse = googleCalendarRequest('POST', $url, $accessToken, $eventBody);
+
+    if ($googleResponse['status'] >= 200 && $googleResponse['status'] < 300) {
+        return [
+            'ok' => true,
+            'event_id' => $googleResponse['body']['id'] ?? null,
+        ];
+    }
+
+    $error = $googleResponse['body']['error']['message'] ?? 'Google Calendar API error';
+    return ['ok' => false, 'error' => $error, 'status' => $googleResponse['status']];
+}
+
+function buildIsoDateTime(string $date, string $time, string $timezone): array
+{
+    $dateTime = DateTime::createFromFormat('Y-m-d H:i', $date . ' ' . $time, new DateTimeZone($timezone));
+    if (!$dateTime) {
+        return ['ok' => false, 'error' => 'Invalid date or time'];
+    }
+
+    $startIso = $dateTime->format('c');
+    return ['ok' => true, 'start' => $dateTime, 'start_iso' => $startIso];
+}
+
 function googleCalendarRequest(string $method, string $url, ?string $accessToken = null, ?array $body = null): array
 {
     $headers = ['Content-Type: application/json'];
@@ -172,6 +256,7 @@ function googleCalendarRequest(string $method, string $url, ?string $accessToken
 function normalizeEvents(array $googleEvents, array $localBookings): array
 {
     $events = [];
+    $seen = [];
 
     foreach ($googleEvents as $event) {
         $start = $event['start']['dateTime'] ?? ($event['start']['date'] ?? null);
@@ -179,6 +264,12 @@ function normalizeEvents(array $googleEvents, array $localBookings): array
         if (!$start || !$end) {
             continue;
         }
+
+        $key = $start . '|' . $end . '|' . ($event['summary'] ?? '');
+        if (isset($seen[$key])) {
+            continue;
+        }
+        $seen[$key] = true;
 
         $events[] = [
             'id' => $event['id'] ?? uniqid('g_', true),
@@ -193,6 +284,12 @@ function normalizeEvents(array $googleEvents, array $localBookings): array
         if (empty($booking['start']) || empty($booking['end'])) {
             continue;
         }
+
+        $key = $booking['start'] . '|' . $booking['end'] . '|' . ($booking['title'] ?? '');
+        if (isset($seen[$key])) {
+            continue;
+        }
+        $seen[$key] = true;
 
         $events[] = [
             'id' => $booking['id'] ?? uniqid('l_', true),

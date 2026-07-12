@@ -1,3 +1,4 @@
 .env
 api/service-account.json
 api/data/bookings.json
+!api/data/.gitkeep

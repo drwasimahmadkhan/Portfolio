@@ -22,16 +22,26 @@ foreach ($required as $field) {
 
 $config = getCalendarConfig();
 $calendarId = $config['calendar_id'];
+$timezone = $payload['timezone'] ?? $config['timezone'];
 $durationMinutes = max(30, (int) ($payload['duration_minutes'] ?? 120));
 
-$startDateTime = $payload['preferred_date'] . 'T' . $payload['preferred_time'] . ':00';
-$startTs = strtotime($startDateTime);
-if ($startTs === false) {
-    jsonResponse(['ok' => false, 'error' => 'Invalid date or time'], 400);
+$dateTime = buildIsoDateTime(
+    trim((string) $payload['preferred_date']),
+    trim((string) $payload['preferred_time']),
+    $timezone
+);
+
+if (empty($dateTime['ok'])) {
+    jsonResponse(['ok' => false, 'error' => $dateTime['error'] ?? 'Invalid date or time'], 400);
 }
 
-$endDateTime = date('c', $startTs + ($durationMinutes * 60));
-$startIso = date('c', $startTs);
+/** @var DateTime $startDate */
+$startDate = $dateTime['start'];
+$endDate = clone $startDate;
+$endDate->modify('+' . $durationMinutes . ' minutes');
+
+$startIso = $startDate->format('c');
+$endIso = $endDate->format('c');
 
 $topic = trim((string) ($payload['topic'] ?? ''));
 $participants = trim((string) ($payload['participants'] ?? ''));
@@ -57,16 +67,18 @@ if ($notes !== '') {
     $descriptionLines[] = 'Notes: ' . $notes;
 }
 
+$description = implode("\n", $descriptionLines);
+
 $eventBody = [
     'summary' => $summary,
-    'description' => implode("\n", $descriptionLines),
+    'description' => $description,
     'start' => [
         'dateTime' => $startIso,
-        'timeZone' => $payload['timezone'] ?? 'Asia/Karachi',
+        'timeZone' => $timezone,
     ],
     'end' => [
-        'dateTime' => $endDateTime,
-        'timeZone' => $payload['timezone'] ?? 'Asia/Karachi',
+        'dateTime' => $endIso,
+        'timeZone' => $timezone,
     ],
     'attendees' => [
         ['email' => $payload['email']],
@@ -76,15 +88,43 @@ $eventBody = [
 $bookingId = 'AT-' . random_int(100000, 999999);
 $googleEventId = null;
 $googleSynced = false;
+$syncMethod = null;
+$syncError = null;
 
-$accessToken = getServiceAccountAccessToken($config['service_account_path']);
-if ($accessToken) {
-    $url = 'https://www.googleapis.com/calendar/v3/calendars/' . rawurlencode($calendarId) . '/events';
-    $googleResponse = googleCalendarRequest('POST', $url, $accessToken, $eventBody);
+if (!empty($config['calendar_webhook'])) {
+    $webhookResult = createGoogleEventViaWebhook($config['calendar_webhook'], [
+        'calendarId' => $calendarId,
+        'summary' => $summary,
+        'description' => $description,
+        'start' => $startIso,
+        'end' => $endIso,
+        'email' => $payload['email'],
+        'location' => $payload['mode'],
+    ]);
 
-    if ($googleResponse['status'] >= 200 && $googleResponse['status'] < 300) {
+    if (!empty($webhookResult['ok'])) {
         $googleSynced = true;
-        $googleEventId = $googleResponse['body']['id'] ?? null;
+        $googleEventId = $webhookResult['event_id'] ?? null;
+        $syncMethod = 'webhook';
+    } else {
+        $syncError = $webhookResult['error'] ?? 'Webhook sync failed';
+    }
+}
+
+if (!$googleSynced) {
+    $serviceResult = createGoogleEventViaServiceAccount(
+        $calendarId,
+        $config['service_account_path'],
+        $eventBody
+    );
+
+    if (!empty($serviceResult['ok'])) {
+        $googleSynced = true;
+        $googleEventId = $serviceResult['event_id'] ?? null;
+        $syncMethod = 'service_account';
+        $syncError = null;
+    } elseif ($syncError === null) {
+        $syncError = $serviceResult['error'] ?? 'Google sync not configured';
     }
 }
 
@@ -94,20 +134,31 @@ $bookings[] = [
     'google_event_id' => $googleEventId,
     'title' => $summary,
     'start' => $startIso,
-    'end' => $endDateTime,
+    'end' => $endIso,
     'payload' => $payload,
     'created_at' => gmdate('c'),
 ];
-writeBookings($config['bookings_path'], $bookings);
+
+$storedLocally = writeBookings($config['bookings_path'], $bookings);
+if (!$storedLocally) {
+    jsonResponse([
+        'ok' => false,
+        'error' => 'Could not save booking on server. Check permissions for api/data/',
+    ], 500);
+}
+
+$message = $googleSynced
+    ? 'Session booked and added to your Google Calendar.'
+    : 'Session saved on site. Add Calendar_Webhook to .env to sync with Google Calendar (see api/google-calendar.gs).';
 
 jsonResponse([
     'ok' => true,
     'booking_id' => $bookingId,
     'google_synced' => $googleSynced,
     'google_event_id' => $googleEventId,
+    'sync_method' => $syncMethod,
+    'sync_error' => $syncError,
     'start' => $startIso,
-    'end' => $endDateTime,
-    'message' => $googleSynced
-        ? 'Session booked and added to the calendar.'
-        : 'Session booked. Add api/service-account.json to sync directly with Google Calendar.',
+    'end' => $endIso,
+    'message' => $message,
 ]);

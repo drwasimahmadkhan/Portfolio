@@ -24,9 +24,12 @@ $url = "https://www.googleapis.com/calendar/v3/calendars/{$calendarId}/events"
 
 $response = googleCalendarRequest('GET', $url);
 $googleItems = [];
+$googleError = null;
 
 if ($response['status'] >= 200 && $response['status'] < 300) {
     $googleItems = $response['body']['items'] ?? [];
+} else {
+    $googleError = $response['body']['error']['message'] ?? 'Google Calendar read failed';
 }
 
 $localBookings = readBookings($config['bookings_path']);
@@ -36,4 +39,8 @@ jsonResponse([
     'ok' => true,
     'events' => $events,
     'google_status' => $response['status'],
+    'google_error' => $googleError,
+    'local_count' => count($localBookings),
+    'webhook_configured' => !empty($config['calendar_webhook']),
+    'service_account_configured' => is_readable($config['service_account_path']),
 ]);
