@@ -530,6 +530,16 @@ section {
     position: relative;
 }
 
+#package-cards-creative .catalyst-card {
+    min-width: 0;
+}
+
+@media (min-width: 1280px) {
+    #package-cards-creative {
+        grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
+}
+
 /* Creative card enhancements */
 .catalyst-card {
     background: linear-gradient(145deg, rgb(var(--card)), rgb(var(--card)) );

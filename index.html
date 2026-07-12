@@ -263,121 +263,16 @@
             </div>
         </section>
         <!-- THE ATELIER -->
-        <section id="atelier" class="py-20 px-6 border-t border-border">
-            <div class="max-w-5xl mx-auto">
+        <section id="atelier" class="py-20 px-6 border-t border-border scroll-mt-28">
+            <div class="max-w-7xl mx-auto">
                 <div class="max-w-xl mb-12">
                     <div class="text-xs tracking-[3px] text-accent">THE ATELIER</div>
                     <h2 class="text-[52px] font-medium tracking-[-1.8px] leading-none mt-1">Private sessions.<br>Thoughtful collaboration.</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-stretch" id="package-cards">
-                    <div class="catalyst-card flex flex-col h-full px-7 py-7 rounded-3xl border border-border cursor-pointer" data-package-id="awareness-talk" data-title="Awareness Talk" data-duration="1–2 hrs">
-                        <div class="flex-1">
-                            <div class="font-mono text-xs text-accent">01</div>
-                            <div class="mt-6 font-medium leading-snug">Awareness Talk</div>
-                            <div class="text-xs text-muted mt-1">1–2 hours</div>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <div class="catalyst-select-btn">SELECT</div>
-                        </div>
-                    </div>
-                    <div class="catalyst-card flex flex-col h-full px-7 py-7 rounded-3xl border border-border cursor-pointer" data-package-id="genai-workshop" data-title="Generative Workshop" data-duration="2–4 hrs">
-                        <div class="flex-1">
-                            <div class="font-mono text-xs text-accent">02</div>
-                            <div class="mt-6 font-medium leading-snug">Generative Workshop</div>
-                            <div class="text-xs text-muted mt-1">2–4 hours</div>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <div class="catalyst-select-btn">SELECT</div>
-                        </div>
-                    </div>
-                    <div class="catalyst-card flex flex-col h-full px-7 py-7 rounded-3xl border border-border cursor-pointer" data-package-id="corporate-training" data-title="Team Training" data-duration="Half/Full day">
-                        <div class="flex-1">
-                            <div class="font-mono text-xs text-accent">03</div>
-                            <div class="mt-6 font-medium leading-snug">Team Training</div>
-                            <div class="text-xs text-muted mt-1">Half or Full day</div>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <div class="catalyst-select-btn">SELECT</div>
-                        </div>
-                    </div>
-                    <div class="catalyst-card flex flex-col h-full px-7 py-7 rounded-3xl border border-border cursor-pointer" data-package-id="consultancy" data-title="Consultancy" data-duration="60–120 min">
-                        <div class="flex-1">
-                            <div class="font-mono text-xs text-accent">04</div>
-                            <div class="mt-6 font-medium leading-snug">Consultancy</div>
-                            <div class="text-xs text-muted mt-1">60–120 min</div>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <div class="catalyst-select-btn">SELECT</div>
-                        </div>
-                    </div>
-                    <div class="catalyst-card flex flex-col h-full px-7 py-7 rounded-3xl border border-border cursor-pointer" data-package-id="custom-session" data-title="Custom Session" data-duration="Flexible">
-                        <div class="flex-1">
-                            <div class="font-mono text-xs text-accent">05</div>
-                            <div class="mt-6 font-medium leading-snug">Custom Session</div>
-                            <div class="text-xs text-muted mt-1">Flexible</div>
-                        </div>
-                        <div class="mt-6 w-full">
-                            <div class="catalyst-select-btn">SELECT</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-10 max-w-3xl">
-                    <div id="live-canvas" class="p-8 border border-border rounded-3xl mb-8 text-sm">
-                        <div id="canvas-empty">Select a format above to begin.</div>
-                        <div id="canvas-filled" class="hidden">
-                            <div id="canvas-title" class="font-medium text-lg"></div>
-                            <div id="canvas-duration" class="text-xs text-accent mt-1"></div>
-                        </div>
-                    </div>
-
-                    <form id="booking-form" class="space-y-5">
-                        <input type="hidden" id="selected_package" name="selected_package" required>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="full_name" name="full_name" placeholder="Name" class="border-b py-3 px-1 bg-transparent w-full" required>
-                            <input id="email" name="email" type="email" placeholder="Email" class="border-b py-3 px-1 bg-transparent w-full" required>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="phone" name="phone" placeholder="Phone" class="border-b py-3 px-1 bg-transparent w-full" required>
-                            <input id="organization" name="organization" placeholder="Organization" class="border-b py-3 px-1 bg-transparent w-full" required>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="preferred_date" name="preferred_date" type="date" class="border-b py-3 px-1 bg-transparent w-full" required>
-                            <select id="mode" name="mode" class="border-b py-3 px-1 bg-transparent w-full" required>
-                                <option value="">Mode</option>
-                                <option value="Online">Online</option>
-                                <option value="Onsite">Onsite</option>
-                            </select>
-                        </div>
-                        <input id="topic" name="topic" placeholder="Topic or focus" class="border-b py-3 px-1 bg-transparent w-full">
-
-                        <button type="submit" class="mt-4 w-full py-3.5 border rounded-full text-sm tracking-widest">REQUEST SESSION</button>
-                    </form>
-                </div>
-
-                <!-- Voucher -->
-                <div id="booking-voucher" class="hidden mt-12 max-w-sm mx-auto border border-border p-7 rounded-3xl text-sm">
-                    <div id="voucher-ref" class="font-mono text-xs"></div>
-                    <div id="voucher-package" class="font-medium mt-1"></div>
-                    <div class="mt-6 text-muted text-xs space-y-0.5">
-                        <div id="voucher-name"></div>
-                        <div><span id="voucher-email"></span> · <span id="voucher-phone"></span></div>
-                        <div><span id="voucher-date"></span> · <span id="voucher-mode"></span></div>
-                    </div>
-                    <div class="text-[10px] mt-6 text-muted">Pending confirmation. We will be in touch shortly.</div>
-                    <div class="flex gap-2 mt-4 text-xs">
-                        <button onclick="printVoucher()" class="flex-1 py-1 border rounded">Print</button>
-                        <button onclick="resetBookingFormAndVoucher()" class="flex-1 py-1 border rounded">New Request</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
                 <!-- CREATIVE PACKAGE CARDS: "Signature Catalysts" -->
-                <div class="mb-16 px-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-stretch" id="package-cards-creative">
+                <div class="mb-16">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch" id="package-cards-creative">
                         
                         <!-- Catalyst 1 -->
                         <div class="catalyst-card group relative flex flex-col h-full glass border border-border hover:border-accent/70 rounded-3xl px-7 py-7 cursor-pointer transition-all duration-300 overflow-hidden" 
@@ -468,7 +363,7 @@
                 </div>
 
                 <!-- LIVE SESSION CANVAS + FORM (creative split) -->
-                <div class="grid lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-5 gap-8 w-full">
                     
                     <!-- Live Creative Canvas -->
                     <div class="lg:col-span-2">
