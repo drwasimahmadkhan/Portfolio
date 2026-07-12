@@ -192,6 +192,88 @@ function createGoogleEventViaWebhook(string $webhookUrl, array $payload): array
     ];
 }
 
+function fetchGoogleEventsViaWebhook(string $webhookUrl, string $calendarId, string $start, string $end): array
+{
+    if ($webhookUrl === '') {
+        return ['ok' => false, 'error' => 'Calendar_Webhook not configured', 'items' => []];
+    }
+
+    $query = http_build_query([
+        'action' => 'events',
+        'calendarId' => $calendarId,
+        'start' => $start,
+        'end' => $end,
+    ]);
+
+    $separator = str_contains($webhookUrl, '?') ? '&' : '?';
+    $url = $webhookUrl . $separator . $query;
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_TIMEOUT => 20,
+    ]);
+
+    $response = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    $body = json_decode($response ?: '', true);
+    if ($status >= 200 && $status < 300 && is_array($body) && !empty($body['ok'])) {
+        return [
+            'ok' => true,
+            'items' => is_array($body['items'] ?? null) ? $body['items'] : [],
+            'source' => 'webhook',
+        ];
+    }
+
+    return [
+        'ok' => false,
+        'error' => is_array($body) ? ($body['error'] ?? 'Webhook read failed') : 'Webhook read failed',
+        'status' => $status,
+        'items' => [],
+    ];
+}
+
+function fetchGoogleEventsViaApiKey(string $calendarId, string $apiKey, string $start, string $end): array
+{
+    $timeMin = rawurlencode(date('c', strtotime($start)));
+    $timeMax = rawurlencode(date('c', strtotime($end)));
+
+    $url = 'https://www.googleapis.com/calendar/v3/calendars/' . rawurlencode($calendarId) . '/events'
+        . "?key={$apiKey}"
+        . "&timeMin={$timeMin}"
+        . "&timeMax={$timeMax}"
+        . "&singleEvents=true"
+        . "&orderBy=startTime"
+        . "&maxResults=250";
+
+    $response = googleCalendarRequest('GET', $url);
+
+    if ($response['status'] >= 200 && $response['status'] < 300) {
+        $items = array_values(array_filter(
+            $response['body']['items'] ?? [],
+            static fn(array $event): bool => ($event['status'] ?? 'confirmed') !== 'cancelled'
+        ));
+
+        return [
+            'ok' => true,
+            'items' => $items,
+            'source' => 'api_key',
+            'status' => $response['status'],
+        ];
+    }
+
+    return [
+        'ok' => false,
+        'items' => [],
+        'source' => 'api_key',
+        'status' => $response['status'],
+        'error' => $response['body']['error']['message'] ?? 'Google Calendar API read failed',
+    ];
+}
+
 function createGoogleEventViaServiceAccount(string $calendarId, string $serviceAccountPath, array $eventBody): array
 {
     $accessToken = getServiceAccountAccessToken($serviceAccountPath);

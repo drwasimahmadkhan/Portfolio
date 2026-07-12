@@ -46,8 +46,41 @@ function doPost(e) {
   }
 }
 
-function doGet() {
-  return jsonOutput({ ok: true, message: 'Atelier calendar webhook is running.' });
+function doGet(e) {
+  try {
+    const params = e.parameter || {};
+
+    if (params.action === 'events' || params.start || params.end) {
+      const calendarId = params.calendarId || CALENDAR_ID;
+      const calendar = CalendarApp.getCalendarById(calendarId);
+
+      if (!calendar) {
+        return jsonOutput({ ok: false, error: 'Calendar not found. Check CALENDAR_ID.' });
+      }
+
+      const start = params.start ? new Date(params.start) : new Date();
+      const end = params.end
+        ? new Date(params.end)
+        : new Date(start.getTime() + (60 * 24 * 60 * 60 * 1000));
+
+      const events = calendar.getEvents(start, end);
+      const items = events.map(function (event) {
+        return {
+          id: event.getId(),
+          summary: event.getTitle(),
+          status: 'confirmed',
+          start: { dateTime: event.getStartTime().toISOString() },
+          end: { dateTime: event.getEndTime().toISOString() },
+        };
+      });
+
+      return jsonOutput({ ok: true, items: items });
+    }
+
+    return jsonOutput({ ok: true, message: 'Atelier calendar webhook is running.' });
+  } catch (error) {
+    return jsonOutput({ ok: false, error: String(error) });
+  }
 }
 
 function jsonOutput(payload) {

@@ -150,8 +150,9 @@ async function fetchCalendarEvents(year, month, { force = false } = {}) {
       throw new Error(data.error || data.google_error || 'Unable to load calendar availability.');
     }
     calendarState.events = data.events || [];
-    calendarState.syncError = data.google_error || null;
+    calendarState.syncError = data.read_error || data.google_error || null;
     calendarState.lastFetchedAt = data.fetched_at || new Date().toISOString();
+    calendarState.readSource = data.source || null;
     return true;
   } catch (error) {
     calendarState.events = [];
@@ -198,11 +199,12 @@ function updateCalendarStatus() {
   const count = calendarState.events.length;
 
   if (calendarState.syncError && count === 0) {
-    statusEl.textContent = `Google Calendar: ${calendarState.syncError}`;
+    statusEl.textContent = `Calendar: ${calendarState.syncError}`;
   } else if (count === 0) {
     statusEl.textContent = 'Live from Google Calendar — no booked sessions this month.';
   } else {
-    statusEl.textContent = `${count} booked session${count === 1 ? '' : 's'} loaded live from Google Calendar.`;
+    const sourceLabel = calendarState.readSource === 'webhook' ? 'Google Calendar' : 'calendar';
+    statusEl.textContent = `${count} booked session${count === 1 ? '' : 's'} loaded live from ${sourceLabel}.`;
   }
   statusEl.classList.remove('hidden');
 }
