@@ -128,28 +128,19 @@ if (!$googleSynced) {
     }
 }
 
-$bookings = readBookings($config['bookings_path']);
-$bookings[] = [
-    'id' => $bookingId,
-    'google_event_id' => $googleEventId,
-    'title' => $summary,
-    'start' => $startIso,
-    'end' => $endIso,
-    'payload' => $payload,
-    'created_at' => gmdate('c'),
-];
-
-$storedLocally = writeBookings($config['bookings_path'], $bookings);
-if (!$storedLocally) {
-    jsonResponse([
-        'ok' => false,
-        'error' => 'Could not save booking on server. Check permissions for api/data/',
-    ], 500);
-}
-
 $message = $googleSynced
     ? 'Session booked and added to your Google Calendar.'
-    : 'Session saved on site. Add Calendar_Webhook to .env to sync with Google Calendar (see api/google-calendar.gs).';
+    : 'Session could not be added to Google Calendar. Check Calendar_Webhook in .env.';
+
+if (!$googleSynced) {
+    jsonResponse([
+        'ok' => false,
+        'booking_id' => $bookingId,
+        'google_synced' => false,
+        'sync_error' => $syncError,
+        'message' => $message,
+    ], 502);
+}
 
 jsonResponse([
     'ok' => true,

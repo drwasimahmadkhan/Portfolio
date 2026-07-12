@@ -125,25 +125,33 @@ function buildSlotsForDate(dateKey) {
   return slots;
 }
 
-async function fetchCalendarEvents(year, month) {
+async function fetchCalendarEvents(year, month, { force = false } = {}) {
   const { start, end } = getMonthRange(year, month);
   const params = new URLSearchParams({
     start: start.toISOString(),
     end: end.toISOString(),
   });
 
+  if (force) {
+    params.set('_', String(Date.now()));
+  }
+
   try {
     if (typeof window.isPortfolioFileProtocol === 'function' && window.isPortfolioFileProtocol()) {
       throw new Error(window.getPortfolioServerMessage());
     }
 
-    const response = await fetch(`api/events.php?${params.toString()}`);
+    const response = await fetch(`api/events.php?${params.toString()}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' },
+    });
     const data = await response.json();
     if (!response.ok || !data.ok) {
-      throw new Error(data.error || 'Unable to load calendar availability.');
+      throw new Error(data.error || data.google_error || 'Unable to load calendar availability.');
     }
     calendarState.events = data.events || [];
-    calendarState.syncError = null;
+    calendarState.syncError = data.google_error || null;
+    calendarState.lastFetchedAt = data.fetched_at || new Date().toISOString();
     return true;
   } catch (error) {
     calendarState.events = [];
@@ -151,6 +159,25 @@ async function fetchCalendarEvents(year, month) {
     return false;
   }
 }
+
+async function refreshAtelierCalendar({ force = true } = {}) {
+  calendarState.loading = true;
+  updateCalendarStatus();
+
+  await fetchCalendarEvents(calendarState.year, calendarState.month, { force });
+
+  calendarState.loading = false;
+
+  if (calendarModal && !calendarModal.classList.contains('hidden')) {
+    renderCalendarDays();
+    renderCalendarSlots();
+  }
+
+  updateCalendarStatus();
+  return calendarState.events;
+}
+
+window.refreshAtelierCalendar = refreshAtelierCalendar;
 
 function updateCalendarStatus() {
   const statusEl = document.getElementById('calendar-sync-status');
@@ -168,14 +195,14 @@ function updateCalendarStatus() {
     return;
   }
 
-  const localCount = calendarState.events.filter((event) => event.source === 'local').length;
-  const googleCount = calendarState.events.filter((event) => event.source === 'google').length;
   const count = calendarState.events.length;
 
-  if (count === 0) {
-    statusEl.textContent = 'No booked sessions this month. All open slots are available.';
+  if (calendarState.syncError && count === 0) {
+    statusEl.textContent = `Google Calendar: ${calendarState.syncError}`;
+  } else if (count === 0) {
+    statusEl.textContent = 'Live from Google Calendar — no booked sessions this month.';
   } else {
-    statusEl.textContent = `${count} booked session${count === 1 ? '' : 's'} loaded (${googleCount} Google, ${localCount} on-site).`;
+    statusEl.textContent = `${count} booked session${count === 1 ? '' : 's'} loaded live from Google Calendar.`;
   }
   statusEl.classList.remove('hidden');
 }
@@ -349,14 +376,14 @@ async function openCalendarModal() {
   calendarState.loading = true;
   updateCalendarStatus();
 
-  const synced = await fetchCalendarEvents(calendarState.year, calendarState.month);
+  const synced = await fetchCalendarEvents(calendarState.year, calendarState.month, { force: true });
   calendarState.loading = false;
   renderCalendarDays();
   renderCalendarSlots();
   updateCalendarStatus();
 
   if (!synced && typeof showBookingToast === 'function') {
-    showBookingToast('Showing open slots only. Calendar sync will work once PHP + .env are live on the server.');
+    showBookingToast('Could not reach Google Calendar. Slots may not reflect latest bookings.');
   }
 }
 
@@ -382,7 +409,7 @@ async function changeCalendarMonth(delta) {
   calendarState.loading = true;
   updateCalendarStatus();
 
-  await fetchCalendarEvents(calendarState.year, calendarState.month);
+  await fetchCalendarEvents(calendarState.year, calendarState.month, { force: true });
 
   calendarState.loading = false;
   renderCalendarDays();

@@ -339,6 +339,10 @@ function initBookingForm(form) {
       showVoucher();
       showBookingToast(data.message || 'Your session has been booked.');
 
+      if (typeof window.refreshAtelierCalendar === 'function') {
+        window.refreshAtelierCalendar({ force: true });
+      }
+
       if (!data.google_synced && data.sync_error) {
         console.warn('Google Calendar sync:', data.sync_error);
       }
@@ -354,6 +358,17 @@ function initBookingForm(form) {
 }
 
 function initAtelier() {
+  let calendarRefreshTimer = null;
+
+  const scheduleCalendarRefresh = () => {
+    clearTimeout(calendarRefreshTimer);
+    calendarRefreshTimer = setTimeout(() => {
+      if (typeof window.refreshAtelierCalendar === 'function') {
+        window.refreshAtelierCalendar({ force: true });
+      }
+    }, 250);
+  };
+
   document.querySelectorAll('.catalyst-card').forEach(card => {
     card.addEventListener('click', () => {
       document.querySelectorAll('.catalyst-card').forEach(c => {
@@ -381,11 +396,24 @@ function initAtelier() {
   const blueprintForm = document.getElementById('booking-form-blueprint');
   if (blueprintForm) {
     initBookingForm(blueprintForm);
-    blueprintForm.querySelectorAll('input, select, textarea').forEach((field) => {
+    blueprintForm.querySelectorAll('input, select, textarea, button').forEach((field) => {
       field.addEventListener('input', updateSessionTicket);
       field.addEventListener('change', updateSessionTicket);
+      field.addEventListener('focus', scheduleCalendarRefresh);
     });
   }
+
+  const atelierSection = document.getElementById('atelier');
+  if (atelierSection && 'IntersectionObserver' in window) {
+    const atelierObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) scheduleCalendarRefresh();
+      });
+    }, { threshold: 0.2 });
+    atelierObserver.observe(atelierSection);
+  }
+
+  scheduleCalendarRefresh();
 
   document.querySelectorAll('#booking-form').forEach(form => {
     initBookingForm(form);
@@ -507,6 +535,8 @@ if (tCanvas && typeof THREE !== 'undefined') {
 const cursorCanvas = document.getElementById('cursor-canvas');
 if (cursorCanvas && window.matchMedia('(pointer: fine)').matches) {
   const ctx = cursorCanvas.getContext('2d');
+  const CURSOR_RADIUS = 10;
+  const TRAIL_SIZE = 5;
   let x = window.innerWidth / 2, y = window.innerHeight / 2;
   const particles = [];
 
@@ -520,24 +550,38 @@ if (cursorCanvas && window.matchMedia('(pointer: fine)').matches) {
   window.addEventListener('mousemove', (e) => {
     x = e.clientX;
     y = e.clientY;
-    particles.push({ x, y, life: 20 });
+    particles.push({ x, y, life: 24 });
   });
 
   function draw() {
     ctx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
-    ctx.fillStyle = 'rgba(99,102,241,0.6)';
+
+    ctx.fillStyle = 'rgba(99,102,241,0.18)';
     ctx.beginPath();
-    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.arc(x, y, CURSOR_RADIUS + 6, 0, Math.PI * 2);
     ctx.fill();
+
+    ctx.fillStyle = 'rgba(99,102,241,0.85)';
+    ctx.beginPath();
+    ctx.arc(x, y, CURSOR_RADIUS, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x, y, CURSOR_RADIUS, 0, Math.PI * 2);
+    ctx.stroke();
 
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
-      ctx.globalAlpha = p.life / 20;
-      ctx.fillStyle = '#6366f1';
-      ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      ctx.globalAlpha = p.life / 24;
+      ctx.fillStyle = '#818cf8';
+      const size = TRAIL_SIZE * (p.life / 24);
+      ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
       p.life--;
       if (p.life <= 0) particles.splice(i, 1);
     }
+    ctx.globalAlpha = 1;
     requestAnimationFrame(draw);
   }
   draw();

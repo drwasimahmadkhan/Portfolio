@@ -27,20 +27,23 @@ $googleItems = [];
 $googleError = null;
 
 if ($response['status'] >= 200 && $response['status'] < 300) {
-    $googleItems = $response['body']['items'] ?? [];
+    $googleItems = array_values(array_filter(
+        $response['body']['items'] ?? [],
+        static fn(array $event): bool => ($event['status'] ?? 'confirmed') !== 'cancelled'
+    ));
 } else {
     $googleError = $response['body']['error']['message'] ?? 'Google Calendar read failed';
 }
 
-$localBookings = readBookings($config['bookings_path']);
-$events = normalizeEvents($googleItems, $localBookings);
+$events = normalizeEvents($googleItems, []);
 
 jsonResponse([
     'ok' => true,
     'events' => $events,
+    'source' => 'google',
     'google_status' => $response['status'],
     'google_error' => $googleError,
-    'local_count' => count($localBookings),
+    'fetched_at' => gmdate('c'),
     'webhook_configured' => !empty($config['calendar_webhook']),
     'service_account_configured' => is_readable($config['service_account_path']),
 ]);
