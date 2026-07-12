@@ -1,41 +1,71 @@
-/* Base Variables - Professional, Academic, Tech-focused Palette */
+/* ============================================
+   THE CATALYST ATELIER — ENTIRELY RENEWED OUT-OF-THE-BOX DESIGN
+   Bold, artistic, mesmerizing modern design for Dr. Wasim Ahmad Khan
+   ============================================ */
+
 :root {
-    --primary: 15 23 42; /* slate-900 */
-    --secondary: 248 250 252; /* slate-50 */
-    --accent: 37 99 235; /* blue-600 */
-    --text: 15 23 42;
-    --muted: 71 85 105; /* slate-500 */
-    --glass: 255 255 255 / 0.7;
-    --glass-strong: 255 255 255 / 0.9;
-    --border: 203 213 225 / 0.5; /* slate-300 */
+    /* DESIGNER STUDIO THEME — Sophisticated, Artistic, Out-of-the-Box */
+    --primary: 10 15 28;
+    --secondary: 245 247 252;
+    --muted: 160 170 190;
+    --card: 15 17 26;
+    --bg: 9 10 15;
+    --bg-elevated: 15 17 26;
+    --text: 245 247 252;
+    --text-muted: 160 170 190;
+    --accent: 99 102 241;          /* Refined indigo */
+    --accent-2: 129 140 248;       /* Indigo companion for gradients */
+    --accent-warm: 245 158 11;     /* Subtle warm gold accent */
+    --border: 42 45 60;
+    --glass: 255 255 255 / 0.06;
+    --glass-strong: 255 255 255 / 0.08;
+    --surface: 15 17 26;
 }
-.theme-dark {
-    --primary: 15 23 42;
-    --secondary: 15 23 42;
-    --accent: 96 165 250; /* blue-400 */
-    --text: 248 250 252;
-    --muted: 148 163 184; /* slate-400 */
-    --glass: 30 41 59 / 0.5; /* slate-800 */
-    --glass-strong: 30 41 59 / 0.8;
-    --border: 51 65 85 / 0.5; /* slate-700 */
-}
+
 .theme-light {
-    --primary: 15 23 42;
-    --secondary: 248 250 252;
-    --accent: 37 99 235;
-    --text: 15 23 42;
-    --muted: 71 85 105;
-    --glass: 255 255 255 / 0.7;
-    --glass-strong: 255 255 255 / 0.9;
-    --border: 203 213 225 / 0.5;
+    --bg: 250 251 255;
+    --bg-elevated: 255 255 255;
+    --text: 15 17 26;
+    --text-muted: 100 110 130;
+    --accent: 67 56 202;
+    --accent-warm: 180 83 38;
+    --border: 220 225 235;
+    --glass: 15 17 26 / 0.05;
+    --glass-strong: 15 17 26 / 0.08;
+    --surface: 255 255 255;
+}
+
+.theme-light {
+    --primary: 10 15 28;
+    --secondary: 245 247 252;
+    --accent: 59 130 246;
+    --accent-2: 139 92 246;
+    --text: 13 18 32;
+    --muted: 92 104 128;
+    --glass: 255 255 255 / 0.78;
+    --glass-strong: 255 255 255 / 0.95;
+    --border: 200 210 225 / 0.55;
+    --card: 255 255 255;
 }
 
 body {
-    background-color: rgb(var(--secondary));
+    background-color: rgb(var(--bg));
     color: rgb(var(--text));
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: "ss01", "tnum";
     overflow-x: hidden;
     transition: background-color 0.3s, color 0.3s;
+    line-height: 1.6;
+}
+
+/* Ensure new glass works with new palette */
+.glass {
+  background: rgb(var(--glass));
+  border: 1px solid rgb(var(--border));
+}
+
+.glass-strong {
+  background: rgb(var(--glass-strong));
+  border: 1px solid rgb(var(--border));
 }
 
 @media (pointer: fine) {
@@ -159,25 +189,15 @@ body {
     transform: scale(1.05);
 }
 
-/* Elegant Cards */
-.elegant-card {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgb(var(--border));
-    position: relative;
-    overflow: hidden;
+/* Elegant Cards - Renewed */
+.glass, .glass-strong {
+    transition: transform .4s cubic-bezier(0.23, 1, 0.32, 1), 
+                box-shadow .4s cubic-bezier(0.23, 1, 0.32, 1), 
+                border-color .2s;
 }
-.elegant-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, rgb(var(--accent)), #8b5cf6);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-}
-.elegant-card:hover::before {
-    transform: scaleX(1);
+.glass:hover, .glass-strong:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 .skill-card {
@@ -210,4 +230,313 @@ body {
 *:focus-visible {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
+}
+
+/* ============================================
+   BOOKING SYSTEM STYLES
+   ============================================ */
+
+/* Package Cards */
+.package-card {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgb(var(--border));
+}
+.package-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+.package-card.selected {
+    border-color: rgb(var(--accent));
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    transform: translateY(-2px);
+}
+.package-card.selected::before {
+    transform: scaleX(1);
+}
+.package-card .select-package-btn {
+    transition: all 0.2s ease;
+}
+.package-card.selected .select-package-btn {
+    background-color: rgb(var(--accent));
+    color: #fff;
+    border-color: rgb(var(--accent));
+}
+
+/* Form polish */
+#booking-form input,
+#booking-form select,
+#booking-form textarea {
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#booking-form input:focus,
+#booking-form select:focus,
+#booking-form textarea:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Voucher */
+.print-voucher {
+    border: 1px solid rgb(var(--border));
+}
+#voucher-card {
+    font-feature-settings: "tnum" 1;
+}
+
+/* Print styles for clean voucher */
+@media print {
+    nav, #navbar, footer, #three-canvas, #cursor-canvas, .print-hidden, .print\:hidden,
+    #booking section > *:not(#booking-voucher),
+    section:not(#booking) {
+        display: none !important;
+    }
+    body, html {
+        background: white !important;
+        color: #111 !important;
+    }
+    #booking-voucher, #booking-voucher * {
+        visibility: visible;
+    }
+    #booking-voucher {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        box-shadow: none !important;
+        border: 2px solid #111 !important;
+    }
+    .print-voucher {
+        box-shadow: none;
+    }
+    #voucher-card .bg-gradient-to-r {
+        background: #1e3a8a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* Error state for booking form */
+.booking-input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+.error-text {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Toast for booking feedback (simple, no extra lib) */
+.booking-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(var(--primary));
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================
+   OUT-OF-THE-BOX CREATIVE BOOKING STYLES
+   The Catalyst Atelier
+   ============================================ */
+
+.catalyst-card {
+    transition: transform .4s cubic-bezier(0.23, 1, 0.32, 1), 
+                box-shadow .4s cubic-bezier(0.23, 1, 0.32, 1), 
+                border-color .2s;
+    position: relative;
+    min-height: 100%;
+}
+.catalyst-card:hover {
+    transform: translateY(-9px) scale(1.015);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+.catalyst-card.selected {
+    border-color: rgb(var(--accent));
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    transform: translateY(-4px);
+}
+.catalyst-card.package-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+.catalyst-card .catalyst-select-btn {
+    transition: all .3s cubic-bezier(0.23, 1.0, 0.32, 1);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    font-weight: 700;
+    padding: 14px 16px;
+    text-align: center;
+    border-radius: 9999px;
+    background-color: rgb(var(--accent));
+    background-image: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)));
+    color: #ffffff;
+    box-shadow: 0 4px 15px -2px rgb(var(--accent) / 0.3);
+}
+.catalyst-card:hover .catalyst-select-btn {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px -5px rgb(var(--accent) / 0.5);
+    letter-spacing: 3px;
+}
+.catalyst-card.selected {
+    box-shadow: 0 0 0 6px rgba(var(--accent), 0.15);
+}
+
+/* Live artistic canvas */
+.atelier-canvas {
+    background: linear-gradient(145deg, rgb(var(--glass)), transparent);
+    transition: all 0.5s cubic-bezier(0.23, 1.0, 0.32, 1);
+    min-height: 300px;
+}
+.atelier-canvas::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27 fill=%27none%27%3E%3Cpath stroke=%27%23607BFF%27 stroke-opacity=%27006%27 stroke-width=%270.5%27 d=%27M0 25h100M0 50h100M0 75h100M25 0v100M50 0v100M75 0v100%27/%3E%3C/svg%27');
+    opacity: 0.05;
+    pointer-events: none;
+    background-size: 42px 42px;
+}
+
+/* Blueprint creative form */
+.blueprint-form {
+    position: relative;
+}
+.blueprint-form::before {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 80px;
+    bottom: 80px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgb(var(--accent)/0.12), transparent);
+    display: none;
+}
+@media (min-width: 1024px) {
+    .blueprint-form::before { display: block; }
+}
+
+.blueprint-field label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+.blueprint-input {
+    font-size: 15px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    padding-bottom: 9px;
+}
+.blueprint-input:focus {
+    border-color: rgb(var(--accent));
+    box-shadow: none;
+}
+.blueprint-input::placeholder {
+    color: rgb(var(--muted) / 0.5);
+}
+
+/* The beautiful Catalyst Pass */
+.catalyst-pass {
+    font-feature-settings: "ss01", "tnum";
+    box-shadow: 0 30px 70px -15px rgb(0 0 0 / 0.3), 
+                0 0 0 1px rgb(var(--accent)/0.1);
+}
+.catalyst-pass::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 44%;
+    height: 1px;
+    background: repeating-linear-gradient(
+        90deg,
+        #ccc 0,
+        #ccc 4px,
+        transparent 4px,
+        transparent 14px
+    );
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+/* Creative select animation on cards */
+.catalyst-card {
+    will-change: transform;
+}
+
+/* Voucher print overrides for the fancy pass */
+@media print {
+    .catalyst-pass {
+        border: 8px solid #111 !important;
+        box-shadow: none !important;
+        background: white !important;
+        color: #111 !important;
+        font-size: 13px;
+    }
+    .catalyst-pass .print-hidden,
+    .catalyst-pass button {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   PREMIUM GLOBAL STYLES — OUT OF THE BOX DESIGN
+   ============================================ */
+
+body {
+    font-feature-settings: "ss01" 1, "tnum" 1;
+}
+
+/* Better glass and depth */
+.glass {
+    background-color: rgb(var(--glass));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgb(var(--border));
+}
+
+.glass-strong {
+    background-color: rgb(var(--glass-strong));
+    backdrop-filter: blur(28px);
+}
+
+/* Beautiful headings */
+h1, h2 {
+    font-feature-settings: "ss01", "tnum";
+    letter-spacing: -0.03em;
+}
+
+.gradient-text {
+    background-image: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent-2)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Premium section spacing */
+section {
+    position: relative;
+}
+
+/* Creative card enhancements */
+.catalyst-card {
+    background: linear-gradient(145deg, rgb(var(--card)), rgb(var(--card)) );
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.catalyst-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 30px 70px -15px rgb(0 0 0 / 0.25);
 }

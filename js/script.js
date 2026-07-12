@@ -1,219 +1,333 @@
-// Theme Management
+// =====================================================
+// DESIGNER THEME - Clean JS
+// =====================================================
+
 const html = document.documentElement;
 const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = document.getElementById('theme-icon');
 
+// Theme
 function setTheme(theme) {
-    if (theme === 'dark') {
-        html.classList.remove('theme-light');
-        html.classList.add('theme-dark', 'dark');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-moon', 'text-primary');
-            themeIcon.classList.add('fa-sun', 'text-accent');
-        }
-        localStorage.setItem('theme', 'dark');
-    } else {
-        html.classList.remove('theme-dark', 'dark');
-        html.classList.add('theme-light');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-sun', 'text-accent');
-            themeIcon.classList.add('fa-moon', 'text-primary');
-        }
-        localStorage.setItem('theme', 'light');
-    }
+  if (theme === 'dark') {
+    html.classList.add('theme-dark', 'dark');
+    html.classList.remove('theme-light');
+    if (themeToggle) themeToggle.textContent = 'Light';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    html.classList.add('theme-light');
+    html.classList.remove('theme-dark', 'dark');
+    if (themeToggle) themeToggle.textContent = 'Dark';
+    localStorage.setItem('theme', 'light');
+  }
 }
+
 setTheme(localStorage.getItem('theme') || 'light');
-if(themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        setTheme(html.classList.contains('theme-dark') ? 'light' : 'dark');
-    });
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    setTheme(html.classList.contains('theme-dark') ? 'light' : 'dark');
+  });
 }
 
-// Navigation Scroll & Mobile Menu
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    if(navbar) {
-        if (window.scrollY > 100) navbar.classList.add('glass', 'backdrop-blur-xl', 'shadow-lg');
-        else navbar.classList.remove('glass', 'backdrop-blur-xl', 'shadow-lg');
-    }
-});
-
+// Mobile Menu
 const mobileBtn = document.getElementById('mobile-menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
-if(mobileBtn && mobileMenu) {
-    mobileBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        mobileMenu.classList.toggle('flex');
-    });
-    document.querySelectorAll('.mobile-link').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-            mobileMenu.classList.remove('flex');
-        });
-    });
+if (mobileBtn && mobileMenu) {
+  mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 }
 
-// ScrollSpy for Navigation
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-link');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 150) {
-            current = section.getAttribute('id');
-        }
+// Gallery Filters
+document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.style.display = (filter === 'all' || item.dataset.category === filter) ? '' : 'none';
     });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
+  });
 });
 
-// GSAP Animations
-if (typeof gsap !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Hero Animations
-    gsap.to("#hero-title", {opacity: 1, y: 0, duration: 0.8, delay: 0.2, ease: "back.out(1.2)", startAt: {y: 30, scale: 0.95}});
-    gsap.to("#hero-subtitle", {opacity: 1, y: 0, duration: 0.8, delay: 0.4, ease: "back.out(1.2)", startAt: {y: 30, scale: 0.95}});
-    gsap.to("#hero-actions-text, #hero-actions-btns", {opacity: 1, y: 0, duration: 0.8, delay: 0.6, ease: "back.out(1.5)", startAt: {y: 30, scale: 0.95}});
-    
-    // Reveal Animations
-    gsap.utils.toArray('.gs-reveal').forEach(el => gsap.fromTo(el, {opacity:0, y:40}, {scrollTrigger:{trigger:el, start:"top 85%"}, opacity:1, y:0, duration:0.8, ease:"back.out(1.2)"}));
-    gsap.utils.toArray('.gs-reveal-left').forEach(el => gsap.fromTo(el, {opacity:0, x:-40}, {scrollTrigger:{trigger:el, start:"top 85%"}, opacity:1, x:0, duration:0.8, ease:"back.out(1.2)"}));
-    gsap.utils.toArray('.gs-reveal-right').forEach(el => gsap.fromTo(el, {opacity:0, x:40}, {scrollTrigger:{trigger:el, start:"top 85%"}, opacity:1, x:0, duration:0.8, ease:"back.out(1.2)"}));
-    gsap.utils.toArray('.gs-reveal-up').forEach(el => gsap.fromTo(el, {opacity:0, y:40}, {scrollTrigger:{trigger:el, start:"top 90%"}, opacity:1, y:0, duration:0.6, ease:"back.out(1.2)"}));
+// =====================================================
+// THE ATELIER - Booking
+// =====================================================
 
-    // 3D Hover effect for elegant cards
-    document.querySelectorAll('.elegant-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            if(window.innerWidth > 768) {
-                card.style.transform = 'translateY(-8px) scale(1.02)';
-                card.style.boxShadow = '0 20px 40px -10px rgba(0,0,0,0.1)';
-            }
-        });
-        card.addEventListener('mouseleave', () => {
-            if(window.innerWidth > 768) {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-            }
-        });
-    });
+function showBookingToast(message) {
+  let toast = document.querySelector('.booking-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'booking-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.display = 'flex';
+  clearTimeout(showBookingToast._timer);
+  showBookingToast._timer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3500);
 }
 
-// Cursor Particles
-const cCanvas = document.getElementById('cursor-canvas');
-if(cCanvas && window.matchMedia('(pointer: fine)').matches) {
-    const cCtx = cCanvas.getContext('2d');
-    const cParts = [];
-    let mx = window.innerWidth/2, my = window.innerHeight/2;
-    const P_COLORS = ['rgba(79,195,247,0.7)', 'rgba(0,119,192,0.6)', 'rgba(167,255,235,0.5)', 'rgba(255,255,255,0.7)'];
-    
-    window.addEventListener('resize', () => { cCanvas.width = window.innerWidth; cCanvas.height = window.innerHeight; });
-    cCanvas.width = window.innerWidth; cCanvas.height = window.innerHeight;
-    
-    window.addEventListener('mousemove', (e) => {
-        mx = e.clientX; my = e.clientY;
-        cParts.push({x: mx, y: my, r: 5+Math.random()*5, c: P_COLORS[Math.floor(Math.random()*P_COLORS.length)], a: 1});
-    });
+function clearFormErrors(form) {
+  form.querySelectorAll('.booking-input-error').forEach(el => el.classList.remove('booking-input-error'));
+  document.querySelectorAll('.catalyst-card.package-error').forEach(card => card.classList.remove('package-error'));
+}
 
-    function animCursor() {
-        cCtx.clearRect(0,0,cCanvas.width,cCanvas.height);
-        cCtx.save(); cCtx.beginPath(); cCtx.arc(mx, my, 8, 0, Math.PI*2);
-        cCtx.shadowColor='rgba(0,119,192,0.5)'; cCtx.shadowBlur=12; cCtx.fillStyle='rgba(0,119,192,0.4)'; cCtx.fill(); cCtx.restore();
-        
-        for(let i=cParts.length-1; i>=0; i--){
-            let p = cParts[i];
-            cCtx.save(); cCtx.globalAlpha = p.a; cCtx.beginPath(); cCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-            cCtx.fillStyle = p.c; cCtx.shadowColor = p.c; cCtx.shadowBlur = 8; cCtx.fill(); cCtx.restore();
-            p.r *= 0.95; p.a *= 0.92; p.y -= 0.5+Math.random();
-            if(p.a < 0.05) cParts.splice(i,1);
-        }
-        requestAnimationFrame(animCursor);
+function validateBookingForm(form) {
+  clearFormErrors(form);
+
+  let valid = true;
+  const packageInput = form.querySelector('[name="selected_package"]');
+  const selectedPackage = packageInput?.value.trim();
+
+  if (!selectedPackage) {
+    valid = false;
+    document.querySelectorAll('.catalyst-card').forEach(card => card.classList.add('package-error'));
+  }
+
+  form.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+    if (!field.value.trim()) {
+      valid = false;
+      field.classList.add('booking-input-error');
     }
-    animCursor();
+  });
+
+  const emailField = form.querySelector('[name="email"]');
+  if (emailField?.value.trim() && !emailField.checkValidity()) {
+    valid = false;
+    emailField.classList.add('booking-input-error');
+  }
+
+  if (!valid) {
+    showBookingToast('Please select a session format and complete all required fields.');
+    const firstInvalid = form.querySelector('.booking-input-error') || document.querySelector('.catalyst-card.package-error');
+    firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  return valid;
 }
 
-// Media Gallery Filter Logic
-const filterBtns = document.querySelectorAll('.gallery-filter-btn');
-const galleryItems = document.querySelectorAll('.gallery-item');
+function updateLiveCanvas(title, duration) {
+  document.querySelectorAll('#live-canvas').forEach(canvas => {
+    const empty = canvas.querySelector('#canvas-empty');
+    const filled = canvas.querySelector('#canvas-filled');
+    const titleEl = canvas.querySelector('#canvas-title');
+    const durationEl = canvas.querySelector('#canvas-duration');
 
-if (filterBtns.length > 0 && galleryItems.length > 0) {
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => {
-                b.classList.remove('bg-accent', 'text-secondary');
-                b.classList.add('glass', 'text-muted');
-            });
-            btn.classList.add('bg-accent', 'text-secondary');
-            btn.classList.remove('glass', 'text-muted');
+    if (empty && filled && titleEl && durationEl) {
+      empty.classList.add('hidden');
+      filled.classList.remove('hidden');
+      titleEl.textContent = title;
+      durationEl.textContent = duration;
+      return;
+    }
 
-            const filterValue = btn.getAttribute('data-filter');
-            galleryItems.forEach(item => {
-                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                    item.style.display = 'block';
-                    setTimeout(() => item.style.opacity = '1', 50);
-                } else {
-                    item.style.opacity = '0';
-                    setTimeout(() => item.style.display = 'none', 300);
-                }
-            });
-        });
+    canvas.innerHTML = `
+      <div class="font-medium">${title}</div>
+      <div class="text-xs mt-1 text-muted">${duration}</div>
+    `;
+  });
+}
+
+function populateVoucher(form, ref) {
+  const getValue = (name) => form.querySelector(`[name="${name}"]`)?.value.trim() || '';
+
+  const setText = (id, value) => {
+    document.querySelectorAll(`#${id}`).forEach(el => {
+      el.textContent = value;
     });
+  };
+
+  setText('voucher-ref', ref);
+  setText('voucher-package', getValue('selected_package'));
+  setText('voucher-name', getValue('full_name'));
+  setText('voucher-email', getValue('email'));
+  setText('voucher-phone', getValue('phone'));
+  setText('voucher-org', getValue('organization'));
+  setText('voucher-date', getValue('preferred_date'));
+  setText('voucher-mode', getValue('mode'));
+  setText('voucher-topic', getValue('topic'));
 }
 
-// Three.js Background
+function showVoucher() {
+  document.querySelectorAll('#booking-voucher').forEach(voucher => {
+    voucher.classList.remove('hidden');
+    voucher.style.display = '';
+    voucher.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+}
+
+function initBookingForm(form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validateBookingForm(form)) return;
+
+    const ref = 'AT-' + Math.floor(100000 + Math.random() * 900000);
+    populateVoucher(form, ref);
+    showVoucher();
+    showBookingToast('Your session request has been created.');
+  });
+}
+
+function initAtelier() {
+  document.querySelectorAll('.catalyst-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.catalyst-card').forEach(c => {
+        c.classList.remove('selected', 'package-error');
+      });
+      card.classList.add('selected');
+
+      const title = card.dataset.title;
+      const duration = card.dataset.duration;
+
+      document.querySelectorAll('[name="selected_package"]').forEach(input => {
+        input.value = title;
+      });
+
+      updateLiveCanvas(title, duration);
+    });
+  });
+
+  document.querySelectorAll('#booking-form, #booking-form-blueprint').forEach(form => {
+    initBookingForm(form);
+  });
+}
+
+function resetBookingFormAndVoucher() {
+  document.querySelectorAll('#booking-form, #booking-form-blueprint').forEach(form => {
+    form.reset();
+    clearFormErrors(form);
+  });
+
+  document.querySelectorAll('[name="selected_package"]').forEach(input => {
+    input.value = '';
+  });
+
+  document.querySelectorAll('.catalyst-card').forEach(card => card.classList.remove('selected', 'package-error'));
+
+  document.querySelectorAll('#booking-voucher').forEach(voucher => {
+    voucher.classList.add('hidden');
+    voucher.style.display = 'none';
+  });
+
+  document.querySelectorAll('#live-canvas').forEach(canvas => {
+    const empty = canvas.querySelector('#canvas-empty');
+    const filled = canvas.querySelector('#canvas-filled');
+    if (empty && filled) {
+      empty.classList.remove('hidden');
+      filled.classList.add('hidden');
+      return;
+    }
+    canvas.innerHTML = '<div id="canvas-empty">Select a format above to begin.</div>';
+  });
+}
+
+function printVoucher() {
+  window.print();
+}
+
+function copyVoucherDetails() {
+  const voucher = document.querySelector('#booking-voucher:not(.hidden)');
+  if (!voucher) return;
+
+  const text = [
+    document.querySelector('#voucher-ref')?.textContent,
+    document.querySelector('#voucher-package')?.textContent,
+    document.querySelector('#voucher-name')?.textContent,
+    document.querySelector('#voucher-email')?.textContent,
+    document.querySelector('#voucher-phone')?.textContent,
+  ].filter(Boolean).join('\n');
+
+  navigator.clipboard?.writeText(text).then(() => {
+    showBookingToast('Pass details copied to clipboard.');
+  });
+}
+
+function emailBookingDetails() {
+  const email = document.querySelector('#voucher-email')?.textContent || '';
+  const ref = document.querySelector('#voucher-ref')?.textContent || '';
+  const pkg = document.querySelector('#voucher-package')?.textContent || '';
+  const subject = encodeURIComponent(`Catalyst Atelier Request ${ref}`);
+  const body = encodeURIComponent(`Session: ${pkg}\nReference: ${ref}`);
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+window.resetBookingFormAndVoucher = resetBookingFormAndVoucher;
+window.printVoucher = printVoucher;
+window.copyVoucherDetails = copyVoucherDetails;
+window.emailBookingDetails = emailBookingDetails;
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAtelier();
+});
+
+// Three.js background (kept for visual interest)
 const tCanvas = document.getElementById('three-canvas');
-if(tCanvas && typeof THREE !== 'undefined') {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({canvas: tCanvas, alpha: true, antialias: true});
+if (tCanvas && typeof THREE !== 'undefined') {
+  // minimal three.js setup (kept from original for artistic feel)
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas: tCanvas, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const particles = new THREE.BufferGeometry();
+  const positions = new Float32Array(600 * 3);
+  for (let i = 0; i < positions.length; i++) {
+    positions[i] = (Math.random() - 0.5) * 20;
+  }
+  particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  const material = new THREE.PointsMaterial({ size: 0.05, color: 0x6366f1 });
+  const points = new THREE.Points(particles, material);
+  scene.add(points);
+  camera.position.z = 8;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    points.rotation.y += 0.0005;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  });
+}
 
-    const pCount = 800; // slightly reduced for performance
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(pCount*3);
-    const cols = new Float32Array(pCount*3);
+// Cursor effect (light version)
+const cursorCanvas = document.getElementById('cursor-canvas');
+if (cursorCanvas && window.matchMedia('(pointer: fine)').matches) {
+  const ctx = cursorCanvas.getContext('2d');
+  let x = window.innerWidth / 2, y = window.innerHeight / 2;
+  const particles = [];
 
-    for(let i=0; i<pCount*3; i+=3) {
-        pos[i] = (Math.random()-0.5)*20; pos[i+1] = (Math.random()-0.5)*20; pos[i+2] = (Math.random()-0.5)*20;
+  function resize() {
+    cursorCanvas.width = window.innerWidth;
+    cursorCanvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('mousemove', (e) => {
+    x = e.clientX;
+    y = e.clientY;
+    particles.push({ x, y, life: 20 });
+  });
+
+  function draw() {
+    ctx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+    ctx.fillStyle = 'rgba(99,102,241,0.6)';
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      ctx.globalAlpha = p.life / 20;
+      ctx.fillStyle = '#6366f1';
+      ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      p.life--;
+      if (p.life <= 0) particles.splice(i, 1);
     }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    
-    function updateColors(theme) {
-        for(let i=0; i<pCount*3; i+=3) {
-            if(theme === 'light'){ cols[i]=0/255; cols[i+1]=119/255; cols[i+2]=192/255; }
-            else { cols[i]=0.3+Math.random()*0.4; cols[i+1]=0.6+Math.random()*0.4; cols[i+2]=1.0; }
-        }
-        geo.setAttribute('color', new THREE.BufferAttribute(cols, 3));
-    }
-    updateColors(html.classList.contains('theme-dark') ? 'dark' : 'light');
-
-    const mat = new THREE.PointsMaterial({size: 0.04, vertexColors: true, transparent: true, opacity: 0.6});
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
-    camera.position.z = 5;
-
-    function animThree() {
-        requestAnimationFrame(animThree);
-        points.rotation.x += 0.0005; points.rotation.y += 0.001;
-        renderer.render(scene, camera);
-    }
-    animThree();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    new MutationObserver(() => {
-        updateColors(html.classList.contains('theme-dark') ? 'dark' : 'light');
-    }).observe(html, {attributes:true, attributeFilter:['class']});
+    requestAnimationFrame(draw);
+  }
+  draw();
 }

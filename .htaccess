@@ -1,0 +1,15 @@
+DirectoryIndex index.html
+Options -Indexes
+
+AddType text/css .css
+AddType application/javascript .js
+AddType image/jpeg .jpeg .jpg
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /portfolio/
+
+    # Force trailing slash so relative asset paths resolve correctly
+    RewriteCond %{REQUEST_URI} ^/portfolio$
+    RewriteRule ^ /portfolio/ [R=301,L]
+</IfModule>
