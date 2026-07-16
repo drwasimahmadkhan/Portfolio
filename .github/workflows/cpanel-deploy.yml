@@ -3,8 +3,8 @@ name: Deploy Portfolio to cPanel
 on:
   push:
     branches:
-      - main # Your branch is 'main' for this repo
-  workflow_dispatch: # Keeps the manual run button just in case
+      - main
+  workflow_dispatch:
 
 jobs:
   web-deploy:
@@ -22,5 +22,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
           local_path: './'
-          # This path drops the files directly into the new portfolio subfolder
-          remote_path: '/home/empowertcl/public_html/scentview.pk/portfolio/'
+          remote_path: '/home/sofiaiqbalcom/iwasim.com/'
