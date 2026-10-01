@@ -59,15 +59,69 @@ if (mobileBtn && mobileMenu && navbar) {
   });
 }
 
-// Gallery Filters
-document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.gallery-item').forEach(item => {
-      item.style.display = (filter === 'all' || item.dataset.category === filter) ? '' : 'none';
-    });
+// Gallery slider
+function initGallerySlider() {
+  const slider = document.querySelector('[data-gallery-slider]');
+  const track = document.querySelector('[data-gallery-track]');
+  const prevBtn = document.querySelector('[data-gallery-prev]');
+  const nextBtn = document.querySelector('[data-gallery-next]');
+
+  if (!slider || !track) return;
+
+  const getStep = () => {
+    const slide = track.querySelector('.gallery-slide');
+    if (!slide) return track.clientWidth * 0.8;
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || '12') || 12;
+    return slide.getBoundingClientRect().width + gap;
+  };
+
+  const scrollByStep = (direction) => {
+    track.scrollBy({ left: direction * getStep(), behavior: 'smooth' });
+  };
+
+  prevBtn?.addEventListener('click', () => scrollByStep(-1));
+  nextBtn?.addEventListener('click', () => scrollByStep(1));
+
+  let isDragging = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  track.addEventListener('pointerdown', (event) => {
+    isDragging = true;
+    startX = event.clientX;
+    scrollLeft = track.scrollLeft;
+    track.classList.add('is-dragging');
+    track.setPointerCapture(event.pointerId);
   });
-});
+
+  track.addEventListener('pointermove', (event) => {
+    if (!isDragging) return;
+    const delta = event.clientX - startX;
+    track.scrollLeft = scrollLeft - delta;
+  });
+
+  const endDrag = (event) => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.classList.remove('is-dragging');
+    if (event?.pointerId != null) {
+      try { track.releasePointerCapture(event.pointerId); } catch (_) {}
+    }
+  };
+
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+  track.addEventListener('pointerleave', endDrag);
+
+  document.querySelectorAll('.gallery-slide-image').forEach((img) => {
+    if (img.complete && img.naturalWidth === 0) {
+      img.classList.add('is-missing');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initGallerySlider);
 
 // =====================================================
 // THE ATELIER - Booking
