@@ -59,7 +59,7 @@ if (mobileBtn && mobileMenu && navbar) {
   });
 }
 
-// Gallery slider
+// Gallery slider — infinite loop + autoplay
 function initGallerySlider() {
   const slider = document.querySelector('[data-gallery-slider]');
   const track = document.querySelector('[data-gallery-track]');
@@ -68,27 +68,116 @@ function initGallerySlider() {
 
   if (!slider || !track) return;
 
+  const originals = Array.from(track.querySelectorAll('.gallery-slide'));
+  if (!originals.length) return;
+
+  // Duplicate slides so the strip can wrap seamlessly
+  originals.forEach((slide) => {
+    const clone = slide.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.classList.add('gallery-slide--clone');
+    track.appendChild(clone);
+  });
+
+  const getGap = () => {
+    const styles = window.getComputedStyle(track);
+    return parseFloat(styles.columnGap || styles.gap || '12') || 12;
+  };
+
   const getStep = () => {
     const slide = track.querySelector('.gallery-slide');
     if (!slide) return track.clientWidth * 0.8;
-    const styles = window.getComputedStyle(track);
-    const gap = parseFloat(styles.columnGap || styles.gap || '12') || 12;
-    return slide.getBoundingClientRect().width + gap;
+    return slide.getBoundingClientRect().width + getGap();
+  };
+
+  const getSetWidth = () => {
+    return originals.reduce((sum, slide) => {
+      return sum + slide.getBoundingClientRect().width;
+    }, 0) + getGap() * originals.length;
+  };
+
+  let isJumping = false;
+  let isDragging = false;
+  let isProgrammatic = false;
+  let autoplayTimer = null;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const withoutSmooth = (fn) => {
+    const prev = track.style.scrollBehavior;
+    track.style.scrollBehavior = 'auto';
+    track.classList.add('is-jumping');
+    fn();
+    void track.scrollLeft;
+    track.classList.remove('is-jumping');
+    track.style.scrollBehavior = prev || '';
+  };
+
+  const normalizeLoop = () => {
+    if (isJumping) return;
+    const setWidth = getSetWidth();
+    if (setWidth <= 0) return;
+
+    // Keep scroll inside the first copy; clones make the wrap seamless
+    if (track.scrollLeft >= setWidth - 1) {
+      isJumping = true;
+      withoutSmooth(() => {
+        track.scrollLeft -= setWidth;
+      });
+      isJumping = false;
+    }
   };
 
   const scrollByStep = (direction) => {
-    track.scrollBy({ left: direction * getStep(), behavior: 'smooth' });
+    const setWidth = getSetWidth();
+    const step = getStep();
+    isProgrammatic = true;
+
+    // Going left past the start → jump into the cloned set first
+    if (direction < 0 && track.scrollLeft < step + 1) {
+      withoutSmooth(() => {
+        track.scrollLeft += setWidth;
+      });
+    }
+
+    track.scrollBy({ left: direction * step, behavior: 'smooth' });
+
+    window.setTimeout(() => {
+      normalizeLoop();
+      isProgrammatic = false;
+    }, 480);
   };
 
-  prevBtn?.addEventListener('click', () => scrollByStep(-1));
-  nextBtn?.addEventListener('click', () => scrollByStep(1));
+  const stopAutoplay = () => {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  };
 
-  let isDragging = false;
+  const startAutoplay = () => {
+    if (prefersReducedMotion) return;
+    stopAutoplay();
+    autoplayTimer = window.setInterval(() => {
+      if (isDragging || document.hidden || isProgrammatic) return;
+      scrollByStep(1);
+    }, 2000);
+  };
+
+  prevBtn?.addEventListener('click', () => {
+    scrollByStep(-1);
+    startAutoplay();
+  });
+  nextBtn?.addEventListener('click', () => {
+    scrollByStep(1);
+    startAutoplay();
+  });
+
   let startX = 0;
   let scrollLeft = 0;
 
   track.addEventListener('pointerdown', (event) => {
     isDragging = true;
+    stopAutoplay();
     startX = event.clientX;
     scrollLeft = track.scrollLeft;
     track.classList.add('is-dragging');
@@ -99,6 +188,19 @@ function initGallerySlider() {
     if (!isDragging) return;
     const delta = event.clientX - startX;
     track.scrollLeft = scrollLeft - delta;
+
+    const setWidth = getSetWidth();
+    if (setWidth <= 0) return;
+
+    if (track.scrollLeft >= setWidth) {
+      track.scrollLeft -= setWidth;
+      scrollLeft = track.scrollLeft;
+      startX = event.clientX;
+    } else if (track.scrollLeft <= 0) {
+      track.scrollLeft += setWidth;
+      scrollLeft = track.scrollLeft;
+      startX = event.clientX;
+    }
   });
 
   const endDrag = (event) => {
@@ -108,17 +210,40 @@ function initGallerySlider() {
     if (event?.pointerId != null) {
       try { track.releasePointerCapture(event.pointerId); } catch (_) {}
     }
+    normalizeLoop();
+    startAutoplay();
   };
 
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
   track.addEventListener('pointerleave', endDrag);
 
+  track.addEventListener('scroll', () => {
+    if (!isDragging && !isJumping && !isProgrammatic) normalizeLoop();
+  }, { passive: true });
+
+  slider.addEventListener('mouseenter', stopAutoplay);
+  slider.addEventListener('mouseleave', startAutoplay);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+
+  window.addEventListener('resize', () => {
+    normalizeLoop();
+  });
+
   document.querySelectorAll('.gallery-slide-image').forEach((img) => {
     if (img.complete && img.naturalWidth === 0) {
       img.classList.add('is-missing');
     }
   });
+
+  // Start mid-safe at the real first slide
+  withoutSmooth(() => {
+    track.scrollLeft = 0;
+  });
+  startAutoplay();
 }
 
 document.addEventListener('DOMContentLoaded', initGallerySlider);

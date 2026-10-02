@@ -904,7 +904,8 @@ body:has(.server-required-banner) #navbar {
     display: none;
 }
 
-.gallery-slider-track.is-dragging {
+.gallery-slider-track.is-dragging,
+.gallery-slider-track.is-jumping {
     cursor: grabbing;
     scroll-snap-type: none;
     scroll-behavior: auto;
