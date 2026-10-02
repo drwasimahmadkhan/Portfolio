@@ -39,29 +39,130 @@ function jsonResponse(array $payload, int $status = 200): void
 
 function getCalendarConfig(): array
 {
-    $envPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
-    $env = loadEnv($envPath);
+    $config = getAppConfig();
 
-    $calendarId = $env['Calendar_ID'] ?? '';
-    $apiKey = $env['Calendar-Key'] ?? ($env['Calendar_Key'] ?? '');
-    $webhook = $env['Calendar_Webhook'] ?? ($env['Calendar-Webhook'] ?? '');
-
-    if ($calendarId === '' || $apiKey === '') {
+    if ($config['calendar_id'] === '' || $config['api_key'] === '') {
         jsonResponse([
             'ok' => false,
             'error' => 'Calendar_ID and Calendar-Key must be set in .env',
         ], 500);
     }
 
+    return $config;
+}
+
+function getAppConfig(): array
+{
+    $envPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
+    $env = loadEnv($envPath);
+
     return [
-        'calendar_id' => $calendarId,
-        'api_key' => $apiKey,
-        'calendar_webhook' => $webhook,
+        'calendar_id' => $env['Calendar_ID'] ?? '',
+        'api_key' => $env['Calendar-Key'] ?? ($env['Calendar_Key'] ?? ''),
+        'calendar_webhook' => $env['Calendar_Webhook'] ?? ($env['Calendar-Webhook'] ?? ''),
         'timezone' => $env['Calendar_Timezone'] ?? 'Asia/Karachi',
         'service_account_path' => __DIR__ . DIRECTORY_SEPARATOR . 'service-account.json',
         'bookings_path' => __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'bookings.json',
         'env_path' => $envPath,
+        'admin_user' => $env['Admin_User'] ?? 'admin',
+        'admin_password' => $env['Admin_Password'] ?? '',
+        'payment_email' => $env['Payment_Email'] ?? 'drwasimahmankhan@gmail.com',
+        'mail_from' => $env['Mail_From'] ?? 'noreply@iwasim.com',
+        'mail_from_name' => $env['Mail_From_Name'] ?? 'Dr. Wasim Ahmad Khan — Atelier',
     ];
+}
+
+function getPaymentPackages(): array
+{
+    return [
+        [
+            'id' => '30min',
+            'label' => '30 minutes',
+            'duration_minutes' => 30,
+            'amount' => 3500,
+            'currency' => 'PKR',
+        ],
+        [
+            'id' => '1hour',
+            'label' => '1 hour',
+            'duration_minutes' => 60,
+            'amount' => 5000,
+            'currency' => 'PKR',
+        ],
+        [
+            'id' => '2hours',
+            'label' => '2 hours',
+            'duration_minutes' => 120,
+            'amount' => 7500,
+            'currency' => 'PKR',
+        ],
+    ];
+}
+
+function getBankDetails(array $config = []): array
+{
+    return [
+        'account_title' => 'WASIM AHMAD KHAN',
+        'bank' => 'Meezan Bank',
+        'account_number' => '02500106735016',
+        'iban' => 'PK97MEZN0002500106735016',
+        'screenshot_email' => $config['payment_email'] ?? 'drwasimahmankhan@gmail.com',
+    ];
+}
+
+function findPaymentPackage(string $packageId): ?array
+{
+    foreach (getPaymentPackages() as $package) {
+        if ($package['id'] === $packageId) {
+            return $package;
+        }
+    }
+    return null;
+}
+
+function startAdminSession(): void
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+}
+
+function isAdminAuthenticated(): bool
+{
+    startAdminSession();
+    return !empty($_SESSION['atelier_admin']) && $_SESSION['atelier_admin'] === true;
+}
+
+function requireAdmin(): void
+{
+    if (!isAdminAuthenticated()) {
+        jsonResponse(['ok' => false, 'error' => 'Unauthorized'], 401);
+    }
+}
+
+function getHoldBookings(array $bookings): array
+{
+    $holds = [];
+    foreach ($bookings as $booking) {
+        $status = $booking['status'] ?? '';
+        if (!in_array($status, ['pending', 'awaiting_payment', 'accepted'], true)) {
+            continue;
+        }
+        if ($status === 'accepted' && !empty($booking['google_event_id'])) {
+            continue;
+        }
+        if (empty($booking['start']) || empty($booking['end'])) {
+            continue;
+        }
+        $holds[] = [
+            'id' => $booking['id'] ?? uniqid('l_', true),
+            'title' => $booking['title'] ?? 'Reserved session',
+            'start' => $booking['start'],
+            'end' => $booking['end'],
+            'source' => 'local',
+        ];
+    }
+    return $holds;
 }
 
 function ensureBookingsStore(string $path): bool
