@@ -13,7 +13,7 @@ function loadEnv(string $path): array
 
     foreach ($lines as $line) {
         $line = trim($line);
-        if ($line === '' || str_starts_with($line, '#')) {
+        if ($line === '' || strpos($line, '#') === 0) {
             continue;
         }
 
@@ -205,7 +205,7 @@ function fetchGoogleEventsViaWebhook(string $webhookUrl, string $calendarId, str
         'end' => $end,
     ]);
 
-    $separator = str_contains($webhookUrl, '?') ? '&' : '?';
+    $separator = strpos($webhookUrl, '?') !== false ? '&' : '?';
     $url = $webhookUrl . $separator . $query;
 
     $ch = curl_init($url);
@@ -254,7 +254,9 @@ function fetchGoogleEventsViaApiKey(string $calendarId, string $apiKey, string $
     if ($response['status'] >= 200 && $response['status'] < 300) {
         $items = array_values(array_filter(
             $response['body']['items'] ?? [],
-            static fn(array $event): bool => ($event['status'] ?? 'confirmed') !== 'cancelled'
+            static function (array $event): bool {
+                return ($event['status'] ?? 'confirmed') !== 'cancelled';
+            }
         ));
 
         return [
@@ -382,6 +384,8 @@ function normalizeEvents(array $googleEvents, array $localBookings): array
         ];
     }
 
-    usort($events, fn($a, $b) => strcmp($a['start'], $b['start']));
+    usort($events, function ($a, $b) {
+        return strcmp($a['start'], $b['start']);
+    });
     return $events;
 }
