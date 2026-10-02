@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/config.php';
 
-$config = getCalendarConfig();
+$config = getAppConfig();
 $start = $_GET['start'] ?? gmdate('c');
 $end = $_GET['end'] ?? gmdate('c', strtotime('+60 days'));
 
@@ -13,43 +13,46 @@ $readSource = null;
 $readError = null;
 $readStatus = null;
 
-if (!empty($config['calendar_webhook'])) {
-    $webhookResult = fetchGoogleEventsViaWebhook(
-        $config['calendar_webhook'],
-        $config['calendar_id'],
-        $start,
-        $end
-    );
+if ($config['calendar_id'] !== '' && $config['api_key'] !== '') {
+    if (!empty($config['calendar_webhook'])) {
+        $webhookResult = fetchGoogleEventsViaWebhook(
+            $config['calendar_webhook'],
+            $config['calendar_id'],
+            $start,
+            $end
+        );
 
-    if (!empty($webhookResult['ok'])) {
-        $googleItems = $webhookResult['items'];
-        $readSource = $webhookResult['source'] ?? 'webhook';
-    } else {
-        $readError = $webhookResult['error'] ?? 'Webhook read failed';
-        $readStatus = $webhookResult['status'] ?? null;
+        if (!empty($webhookResult['ok'])) {
+            $googleItems = $webhookResult['items'];
+            $readSource = $webhookResult['source'] ?? 'webhook';
+        } else {
+            $readError = $webhookResult['error'] ?? 'Webhook read failed';
+            $readStatus = $webhookResult['status'] ?? null;
+        }
+    }
+
+    if ($googleItems === [] && $readSource === null) {
+        $apiResult = fetchGoogleEventsViaApiKey(
+            $config['calendar_id'],
+            $config['api_key'],
+            $start,
+            $end
+        );
+
+        if (!empty($apiResult['ok'])) {
+            $googleItems = $apiResult['items'];
+            $readSource = $apiResult['source'] ?? 'api_key';
+            $readStatus = $apiResult['status'] ?? null;
+            $readError = null;
+        } elseif ($readError === null) {
+            $readError = $apiResult['error'] ?? 'Google Calendar read failed';
+            $readStatus = $apiResult['status'] ?? null;
+        }
     }
 }
 
-if ($googleItems === [] && $readSource === null) {
-    $apiResult = fetchGoogleEventsViaApiKey(
-        $config['calendar_id'],
-        $config['api_key'],
-        $start,
-        $end
-    );
-
-    if (!empty($apiResult['ok'])) {
-        $googleItems = $apiResult['items'];
-        $readSource = $apiResult['source'] ?? 'api_key';
-        $readStatus = $apiResult['status'] ?? null;
-        $readError = null;
-    } elseif ($readError === null) {
-        $readError = $apiResult['error'] ?? 'Google Calendar read failed';
-        $readStatus = $apiResult['status'] ?? null;
-    }
-}
-
-$events = normalizeEvents($googleItems, []);
+$localHolds = getHoldBookings(readBookings($config['bookings_path']));
+$events = normalizeEvents($googleItems, $localHolds);
 
 jsonResponse([
     'ok' => true,
@@ -60,4 +63,5 @@ jsonResponse([
     'fetched_at' => gmdate('c'),
     'webhook_configured' => !empty($config['calendar_webhook']),
     'service_account_configured' => is_readable($config['service_account_path']),
+    'local_holds' => count($localHolds),
 ]);

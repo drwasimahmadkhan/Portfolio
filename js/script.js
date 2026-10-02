@@ -601,7 +601,7 @@ function updateSessionTicket() {
 
 window.updateSessionTicket = updateSessionTicket;
 
-function populateVoucher(form, ref) {
+function populateVoucher(form, ref, meta = {}) {
   const getValue = (name) => form.querySelector(`[name="${name}"]`)?.value.trim() || '';
 
   const setText = (id, value) => {
@@ -609,6 +609,10 @@ function populateVoucher(form, ref) {
       el.textContent = value;
     });
   };
+
+  window.__pendingBookingId = ref;
+  window.__paymentPackages = Array.isArray(meta.payment_packages) ? meta.payment_packages : [];
+  window.__bankDetails = meta.bank || {};
 
   setText('voucher-ref', ref);
   setText('voucher-package', getValue('selected_package'));
@@ -625,6 +629,90 @@ function populateVoucher(form, ref) {
   })());
   setText('voucher-mode', getValue('mode'));
   setText('voucher-topic', getValue('topic'));
+  setText('voucher-status', 'AWAITING PAYMENT');
+
+  const bank = window.__bankDetails;
+  setText('voucher-bank-title', bank.account_title || 'WASIM AHMAD KHAN');
+  setText('voucher-bank-name', bank.bank || 'Meezan Bank');
+  setText('voucher-bank-account', bank.account_number || '02500106735016');
+  setText('voucher-bank-iban', bank.iban || 'PK97MEZN0002500106735016');
+
+  const email = bank.screenshot_email || 'drwasimahmankhan@gmail.com';
+  document.querySelectorAll('#voucher-payment-email').forEach((el) => {
+    el.textContent = email;
+    el.setAttribute('href', `mailto:${email}?subject=${encodeURIComponent('Payment screenshot ' + ref)}`);
+  });
+
+  renderPaymentPackages(window.__paymentPackages);
+}
+
+function renderPaymentPackages(packages) {
+  const root = document.getElementById('voucher-payment-packages');
+  const selectedLabel = document.getElementById('voucher-selected-payment');
+  if (!root) return;
+
+  const list = Array.isArray(packages) && packages.length
+    ? packages
+    : [
+        { id: '30min', label: '30 minutes', amount: 3500, currency: 'PKR' },
+        { id: '1hour', label: '1 hour', amount: 5000, currency: 'PKR' },
+        { id: '2hours', label: '2 hours', amount: 7500, currency: 'PKR' },
+      ];
+
+  root.innerHTML = list.map((pkg) => `
+    <button type="button" class="voucher-pay-option" data-payment-package="${pkg.id}">
+      <span class="pay-label">${pkg.label}</span>
+      <span class="pay-amount">${Number(pkg.amount).toLocaleString()} ${pkg.currency || 'PKR'}</span>
+    </button>
+  `).join('');
+
+  if (selectedLabel) {
+    selectedLabel.textContent = 'Choose one package to continue.';
+  }
+
+  root.querySelectorAll('[data-payment-package]').forEach((btn) => {
+    btn.addEventListener('click', () => selectPaymentPackage(btn.dataset.paymentPackage));
+  });
+}
+
+async function selectPaymentPackage(packageId) {
+  const bookingId = window.__pendingBookingId;
+  if (!bookingId || !packageId) return;
+
+  const root = document.getElementById('voucher-payment-packages');
+  const selectedLabel = document.getElementById('voucher-selected-payment');
+  const buttons = root?.querySelectorAll('.voucher-pay-option') || [];
+
+  buttons.forEach((btn) => {
+    btn.classList.toggle('is-selected', btn.dataset.paymentPackage === packageId);
+    btn.disabled = true;
+  });
+
+  try {
+    ensureHttpServer();
+    const response = await fetch('api/select-payment.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        booking_id: bookingId,
+        payment_package_id: packageId,
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Could not save payment package.');
+    }
+
+    const pkg = data.booking || {};
+    if (selectedLabel) {
+      selectedLabel.textContent = `Selected: ${pkg.payment_label} — ${Number(pkg.payment_amount).toLocaleString()} ${pkg.payment_currency || 'PKR'}. Send screenshot to complete.`;
+    }
+    showBookingToast('Package selected. Transfer and email your payment screenshot.');
+  } catch (error) {
+    showBookingToast(error.message || 'Could not save payment package.');
+  } finally {
+    buttons.forEach((btn) => { btn.disabled = false; });
+  }
 }
 
 function showVoucher() {
@@ -644,7 +732,7 @@ function initBookingForm(form) {
     const originalLabel = submitBtn?.innerHTML;
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Scheduling...</span>';
+      submitBtn.innerHTML = '<span>Submitting request...</span>';
     }
 
     const payload = {
@@ -674,23 +762,19 @@ function initBookingForm(form) {
 
       const data = await response.json();
       if (!response.ok || !data.ok) {
-        throw new Error(data.error || 'Unable to book this session.');
+        throw new Error(data.error || 'Unable to submit this request.');
       }
 
       const ref = data.booking_id || ('AT-' + Math.floor(100000 + Math.random() * 900000));
-      populateVoucher(form, ref);
+      populateVoucher(form, ref, data);
       showVoucher();
-      showBookingToast(data.message || 'Your session has been booked.');
+      showBookingToast(data.message || 'Thank you — select a payment package to continue.');
 
       if (typeof window.refreshAtelierCalendar === 'function') {
         window.refreshAtelierCalendar({ force: true });
       }
-
-      if (!data.google_synced && data.sync_error) {
-        console.warn('Google Calendar sync:', data.sync_error);
-      }
     } catch (error) {
-      showBookingToast(error.message || 'Unable to book this session.');
+      showBookingToast(error.message || 'Unable to submit this request.');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -750,6 +834,10 @@ function initAtelier() {
 }
 
 function resetBookingFormAndVoucher() {
+  window.__pendingBookingId = null;
+  window.__paymentPackages = [];
+  window.__bankDetails = {};
+
   document.querySelectorAll('#booking-form, #booking-form-blueprint').forEach(form => {
     form.reset();
     clearFormErrors(form);
@@ -800,16 +888,27 @@ function copyVoucherDetails() {
   const voucher = document.querySelector('#booking-voucher:not(.hidden)');
   if (!voucher) return;
 
+  const bank = window.__bankDetails || {};
   const text = [
-    document.querySelector('#voucher-ref')?.textContent,
-    document.querySelector('#voucher-package')?.textContent,
-    document.querySelector('#voucher-name')?.textContent,
-    document.querySelector('#voucher-email')?.textContent,
-    document.querySelector('#voucher-phone')?.textContent,
-  ].filter(Boolean).join('\n');
+    'Pass ID: ' + (document.querySelector('#voucher-ref')?.textContent || ''),
+    'Session: ' + (document.querySelector('#voucher-package')?.textContent || ''),
+    'Name: ' + (document.querySelector('#voucher-name')?.textContent || ''),
+    '',
+    'Payment packages:',
+    '30 minutes — PKR 3,500',
+    '1 hour — PKR 5,000',
+    '2 hours — PKR 7,500',
+    '',
+    'Account Title: ' + (bank.account_title || document.querySelector('#voucher-bank-title')?.textContent || ''),
+    'Bank: ' + (bank.bank || document.querySelector('#voucher-bank-name')?.textContent || ''),
+    'Account Number: ' + (bank.account_number || document.querySelector('#voucher-bank-account')?.textContent || ''),
+    'IBAN: ' + (bank.iban || document.querySelector('#voucher-bank-iban')?.textContent || ''),
+    '',
+    'Send payment screenshot to: ' + (bank.screenshot_email || 'drwasimahmankhan@gmail.com'),
+  ].filter((line, index, arr) => !(line === '' && arr[index - 1] === '')).join('\n');
 
   navigator.clipboard?.writeText(text).then(() => {
-    showBookingToast('Pass details copied to clipboard.');
+    showBookingToast('Payment details copied to clipboard.');
   });
 }
 

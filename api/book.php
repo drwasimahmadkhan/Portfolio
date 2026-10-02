@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/mailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonResponse(['ok' => false, 'error' => 'Method not allowed'], 405);
@@ -20,8 +21,7 @@ foreach ($required as $field) {
     }
 }
 
-$config = getCalendarConfig();
-$calendarId = $config['calendar_id'];
+$config = getAppConfig();
 $timezone = $payload['timezone'] ?? $config['timezone'];
 $durationMinutes = max(30, (int) ($payload['duration_minutes'] ?? 120));
 
@@ -43,113 +43,63 @@ $endDate->modify('+' . $durationMinutes . ' minutes');
 $startIso = $startDate->format('c');
 $endIso = $endDate->format('c');
 
-$topic = trim((string) ($payload['topic'] ?? ''));
-$participants = trim((string) ($payload['participants'] ?? ''));
-$notes = trim((string) ($payload['additional_notes'] ?? ''));
-
-$summary = trim((string) $payload['selected_package']) . ' — ' . trim((string) $payload['full_name']);
-$descriptionLines = [
-    'Session: ' . $payload['selected_package'],
-    'Name: ' . $payload['full_name'],
-    'Email: ' . $payload['email'],
-    'Phone: ' . $payload['phone'],
-    'Organization: ' . $payload['organization'],
-    'Mode: ' . $payload['mode'],
-];
-
-if ($topic !== '') {
-    $descriptionLines[] = 'Topic: ' . $topic;
-}
-if ($participants !== '') {
-    $descriptionLines[] = 'Participants: ' . $participants;
-}
-if ($notes !== '') {
-    $descriptionLines[] = 'Notes: ' . $notes;
-}
-
-$description = implode("\n", $descriptionLines);
-
-$eventBody = [
-    'summary' => $summary,
-    'description' => $description,
-    'start' => [
-        'dateTime' => $startIso,
-        'timeZone' => $timezone,
-    ],
-    'end' => [
-        'dateTime' => $endIso,
-        'timeZone' => $timezone,
-    ],
-    'attendees' => [
-        ['email' => $payload['email']],
-    ],
-];
-
 $bookingId = 'AT-' . random_int(100000, 999999);
-$googleEventId = null;
-$googleSynced = false;
-$syncMethod = null;
-$syncError = null;
+$now = gmdate('c');
 
-if (!empty($config['calendar_webhook'])) {
-    $webhookResult = createGoogleEventViaWebhook($config['calendar_webhook'], [
-        'calendarId' => $calendarId,
-        'summary' => $summary,
-        'description' => $description,
-        'start' => $startIso,
-        'end' => $endIso,
-        'email' => $payload['email'],
-        'location' => $payload['mode'],
-    ]);
+$booking = [
+    'id' => $bookingId,
+    'status' => 'awaiting_payment',
+    'full_name' => trim((string) $payload['full_name']),
+    'email' => trim((string) $payload['email']),
+    'phone' => trim((string) $payload['phone']),
+    'organization' => trim((string) $payload['organization']),
+    'selected_package' => trim((string) $payload['selected_package']),
+    'preferred_date' => trim((string) $payload['preferred_date']),
+    'preferred_time' => trim((string) $payload['preferred_time']),
+    'mode' => trim((string) $payload['mode']),
+    'topic' => trim((string) ($payload['topic'] ?? '')),
+    'participants' => trim((string) ($payload['participants'] ?? '')),
+    'additional_notes' => trim((string) ($payload['additional_notes'] ?? '')),
+    'timezone' => $timezone,
+    'duration_minutes' => $durationMinutes,
+    'start' => $startIso,
+    'end' => $endIso,
+    'title' => trim((string) $payload['selected_package']) . ' — ' . trim((string) $payload['full_name']),
+    'payment_package_id' => null,
+    'payment_label' => null,
+    'payment_amount' => null,
+    'payment_currency' => 'PKR',
+    'google_event_id' => null,
+    'google_synced' => false,
+    'created_at' => $now,
+    'updated_at' => $now,
+    'accepted_at' => null,
+];
 
-    if (!empty($webhookResult['ok'])) {
-        $googleSynced = true;
-        $googleEventId = $webhookResult['event_id'] ?? null;
-        $syncMethod = 'webhook';
-    } else {
-        $syncError = $webhookResult['error'] ?? 'Webhook sync failed';
-    }
+$bookings = readBookings($config['bookings_path']);
+$bookings[] = $booking;
+
+if (!writeBookings($config['bookings_path'], $bookings)) {
+    jsonResponse(['ok' => false, 'error' => 'Could not save booking request'], 500);
 }
 
-if (!$googleSynced) {
-    $serviceResult = createGoogleEventViaServiceAccount(
-        $calendarId,
-        $config['service_account_path'],
-        $eventBody
-    );
+$bank = getBankDetails($config);
 
-    if (!empty($serviceResult['ok'])) {
-        $googleSynced = true;
-        $googleEventId = $serviceResult['event_id'] ?? null;
-        $syncMethod = 'service_account';
-        $syncError = null;
-    } elseif ($syncError === null) {
-        $syncError = $serviceResult['error'] ?? 'Google sync not configured';
-    }
-}
-
-$message = $googleSynced
-    ? 'Session booked and added to your Google Calendar.'
-    : 'Session could not be added to Google Calendar. Check Calendar_Webhook in .env.';
-
-if (!$googleSynced) {
-    jsonResponse([
-        'ok' => false,
-        'booking_id' => $bookingId,
-        'google_synced' => false,
-        'sync_error' => $syncError,
-        'message' => $message,
-    ], 502);
-}
+$clientMail = sendBookingThankYouEmail($booking, $config);
+$adminMail = sendBookingAdminNotifyEmail($booking, $config);
 
 jsonResponse([
     'ok' => true,
     'booking_id' => $bookingId,
-    'google_synced' => $googleSynced,
-    'google_event_id' => $googleEventId,
-    'sync_method' => $syncMethod,
-    'sync_error' => $syncError,
+    'status' => 'awaiting_payment',
     'start' => $startIso,
     'end' => $endIso,
-    'message' => $message,
+    'google_synced' => false,
+    'payment_packages' => getPaymentPackages(),
+    'bank' => $bank,
+    'mail' => [
+        'client' => $clientMail,
+        'admin' => $adminMail,
+    ],
+    'message' => 'Thank you. Check your email for payment instructions, then send your transfer screenshot.',
 ]);

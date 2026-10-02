@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atelier Admin — Booking Requests</title>
+  <link rel="icon" href="assets/favicon.jpeg">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card: #11131c;
+      --text: #f3f5fb;
+      --muted: #9aa3b8;
+      --accent: #818cf8;
+      --border: #2a2d3c;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --bad: #f87171;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #15182a, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    h1 { font-size: 1.75rem; margin: 0 0 0.35rem; }
+    .sub { color: var(--muted); margin-bottom: 1.75rem; }
+    .card {
+      background: color-mix(in srgb, var(--card) 92%, white 2%);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    label { display: block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+    input, select, button {
+      font: inherit;
+    }
+    input, select {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      color: var(--text);
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 0.9rem;
+    }
+    button {
+      border: none;
+      border-radius: 0.75rem;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    button.danger {
+      background: transparent;
+      border: 1px solid color-mix(in srgb, var(--bad) 50%, var(--border));
+      color: var(--bad);
+    }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .hidden { display: none !important; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .chip {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+    }
+    .chip.active { color: var(--text); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+    .list { display: grid; gap: 0.85rem; }
+    .request {
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+      background: color-mix(in srgb, var(--card) 88%, black 12%);
+    }
+    .request-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .badge.awaiting_payment { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); }
+    .badge.accepted { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--border)); }
+    .badge.rejected { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 45%, var(--border)); }
+    .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.65rem 1rem; font-size: 0.92rem; }
+    .meta span { display: block; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.15rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; align-items: center; }
+    .actions select { width: auto; min-width: 160px; margin: 0; }
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.25rem;
+      transform: translateX(-50%);
+      background: #111;
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      display: none;
+      z-index: 50;
+      max-width: min(90vw, 480px);
+      text-align: center;
+    }
+    .login-wrap { max-width: 420px; margin: 12vh auto 0; }
+    a.home { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+    a.home:hover { color: var(--accent); }
+    .empty { color: var(--muted); padding: 2rem 0; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="login-view" class="login-wrap hidden">
+      <h1>Atelier Admin</h1>
+      <p class="sub">Sign in to review payment requests and accept bookings.</p>
+      <div class="card">
+        <form id="login-form">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button type="submit" style="width:100%">Sign in</button>
+        </form>
+        <p style="margin:1rem 0 0; color:var(--muted); font-size:0.85rem;">
+          Set <code>Admin_User</code> and <code>Admin_Password</code> in your <code>.env</code> file.
+        </p>
+        <p style="margin:0.75rem 0 0;"><a class="home" href="index.html">← Back to site</a></p>
+      </div>
+    </div>
+
+    <div id="dashboard-view" class="hidden">
+      <div class="topbar">
+        <div>
+          <h1>Booking requests</h1>
+          <p class="sub" style="margin:0">Accept only after you verify the payment screenshot.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <a class="home" href="index.html">Site</a>
+          <button type="button" class="secondary" id="logout-btn">Log out</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <button type="button" class="chip active" data-filter="awaiting_payment">Awaiting payment</button>
+        <button type="button" class="chip" data-filter="accepted">Accepted</button>
+        <button type="button" class="chip" data-filter="rejected">Rejected</button>
+        <button type="button" class="chip" data-filter="all">All</button>
+      </div>
+
+      <div id="bookings-list" class="list"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const loginView = document.getElementById('login-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const listEl = document.getElementById('bookings-list');
+    const toastEl = document.getElementById('toast');
+    let bookings = [];
+    let filter = 'awaiting_payment';
+    let packages = [];
+
+    function toast(message) {
+      toastEl.textContent = message;
+      toastEl.style.display = 'block';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toastEl.style.display = 'none'; }, 3200);
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        ...options,
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok === false) {
+        throw new Error(data.error || 'Request failed');
+      }
+      return data;
+    }
+
+    function money(amount, currency = 'PKR') {
+      if (amount == null || amount === '') return '—';
+      return `${Number(amount).toLocaleString()} ${currency}`;
+    }
+
+    function render() {
+      const items = bookings.filter((b) => filter === 'all' ? true : (b.status || '') === filter);
+      if (!items.length) {
+        listEl.innerHTML = '<div class="empty">No requests in this view.</div>';
+        return;
+      }
+
+      listEl.innerHTML = items.map((b) => {
+        const status = b.status || 'awaiting_payment';
+        const canAct = status === 'awaiting_payment' || status === 'pending';
+        const packageOptions = packages.map((p) =>
+          `<option value="${p.id}" ${b.payment_package_id === p.id ? 'selected' : ''}>${p.label} — ${money(p.amount, p.currency)}</option>`
+        ).join('');
+
+        return `
+          <article class="request" data-id="${b.id}">
+            <div class="request-head">
+              <div>
+                <strong>${b.id || ''}</strong>
+                <div style="color:var(--muted); font-size:0.85rem; margin-top:0.2rem;">${b.created_at ? new Date(b.created_at).toLocaleString() : ''}</div>
+              </div>
+              <span class="badge ${status}">${status.replace(/_/g, ' ')}</span>
+            </div>
+            <div class="meta">
+              <div><span>Name</span>${b.full_name || '—'}</div>
+              <div><span>Email</span>${b.email || '—'}</div>
+              <div><span>Phone</span>${b.phone || '—'}</div>
+              <div><span>Organization</span>${b.organization || '—'}</div>
+              <div><span>Session</span>${b.selected_package || '—'}</div>
+              <div><span>Schedule</span>${b.preferred_date || ''} ${b.preferred_time || ''}</div>
+              <div><span>Mode</span>${b.mode || '—'}</div>
+              <div><span>Payment</span>${b.payment_label ? `${b.payment_label} · ${money(b.payment_amount, b.payment_currency)}` : 'Not selected yet'}</div>
+              <div><span>Topic</span>${b.topic || '—'}</div>
+            </div>
+            ${canAct ? `
+              <div class="actions">
+                <select data-package>
+                  <option value="">Payment package</option>
+                  ${packageOptions}
+                </select>
+                <button type="button" data-accept>Accept & create Meet</button>
+                <button type="button" class="danger" data-reject>Reject</button>
+              </div>
+            ` : `
+              <div class="actions">
+                <span style="color:var(--muted); font-size:0.9rem;">
+                  ${b.google_event_id ? `Calendar event: ${b.google_event_id}` : ''}
+                </span>
+              </div>
+            `}
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function loadBookings() {
+      const data = await api('api/admin-bookings.php');
+      bookings = data.bookings || [];
+      packages = data.payment_packages || [];
+      render();
+    }
+
+    async function boot() {
+      try {
+        const session = await api('api/admin-auth.php');
+        if (session.authenticated) {
+          loginView.classList.add('hidden');
+          dashboardView.classList.remove('hidden');
+          await loadBookings();
+        } else {
+          dashboardView.classList.add('hidden');
+          loginView.classList.remove('hidden');
+        }
+      } catch (error) {
+        dashboardView.classList.add('hidden');
+        loginView.classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      try {
+        await api('api/admin-auth.php', {
+          method: 'POST',
+          body: JSON.stringify({ action: 'login', username, password }),
+        });
+        toast('Signed in');
+        await boot();
+      } catch (error) {
+        toast(error.message || 'Login failed');
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await api('api/admin-auth.php', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'logout' }),
+      });
+      bookings = [];
+      await boot();
+    });
+
+    document.querySelectorAll('[data-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-filter]').forEach((el) => el.classList.remove('active'));
+        btn.classList.add('active');
+        filter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    listEl.addEventListener('click', async (event) => {
+      const acceptBtn = event.target.closest('[data-accept]');
+      const rejectBtn = event.target.closest('[data-reject]');
+      if (!acceptBtn && !rejectBtn) return;
+
+      const card = event.target.closest('.request');
+      const bookingId = card?.dataset.id;
+      if (!bookingId) return;
+
+      const packageId = card.querySelector('[data-package]')?.value || '';
+
+      try {
+        if (acceptBtn) {
+          acceptBtn.disabled = true;
+          await api('api/admin-bookings.php', {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'accept',
+              booking_id: bookingId,
+              payment_package_id: packageId || undefined,
+            }),
+          });
+          toast('Accepted — calendar event created');
+        } else {
+          rejectBtn.disabled = true;
+          await api('api/admin-bookings.php', {
+            method: 'POST',
+            body: JSON.stringify({ action: 'reject', booking_id: bookingId }),
+          });
+          toast('Booking rejected');
+        }
+        await loadBookings();
+      } catch (error) {
+        toast(error.message || 'Action failed');
+        await loadBookings();
+      }
+    });
+
+    boot();
+  </script>
+</body>
+</html>

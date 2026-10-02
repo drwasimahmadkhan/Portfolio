@@ -1,6 +1,25 @@
+# Secrets / local config
 .env
+.env.*
+!.env.example
 env
 
+# Calendar / booking private data
 api/service-account.json
 api/data/bookings.json
 !api/data/.gitkeep
+
+# Send-Mail: keep PHPMailer + scripts, hide local secrets/demos
+Send-Mail/.env
+Send-Mail/.env.*
+Send-Mail/index.php
+Send-Mail/*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.tmp
