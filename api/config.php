@@ -9,7 +9,17 @@ function loadEnv(string $path): array
     }
 
     $env = [];
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+    $raw = file_get_contents($path);
+    if ($raw === false) {
+        return [];
+    }
+
+    // Strip UTF-8 BOM if present (common after Windows/cPanel uploads)
+    if (strncmp($raw, "\xEF\xBB\xBF", 3) === 0) {
+        $raw = substr($raw, 3);
+    }
+
+    $lines = preg_split("/\r\n|\n|\r/", $raw) ?: [];
 
     foreach ($lines as $line) {
         $line = trim($line);
@@ -22,10 +32,41 @@ function loadEnv(string $path): array
             continue;
         }
 
-        $env[trim($parts[0])] = trim($parts[1]);
+        $key = trim($parts[0]);
+        $value = trim($parts[1]);
+
+        // Strip surrounding quotes
+        if (
+            strlen($value) >= 2 &&
+            (($value[0] === '"' && substr($value, -1) === '"') ||
+             ($value[0] === "'" && substr($value, -1) === "'"))
+        ) {
+            $value = substr($value, 1, -1);
+        }
+
+        if ($key !== '') {
+            $env[$key] = $value;
+        }
     }
 
     return $env;
+}
+
+function resolveEnvPath(): string
+{
+    $root = dirname(__DIR__);
+    $candidates = [
+        $root . DIRECTORY_SEPARATOR . '.env',
+        $root . DIRECTORY_SEPARATOR . 'env', // cPanel often creates "env" without the leading dot
+    ];
+
+    foreach ($candidates as $path) {
+        if (is_readable($path)) {
+            return $path;
+        }
+    }
+
+    return $candidates[0];
 }
 
 function jsonResponse(array $payload, int $status = 200): void
@@ -44,7 +85,7 @@ function getCalendarConfig(): array
     if ($config['calendar_id'] === '' || $config['api_key'] === '') {
         jsonResponse([
             'ok' => false,
-            'error' => 'Calendar_ID and Calendar-Key must be set in .env',
+            'error' => 'Calendar_ID and Calendar-Key must be set in .env (or env)',
         ], 500);
     }
 
@@ -53,7 +94,7 @@ function getCalendarConfig(): array
 
 function getAppConfig(): array
 {
-    $envPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
+    $envPath = resolveEnvPath();
     $env = loadEnv($envPath);
 
     return [
@@ -64,6 +105,7 @@ function getAppConfig(): array
         'service_account_path' => __DIR__ . DIRECTORY_SEPARATOR . 'service-account.json',
         'bookings_path' => __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'bookings.json',
         'env_path' => $envPath,
+        'env_loaded' => is_readable($envPath),
         'admin_user' => $env['Admin_User'] ?? 'admin',
         'admin_password' => $env['Admin_Password'] ?? '',
         'payment_email' => $env['Payment_Email'] ?? 'drwasimahmankhan@gmail.com',

@@ -490,37 +490,37 @@
                             </div>
 
                             <!-- Thank you + payment -->
-                            <div class="pt-6 space-y-5">
-                                <div class="rounded-2xl border border-accent/25 bg-accent/5 px-4 py-4">
-                                    <div class="text-xs tracking-widest text-accent uppercase font-medium">Thank you</div>
-                                    <p class="text-sm mt-2 text-[#333] dark:text-slate-200 leading-relaxed">
+                            <div class="pt-6 space-y-6 payment-panel">
+                                <div class="rounded-2xl border border-accent/30 bg-accent/10 px-5 py-5">
+                                    <div class="text-sm tracking-[0.18em] text-accent uppercase font-semibold">Thank you</div>
+                                    <p class="text-base sm:text-lg mt-3 text-[#222] dark:text-slate-100 leading-relaxed">
                                         Your request is received. Select a session length below, transfer the matching amount, then email your payment screenshot to
-                                        <a id="voucher-payment-email" href="mailto:drwasimahmankhan@gmail.com" class="text-accent font-medium underline underline-offset-2">drwasimahmankhan@gmail.com</a>
+                                        <a id="voucher-payment-email" href="mailto:drwasimahmankhan@gmail.com" class="text-accent font-semibold underline underline-offset-2">drwasimahmankhan@gmail.com</a>
                                         with your Pass ID. Your Meet is created only after payment is verified.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <div class="flex items-center gap-2 mb-3 text-accent text-sm">
+                                    <div class="flex items-center gap-2 mb-4 text-accent">
                                         <i class="fas fa-tags"></i>
-                                        <span class="uppercase tracking-widest text-xs font-medium">Select payment package</span>
+                                        <span class="uppercase tracking-[0.16em] text-sm font-semibold">Select payment package</span>
                                     </div>
-                                    <div id="voucher-payment-packages" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5"></div>
-                                    <div id="voucher-selected-payment" class="text-xs text-muted mt-2">Choose one package to continue.</div>
+                                    <div id="voucher-payment-packages" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+                                    <div id="voucher-selected-payment" class="text-sm text-muted mt-3">Choose one package to continue.</div>
                                 </div>
 
-                                <div>
-                                    <div class="flex items-center gap-2 mb-2 text-accent text-sm">
+                                <div class="rounded-2xl border border-border/80 bg-[#f8fafc] dark:bg-white/5 px-5 py-5">
+                                    <div class="flex items-center gap-2 mb-4 text-accent">
                                         <i class="fas fa-receipt"></i>
-                                        <span class="uppercase tracking-widest text-xs font-medium">Bank transfer details</span>
+                                        <span class="uppercase tracking-[0.16em] text-sm font-semibold">Bank transfer details</span>
                                     </div>
-                                    <div class="text-xs leading-relaxed text-[#444] dark:text-slate-400 space-y-1">
-                                        <div><strong class="text-[#111] dark:text-white">Account Title:</strong> <span id="voucher-bank-title">WASIM AHMAD KHAN</span></div>
-                                        <div><strong class="text-[#111] dark:text-white">Bank:</strong> <span id="voucher-bank-name">Meezan Bank</span></div>
-                                        <div><strong class="text-[#111] dark:text-white">Account Number:</strong> <span id="voucher-bank-account">02500106735016</span></div>
-                                        <div><strong class="text-[#111] dark:text-white">IBAN:</strong> <span id="voucher-bank-iban">PK97MEZN0002500106735016</span></div>
+                                    <div class="payment-bank-details space-y-2.5 text-[#222] dark:text-slate-100">
+                                        <div><span class="payment-bank-label">Account Title</span><span id="voucher-bank-title" class="payment-bank-value">WASIM AHMAD KHAN</span></div>
+                                        <div><span class="payment-bank-label">Bank</span><span id="voucher-bank-name" class="payment-bank-value">Meezan Bank</span></div>
+                                        <div><span class="payment-bank-label">Account Number</span><span id="voucher-bank-account" class="payment-bank-value">02500106735016</span></div>
+                                        <div><span class="payment-bank-label">IBAN</span><span id="voucher-bank-iban" class="payment-bank-value">PK97MEZN0002500106735016</span></div>
                                     </div>
-                                    <div class="text-[10px] text-muted mt-2">Mention your Pass ID in the transfer notes and screenshot email subject.</div>
+                                    <div class="text-sm text-muted mt-4">Mention your Pass ID in the transfer notes and screenshot email subject.</div>
                                 </div>
                             </div>
                         </div>

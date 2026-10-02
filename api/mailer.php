@@ -13,29 +13,54 @@ function atelierMailerBootstrap(): bool
         return $ready;
     }
 
-    $base = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Send-Mail' . DIRECTORY_SEPARATOR . 'PHPMailer-6.8.0' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
-    $files = [
-        $base . 'Exception.php',
-        $base . 'PHPMailer.php',
-        $base . 'SMTP.php',
+    $candidates = [
+        dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Send-Mail' . DIRECTORY_SEPARATOR . 'PHPMailer-6.8.0' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR,
+        __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'PHPMailer' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR,
     ];
 
-    foreach ($files as $file) {
-        if (!is_readable($file)) {
-            $ready = false;
-            return false;
+    foreach ($candidates as $base) {
+        $files = [
+            $base . 'Exception.php',
+            $base . 'PHPMailer.php',
+            $base . 'SMTP.php',
+        ];
+        $ok = true;
+        foreach ($files as $file) {
+            if (!is_readable($file)) {
+                $ok = false;
+                break;
+            }
         }
-        require_once $file;
+        if (!$ok) {
+            continue;
+        }
+        foreach ($files as $file) {
+            require_once $file;
+        }
+        $ready = true;
+        return true;
     }
 
-    $ready = true;
-    return true;
+    $ready = false;
+    return false;
+}
+
+function logMailAttempt(array $result): void
+{
+    $dir = __DIR__ . DIRECTORY_SEPARATOR . 'data';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+    $line = date('c') . ' ' . json_encode($result) . PHP_EOL;
+    @file_put_contents($dir . DIRECTORY_SEPARATOR . 'mail.log', $line, FILE_APPEND);
 }
 
 function sendAtelierMail(array $options): array
 {
     if (!atelierMailerBootstrap()) {
-        return ['ok' => false, 'error' => 'PHPMailer not found in Send-Mail/PHPMailer-6.8.0'];
+        $result = ['ok' => false, 'error' => 'PHPMailer not found. Upload Send-Mail/PHPMailer-6.8.0 to the server.'];
+        logMailAttempt($result);
+        return $result;
     }
 
     $config = function_exists('getAppConfig') ? getAppConfig() : [];
@@ -49,46 +74,81 @@ function sendAtelierMail(array $options): array
     $replyName = $options['reply_name'] ?? '';
 
     if ($to === '' || $subject === '' || $html === '') {
-        return ['ok' => false, 'error' => 'Missing to/subject/html'];
+        $result = ['ok' => false, 'error' => 'Missing to/subject/html'];
+        logMailAttempt($result);
+        return $result;
     }
 
+    $errors = [];
+
+    // Attempt 1: PHPMailer isMail (hosting sendmail) — same as Send-Mail scripts
     try {
         $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-        // Same transport as Send-Mail: hosting provider mail (sendmail)
         $mail->isMail();
         $mail->CharSet = 'UTF-8';
         $mail->setFrom($fromEmail, $fromName);
         $mail->addAddress($to);
-
         if ($replyTo) {
             $mail->addReplyTo($replyTo, $replyName ?: $replyTo);
         }
-
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $html;
         $mail->AltBody = $text;
         $mail->send();
-
-        return ['ok' => true, 'method' => 'phpmailer_isMail'];
+        $result = ['ok' => true, 'method' => 'phpmailer_isMail', 'to' => $to];
+        logMailAttempt($result);
+        return $result;
     } catch (Throwable $e) {
-        // Fallback to PHP mail() like Send-Mail scripts do
-        $headers = [
-            'MIME-Version: 1.0',
-            'Content-type: text/html; charset=UTF-8',
-            'From: ' . $fromName . ' <' . $fromEmail . '>',
-        ];
-        if ($replyTo) {
-            $headers[] = 'Reply-To: ' . $replyTo;
-        }
-
-        $sent = @mail($to, $subject, $html, implode("\r\n", $headers));
-        if ($sent) {
-            return ['ok' => true, 'method' => 'mail_fallback'];
-        }
-
-        return ['ok' => false, 'error' => $e->getMessage()];
+        $errors[] = 'isMail: ' . $e->getMessage();
     }
+
+    // Attempt 2: PHPMailer isSendmail
+    try {
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        $mail->isSendmail();
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom($fromEmail, $fromName);
+        $mail->addAddress($to);
+        if ($replyTo) {
+            $mail->addReplyTo($replyTo, $replyName ?: $replyTo);
+        }
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $html;
+        $mail->AltBody = $text;
+        $mail->send();
+        $result = ['ok' => true, 'method' => 'phpmailer_isSendmail', 'to' => $to];
+        logMailAttempt($result);
+        return $result;
+    } catch (Throwable $e) {
+        $errors[] = 'isSendmail: ' . $e->getMessage();
+    }
+
+    // Attempt 3: native PHP mail()
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-type: text/html; charset=UTF-8',
+        'From: ' . sprintf('"%s" <%s>', addslashes($fromName), $fromEmail),
+    ];
+    if ($replyTo) {
+        $headers[] = 'Reply-To: ' . $replyTo;
+    }
+
+    $sent = @mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $html, implode("\r\n", $headers));
+    if ($sent) {
+        $result = ['ok' => true, 'method' => 'mail_fallback', 'to' => $to];
+        logMailAttempt($result);
+        return $result;
+    }
+
+    $result = [
+        'ok' => false,
+        'error' => implode(' | ', $errors) ?: 'All mail transports failed',
+        'to' => $to,
+    ];
+    logMailAttempt($result);
+    return $result;
 }
 
 function bookingEmailShell(string $title, string $innerHtml): string

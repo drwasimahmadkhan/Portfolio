@@ -43,7 +43,9 @@ $password = (string) ($payload['password'] ?? '');
 if ($config['admin_password'] === '') {
     jsonResponse([
         'ok' => false,
-        'error' => 'Admin_Password is not set in .env',
+        'error' => 'Admin_Password is not set. On cPanel create a file named ".env" OR "env" in the site root (iwasim.com/) with Admin_User and Admin_Password.',
+        'env_path' => basename((string) ($config['env_path'] ?? '')),
+        'env_loaded' => !empty($config['env_loaded']),
     ], 500);
 }
 
