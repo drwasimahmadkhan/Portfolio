@@ -1,0 +1,5 @@
+# Local secrets only — PHPMailer library IS committed
+.env
+.env.*
+index.php
+*.log
