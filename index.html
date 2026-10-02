@@ -109,7 +109,7 @@
     <!-- DESIGNER NAV -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 md:py-6">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-4">
                 <img src="assets/favicon.jpeg" alt="Dr. Wasim Ahmad Khan" class="w-9 h-9 rounded-2xl object-cover ring-1 ring-white/20">
                 <div>
                     <div class="font-semibold tracking-tight text-lg">Wasim Ahmad Khan</div>
@@ -119,10 +119,11 @@
 
             <div class="flex items-center gap-8 text-sm">
                 <div class="hidden md:flex gap-8 font-medium">
-                    <a href="#about" class="hover:text-accent transition">About</a>
-                    <a href="#work" class="hover:text-accent transition">Work</a>
-                    <a href="#practice" class="hover:text-accent transition">Practice</a>
-                    <a href="#atelier" class="hover:text-accent transition font-medium">The Atelier</a>
+                    <a href="index.html#about" class="hover:text-accent transition">About</a>
+                    <a href="index.html#work" class="hover:text-accent transition">Work</a>
+                    <a href="index.html#practice" class="hover:text-accent transition">Practice</a>
+                    <a href="index.html#gallery" class="hover:text-accent transition">Gallery</a>
+                    <a href="index.html#atelier" class="hover:text-accent transition font-medium">The Atelier</a>
                 </div>
 
                 <button id="theme-toggle" class="text-sm px-4 py-1.5 border border-border rounded-full hover:border-accent transition">Light</button>
@@ -136,11 +137,12 @@
         </div>
 
         <div id="mobile-menu" class="hidden md:hidden mobile-menu-panel px-6 pt-4 pb-6 text-sm space-y-1 border-t border-border/40">
-            <a href="#about" class="mobile-menu-link">About</a>
-            <a href="#work" class="mobile-menu-link">Work</a>
-            <a href="#practice" class="mobile-menu-link">Practice</a>
-            <a href="#atelier" class="mobile-menu-link">The Atelier</a>
-            <a href="#contact" class="mobile-menu-link">Contact</a>
+            <a href="index.html#about" class="mobile-menu-link">About</a>
+            <a href="index.html#work" class="mobile-menu-link">Work</a>
+            <a href="index.html#practice" class="mobile-menu-link">Practice</a>
+            <a href="index.html#gallery" class="mobile-menu-link">Gallery</a>
+            <a href="index.html#atelier" class="mobile-menu-link">The Atelier</a>
+            <a href="index.html#contact" class="mobile-menu-link">Contact</a>
         </div>
     </nav>
 
@@ -160,8 +162,8 @@
                     </div>
 
                     <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row md:justify-center gap-3 sm:gap-4">
-                        <a href="#atelier" class="px-6 sm:px-9 py-3.5 sm:py-4 bg-white text-black rounded-full font-medium text-sm tracking-widest hover:bg-white/90 transition text-center">ENTER THE ATELIER</a>
-                        <a href="#work" class="px-6 sm:px-9 py-3.5 sm:py-4 border border-white/30 hover:border-white/60 rounded-full text-sm tracking-widest transition text-center">VIEW SELECTED WORK</a>
+                        <a href="index.html#atelier" class="px-6 sm:px-9 py-3.5 sm:py-4 bg-white text-black rounded-full font-medium text-sm tracking-widest hover:bg-white/90 transition text-center">ENTER THE ATELIER</a>
+                        <a href="index.html#work" class="px-6 sm:px-9 py-3.5 sm:py-4 border border-white/30 hover:border-white/60 rounded-full text-sm tracking-widest transition text-center">VIEW SELECTED WORK</a>
                     </div>
                 </div>
             </div>
@@ -238,7 +240,7 @@
                         <span class="text-xs tracking-[3px] text-accent">SELECTED WORKS</span>
                         <h2 class="text-6xl tracking-[-2.5px] font-medium">Things I’ve shaped.</h2>
                     </div>
-                    <a href="#atelier" class="hidden md:block text-sm hover:text-accent">View all experiments →</a>
+                    <a href="index.html#atelier" class="hidden md:block text-sm hover:text-accent">View all experiments →</a>
                 </div>
 
                 <div class="grid md:grid-cols-12 gap-5">
@@ -518,48 +520,66 @@
             </div>
         </section>
 
-        <!-- GALLERY — REIMAGINED -->
-        <section id="gallery" class="py-16 px-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="mb-8 flex justify-between items-end">
-                    <div>
-                        <h2 class="text-5xl font-black tracking-tight">Moments in the field.</h2>
-                    </div>
-                    <div class="hidden md:flex gap-2 text-xs">
-                        <button class="gallery-filter-btn px-5 py-2 rounded-full bg-accent text-white" data-filter="all">ALL</button>
-                        <button class="gallery-filter-btn px-5 py-2 rounded-full glass" data-filter="conferences">TALKS</button>
-                        <button class="gallery-filter-btn px-5 py-2 rounded-full glass" data-filter="research">RESEARCH</button>
-                    </div>
-                </div>
+        <!-- GALLERY SLIDER -->
+        <section id="gallery" class="py-20 border-t border-border scroll-mt-28">
+            <div class="max-w-6xl mx-auto px-6 mb-10">
+                <div class="text-xs tracking-[3px] text-accent">GALLERY</div>
+                <h2 class="text-4xl sm:text-5xl font-medium tracking-tight mt-2">Moments from the field.</h2>
+            </div>
 
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="gallery-item relative overflow-hidden rounded-3xl group" data-category="conferences">
-                        <img src="https://picsum.photos/id/1015/700/520" class="w-full aspect-[16/11] object-cover group-hover:scale-105 transition duration-700" alt="Keynote">
-                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/60 to-black/90"></div>
-                        <div class="absolute bottom-0 left-0 p-6 text-white">
-                            <div class="text-[10px] tracking-[2px] opacity-60">KEYNOTE 2023</div>
-                            <div class="font-semibold text-2xl leading-none mt-1">Cognitive Architectures</div>
-                            <div class="text-sm opacity-80 mt-1">International Conference on AI</div>
-                        </div>
-                    </div>
-                    <div class="gallery-item relative overflow-hidden rounded-3xl group" data-category="research">
-                        <img src="https://picsum.photos/id/160/700/520" class="w-full aspect-[16/11] object-cover group-hover:scale-105 transition duration-700" alt="Research lab">
-                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/60 to-black/90"></div>
-                        <div class="absolute bottom-0 left-0 p-6 text-white">
-                            <div class="text-[10px] tracking-[2px] opacity-60">RESEARCH LAB</div>
-                            <div class="font-semibold text-2xl leading-none mt-1">Cloud Robotics</div>
-                            <div class="text-sm opacity-80 mt-1">Rapuyta Framework</div>
-                        </div>
-                    </div>
-                    <div class="gallery-item relative overflow-hidden rounded-3xl group" data-category="research">
-                        <img src="https://picsum.photos/id/201/700/520" class="w-full aspect-[16/11] object-cover group-hover:scale-105 transition duration-700" alt="Agent systems">
-                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/60 to-black/90"></div>
-                        <div class="absolute bottom-0 left-0 p-6 text-white">
-                            <div class="text-[10px] tracking-[2px] opacity-60">PHD RESEARCH</div>
-                            <div class="font-semibold text-2xl leading-none mt-1">Cognitive Agents</div>
-                            <div class="text-sm opacity-80 mt-1">Toward AGI</div>
-                        </div>
-                    </div>
+            <div class="gallery-slider" data-gallery-slider>
+                <button type="button" class="gallery-slider-btn gallery-slider-btn--prev" data-gallery-prev aria-label="Previous images">
+                    <span aria-hidden="true">‹</span>
+                </button>
+                <button type="button" class="gallery-slider-btn gallery-slider-btn--next" data-gallery-next aria-label="Next images">
+                    <span aria-hidden="true">›</span>
+                </button>
+
+                <div class="gallery-slider-track" data-gallery-track>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-1.jpeg" alt="Field moment 1" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-2.jpeg" alt="Field moment 2" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-3.jpeg" alt="Field moment 3" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-4.jpeg" alt="Field moment 4" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-5.jpeg" alt="Field moment 5" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-6.jpeg" alt="Field moment 6" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-7.jpeg" alt="Field moment 7" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-8.jpeg" alt="Field moment 8" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-9.jpeg" alt="Field moment 9" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-10.jpeg" alt="Field moment 10" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
+                    <article class="gallery-slide">
+                        <img src="assets/gallery/gallery-12.jpeg" alt="Field moment 11" class="gallery-slide-image" loading="lazy" onerror="this.classList.add('is-missing')">
+                        <div class="gallery-slide-placeholder" aria-hidden="true"></div>
+                    </article>
                 </div>
             </div>
         </section>
