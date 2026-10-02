@@ -273,10 +273,109 @@ function ensureHttpServer() {
   }
 }
 
+function initCustomSelects(root = document) {
+  root.querySelectorAll('select.js-custom-select').forEach((select) => {
+    if (select.dataset.customized === 'true') return;
+    select.dataset.customized = 'true';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'custom-select';
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'custom-select__trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+
+    const valueEl = document.createElement('span');
+    valueEl.className = 'custom-select__value is-placeholder';
+
+    const chevron = document.createElement('span');
+    chevron.className = 'custom-select__chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+
+    trigger.append(valueEl, chevron);
+
+    const menu = document.createElement('div');
+    menu.className = 'custom-select__menu';
+    menu.setAttribute('role', 'listbox');
+
+    const syncTrigger = () => {
+      const option = select.selectedOptions[0];
+      const label = option?.textContent?.trim() || select.options[0]?.textContent?.trim() || '';
+      valueEl.textContent = label;
+      valueEl.classList.toggle('is-placeholder', !select.value);
+      menu.querySelectorAll('.custom-select__option').forEach((btn) => {
+        btn.classList.toggle('is-selected', btn.dataset.value === select.value);
+      });
+    };
+
+    Array.from(select.options).forEach((option) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'custom-select__option' + (option.value === '' ? ' is-placeholder' : '');
+      btn.dataset.value = option.value;
+      btn.textContent = option.textContent;
+      btn.setAttribute('role', 'option');
+      btn.addEventListener('click', () => {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        select.dispatchEvent(new Event('input', { bubbles: true }));
+        wrapper.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        syncTrigger();
+      });
+      menu.appendChild(btn);
+    });
+
+    select.classList.add('custom-select__native');
+    select.parentNode.insertBefore(wrapper, select);
+    wrapper.append(select, trigger, menu);
+    syncTrigger();
+
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      const willOpen = !wrapper.classList.contains('is-open');
+      document.querySelectorAll('.custom-select.is-open').forEach((el) => {
+        if (el !== wrapper) {
+          el.classList.remove('is-open');
+          el.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+      wrapper.classList.toggle('is-open', willOpen);
+      trigger.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    select.addEventListener('invalid', () => wrapper.classList.add('is-error'));
+    select.addEventListener('change', () => {
+      wrapper.classList.remove('is-error');
+      syncTrigger();
+    });
+  });
+
+  if (!initCustomSelects._bound) {
+    initCustomSelects._bound = true;
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('.custom-select')) return;
+      document.querySelectorAll('.custom-select.is-open').forEach((el) => {
+        el.classList.remove('is-open');
+        el.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      document.querySelectorAll('.custom-select.is-open').forEach((el) => {
+        el.classList.remove('is-open');
+        el.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+}
+
 function clearFormErrors(form) {
   form.querySelectorAll('.booking-input-error').forEach(el => el.classList.remove('booking-input-error'));
-  document.querySelectorAll('.catalyst-card.package-error').forEach(card => card.classList.remove('package-error'));
   document.getElementById('preferred-date-trigger')?.classList.remove('booking-input-error');
+  form.querySelectorAll('.custom-select.is-error').forEach(el => el.classList.remove('is-error'));
 }
 
 function validateBookingForm(form) {
@@ -288,13 +387,15 @@ function validateBookingForm(form) {
 
   if (!selectedPackage) {
     valid = false;
-    document.querySelectorAll('.catalyst-card').forEach(card => card.classList.add('package-error'));
+    packageInput?.classList.add('booking-input-error');
+    packageInput?.closest('.custom-select')?.classList.add('is-error');
   }
 
   form.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
     if (!field.value.trim()) {
       valid = false;
       field.classList.add('booking-input-error');
+      field.closest('.custom-select')?.classList.add('is-error');
     }
   });
 
@@ -311,12 +412,70 @@ function validateBookingForm(form) {
   }
 
   if (!valid) {
-    showBookingToast('Please select a session format and complete all required fields.');
-    const firstInvalid = form.querySelector('.booking-input-error') || document.querySelector('.catalyst-card.package-error');
+    showBookingToast('Please select a session type and complete all required fields.');
+    const firstInvalid = form.querySelector('.custom-select.is-error .custom-select__trigger, .booking-input-error');
     firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   return valid;
+}
+
+const SESSION_PACKAGES = {
+  'AI Awareness Talk': {
+    id: 'awareness-talk',
+    duration: '1–2 hours',
+    durationMinutes: '120',
+    vision: 'An inspiring ignition for curious minds. Plant the seeds of possibility.',
+  },
+  'Generative AI Workshop': {
+    id: 'genai-workshop',
+    duration: '2–4 hours',
+    durationMinutes: '180',
+    vision: 'Hands-on creation. Build real tools, break assumptions, leave with working prototypes.',
+  },
+  'Corporate AI Training': {
+    id: 'corporate-training',
+    duration: 'Half / Full day',
+    durationMinutes: '480',
+    vision: 'Transform how entire teams think. Strategic depth + practical capability in one powerful day.',
+  },
+  'AI Consultancy Session': {
+    id: 'consultancy',
+    duration: '60–120 min',
+    durationMinutes: '90',
+    vision: 'High-signal advisory. Architecture, strategy, and clarity when it matters most.',
+  },
+  'Custom Session': {
+    id: 'custom-session',
+    duration: 'Flexible',
+    durationMinutes: '120',
+    vision: 'You bring the challenge. We invent the format together.',
+  },
+};
+
+function applySelectedPackage(selectEl) {
+  const option = selectEl?.selectedOptions?.[0];
+  const title = selectEl?.value.trim() || '';
+  const meta = SESSION_PACKAGES[title] || {};
+
+  const packageId = option?.dataset.packageId || meta.id || '';
+  const duration = option?.dataset.duration || meta.duration || '';
+  const durationMinutes = option?.dataset.durationMinutes || meta.durationMinutes || '120';
+  const vision = option?.dataset.vision || meta.vision || '';
+
+  const packageIdInput = document.getElementById('selected_package_id');
+  if (packageIdInput) packageIdInput.value = packageId;
+
+  const durationInput = document.getElementById('duration_minutes');
+  if (durationInput) durationInput.value = durationMinutes;
+
+  updateLiveCanvas({
+    dataset: {
+      title,
+      duration,
+      vision,
+    },
+  });
 }
 
 function updateLiveCanvas(card) {
@@ -335,6 +494,9 @@ function updateLiveCanvas(card) {
       if (title) {
         empty.classList.add('hidden');
         filled.classList.remove('hidden');
+      } else {
+        empty.classList.remove('hidden');
+        filled.classList.add('hidden');
       }
       titleEl.textContent = title;
       durationEl.textContent = duration;
@@ -373,9 +535,11 @@ function updateSessionTicket() {
 
   const getValue = (name) => form.querySelector(`[name="${name}"]`)?.value.trim() || '';
   const packageName = getValue('selected_package');
-  const selectedCard = document.querySelector('.catalyst-card.selected');
-  const duration = selectedCard?.dataset?.duration || '';
-  const vision = selectedCard?.dataset?.vision || getValue('topic');
+  const packageMeta = SESSION_PACKAGES[packageName] || {};
+  const packageSelect = form.querySelector('[name="selected_package"]');
+  const selectedOption = packageSelect?.selectedOptions?.[0];
+  const duration = selectedOption?.dataset.duration || packageMeta.duration || '';
+  const vision = selectedOption?.dataset.vision || packageMeta.vision || getValue('topic');
 
   const canvas = document.getElementById('live-canvas');
   const empty = canvas?.querySelector('#canvas-empty');
@@ -548,33 +712,17 @@ function initAtelier() {
     }, 250);
   };
 
-  document.querySelectorAll('.catalyst-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.catalyst-card').forEach(c => {
-        c.classList.remove('selected', 'package-error');
-      });
-      card.classList.add('selected');
-
-      const title = card.dataset.title;
-      const durationMinutes = card.dataset.durationMinutes || '120';
-
-      document.querySelectorAll('[name="selected_package"]').forEach(input => {
-        input.value = title;
-      });
-
-      const packageIdInput = document.getElementById('selected_package_id');
-      if (packageIdInput) packageIdInput.value = card.dataset.packageId || '';
-
-      const durationInput = document.getElementById('duration_minutes');
-      if (durationInput) durationInput.value = durationMinutes;
-
-      updateLiveCanvas(card);
-    });
-  });
-
   const blueprintForm = document.getElementById('booking-form-blueprint');
   if (blueprintForm) {
+    initCustomSelects(blueprintForm);
     initBookingForm(blueprintForm);
+
+    const packageSelect = blueprintForm.querySelector('[name="selected_package"]');
+    packageSelect?.addEventListener('change', () => {
+      applySelectedPackage(packageSelect);
+      scheduleCalendarRefresh();
+    });
+
     blueprintForm.querySelectorAll('input, select, textarea, button').forEach((field) => {
       field.addEventListener('input', updateSessionTicket);
       field.addEventListener('change', updateSessionTicket);
@@ -605,13 +753,21 @@ function resetBookingFormAndVoucher() {
   document.querySelectorAll('#booking-form, #booking-form-blueprint').forEach(form => {
     form.reset();
     clearFormErrors(form);
+    form.querySelectorAll('select.js-custom-select').forEach((select) => {
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
   });
 
   document.querySelectorAll('[name="selected_package"]').forEach(input => {
     input.value = '';
   });
 
-  document.querySelectorAll('.catalyst-card').forEach(card => card.classList.remove('selected', 'package-error'));
+  document.querySelectorAll('[name="selected_package_id"]').forEach(input => {
+    input.value = '';
+  });
+
+  const durationInput = document.getElementById('duration_minutes');
+  if (durationInput) durationInput.value = '120';
 
   document.querySelectorAll('#booking-voucher').forEach(voucher => {
     voucher.classList.add('hidden');
