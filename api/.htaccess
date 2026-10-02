@@ -2,7 +2,7 @@
     Require all granted
 </IfModule>
 
-<FilesMatch "^(service-account\.json|\.htaccess)$">
+<FilesMatch "^(service-account\.json|\.htaccess|admin\.env|\.env|env)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>

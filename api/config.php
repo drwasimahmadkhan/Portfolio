@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 function loadEnv(string $path): array
 {
-    if (!is_readable($path)) {
+    if ($path === '' || !file_exists($path)) {
         return [];
     }
 
-    $env = [];
-    $raw = file_get_contents($path);
-    if ($raw === false) {
+    $raw = @file_get_contents($path);
+    if ($raw === false || $raw === '') {
         return [];
     }
 
@@ -19,12 +18,21 @@ function loadEnv(string $path): array
         $raw = substr($raw, 3);
     }
 
+    $env = [];
     $lines = preg_split("/\r\n|\n|\r/", $raw) ?: [];
 
     foreach ($lines as $line) {
         $line = trim($line);
+        // Remove UTF-8 BOM / weird spaces on a per-line basis too
+        $line = preg_replace('/^\xEF\xBB\xBF/u', '', $line);
+        $line = trim($line, " \t\n\r\0\x0B\xC2\xA0");
+
         if ($line === '' || strpos($line, '#') === 0) {
             continue;
+        }
+
+        if (stripos($line, 'export ') === 0) {
+            $line = trim(substr($line, 7));
         }
 
         $parts = explode('=', $line, 2);
@@ -32,8 +40,8 @@ function loadEnv(string $path): array
             continue;
         }
 
-        $key = trim($parts[0]);
-        $value = trim($parts[1]);
+        $key = trim($parts[0], " \t\n\r\0\x0B\xC2\xA0\"'");
+        $value = trim($parts[1], " \t\n\r\0\x0B\xC2\xA0");
 
         // Strip surrounding quotes
         if (
@@ -52,21 +60,91 @@ function loadEnv(string $path): array
     return $env;
 }
 
-function resolveEnvPath(): string
+function envCandidatePaths(): array
 {
-    $root = dirname(__DIR__);
-    $candidates = [
-        $root . DIRECTORY_SEPARATOR . '.env',
-        $root . DIRECTORY_SEPARATOR . 'env', // cPanel often creates "env" without the leading dot
-    ];
+    $roots = [];
 
-    foreach ($candidates as $path) {
-        if (is_readable($path)) {
-            return $path;
+    // Lowest priority first — later files override earlier ones when merged
+    if (!empty($_SERVER['DOCUMENT_ROOT'])) {
+        $docRoot = rtrim((string) $_SERVER['DOCUMENT_ROOT'], "/\\");
+        $parent = dirname($docRoot);
+        if ($parent && $parent !== $docRoot) {
+            $roots[] = $parent;
+        }
+        $roots[] = $docRoot;
+    }
+
+    $roots[] = dirname(__DIR__); // site root next to index.html
+    $roots[] = __DIR__;          // api/ folder (highest among candidates)
+
+    $roots = array_values(array_unique(array_filter($roots)));
+    $names = ['.env', 'env', '.env.local', 'env.txt'];
+    $paths = [];
+
+    foreach ($roots as $root) {
+        foreach ($names as $name) {
+            $paths[] = $root . DIRECTORY_SEPARATOR . $name;
         }
     }
 
-    return $candidates[0];
+    return $paths;
+}
+
+function resolveEnvPath(): string
+{
+    foreach (envCandidatePaths() as $path) {
+        if (file_exists($path) && is_file($path)) {
+            $probe = @file_get_contents($path, false, null, 0, 8);
+            if ($probe !== false) {
+                return $path;
+            }
+        }
+    }
+
+    return dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
+}
+
+function loadAllEnvFiles(): array
+{
+    $merged = [];
+    $used = [];
+
+    foreach (envCandidatePaths() as $path) {
+        if (!file_exists($path) || !is_file($path)) {
+            continue;
+        }
+        $chunk = loadEnv($path);
+        if ($chunk === []) {
+            continue;
+        }
+        $merged = array_merge($merged, $chunk);
+        $used[] = $path;
+    }
+
+    $adminEnvPath = __DIR__ . DIRECTORY_SEPARATOR . 'admin.env';
+    if (file_exists($adminEnvPath)) {
+        $chunk = loadEnv($adminEnvPath);
+        if ($chunk !== []) {
+            $merged = array_merge($merged, $chunk);
+            $used[] = $adminEnvPath;
+        }
+    }
+
+    return [
+        'env' => $merged,
+        'paths' => $used,
+        'primary' => $used[0] ?? (dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env'),
+    ];
+}
+
+function envValue(array $env, array $keys, string $default = ''): string
+{
+    foreach ($keys as $key) {
+        if (isset($env[$key]) && trim((string) $env[$key]) !== '') {
+            return trim((string) $env[$key]);
+        }
+    }
+    return $default;
 }
 
 function jsonResponse(array $payload, int $status = 200): void
@@ -94,24 +172,35 @@ function getCalendarConfig(): array
 
 function getAppConfig(): array
 {
-    $envPath = resolveEnvPath();
-    $env = loadEnv($envPath);
+    static $cached = null;
+    if (is_array($cached)) {
+        return $cached;
+    }
 
-    return [
-        'calendar_id' => $env['Calendar_ID'] ?? '',
-        'api_key' => $env['Calendar-Key'] ?? ($env['Calendar_Key'] ?? ''),
-        'calendar_webhook' => $env['Calendar_Webhook'] ?? ($env['Calendar-Webhook'] ?? ''),
-        'timezone' => $env['Calendar_Timezone'] ?? 'Asia/Karachi',
+    $loaded = loadAllEnvFiles();
+    $env = $loaded['env'];
+    $envPath = $loaded['primary'];
+
+    $cached = [
+        'calendar_id' => envValue($env, ['Calendar_ID', 'CalendarId', 'CALENDAR_ID']),
+        'api_key' => envValue($env, ['Calendar-Key', 'Calendar_Key', 'CalendarKey', 'CALENDAR_KEY']),
+        'calendar_webhook' => envValue($env, ['Calendar_Webhook', 'Calendar-Webhook', 'CALENDAR_WEBHOOK']),
+        'timezone' => envValue($env, ['Calendar_Timezone', 'Calendar-Timezone', 'TIMEZONE'], 'Asia/Karachi'),
         'service_account_path' => __DIR__ . DIRECTORY_SEPARATOR . 'service-account.json',
         'bookings_path' => __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'bookings.json',
         'env_path' => $envPath,
-        'env_loaded' => is_readable($envPath),
-        'admin_user' => $env['Admin_User'] ?? 'admin',
-        'admin_password' => $env['Admin_Password'] ?? '',
-        'payment_email' => $env['Payment_Email'] ?? 'drwasimahmankhan@gmail.com',
-        'mail_from' => $env['Mail_From'] ?? 'noreply@iwasim.com',
-        'mail_from_name' => $env['Mail_From_Name'] ?? 'Dr. Wasim Ahmad Khan — Atelier',
+        'env_paths' => $loaded['paths'],
+        'env_loaded' => $env !== [],
+        'env_keys' => array_keys($env),
+        'has_admin_password_key' => envValue($env, ['Admin_Password', 'AdminPassword', 'ADMIN_PASSWORD']) !== '',
+        'admin_user' => envValue($env, ['Admin_User', 'AdminUser', 'ADMIN_USER'], 'admin'),
+        'admin_password' => envValue($env, ['Admin_Password', 'AdminPassword', 'ADMIN_PASSWORD']),
+        'payment_email' => envValue($env, ['Payment_Email', 'PaymentEmail', 'PAYMENT_EMAIL'], 'drwasimahmankhan@gmail.com'),
+        'mail_from' => envValue($env, ['Mail_From', 'MailFrom', 'MAIL_FROM'], 'noreply@iwasim.com'),
+        'mail_from_name' => envValue($env, ['Mail_From_Name', 'MailFromName', 'MAIL_FROM_NAME'], 'Dr. Wasim Ahmad Khan — Atelier'),
     ];
+
+    return $cached;
 }
 
 function getPaymentPackages(): array

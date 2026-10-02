@@ -41,11 +41,15 @@ $username = trim((string) ($payload['username'] ?? ''));
 $password = (string) ($payload['password'] ?? '');
 
 if ($config['admin_password'] === '') {
+    $keys = implode(', ', $config['env_keys'] ?? []);
+    $paths = implode(' | ', array_map('basename', $config['env_paths'] ?? []));
     jsonResponse([
         'ok' => false,
-        'error' => 'Admin_Password is not set. On cPanel create a file named ".env" OR "env" in the site root (iwasim.com/) with Admin_User and Admin_Password.',
-        'env_path' => basename((string) ($config['env_path'] ?? '')),
+        'error' => 'Admin_Password missing from loaded env. Upload api/admin.env (see api/admin.env.example) OR add Admin_Password to the .env next to index.html. Loaded files: '
+            . ($paths !== '' ? $paths : 'none')
+            . '. Keys found: ' . ($keys !== '' ? $keys : 'none'),
         'env_loaded' => !empty($config['env_loaded']),
+        'has_admin_password_key' => !empty($config['has_admin_password_key']),
     ], 500);
 }
 

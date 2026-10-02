@@ -4,6 +4,7 @@
 !.env.example
 env
 **/env
+api/admin.env
 
 # Calendar / booking private data
 api/service-account.json
