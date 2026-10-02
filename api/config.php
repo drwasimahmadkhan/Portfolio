@@ -130,6 +130,20 @@ function loadAllEnvFiles(): array
         }
     }
 
+    // Guaranteed deployable credentials (committed PHP file → always lands on iwasim.com via FTP)
+    $credPath = __DIR__ . DIRECTORY_SEPARATOR . 'admin-credentials.php';
+    if (is_readable($credPath)) {
+        $creds = include $credPath;
+        if (is_array($creds)) {
+            foreach ($creds as $key => $value) {
+                if (is_string($key) && is_scalar($value) && trim((string) $value) !== '') {
+                    $merged[$key] = trim((string) $value);
+                }
+            }
+            $used[] = $credPath;
+        }
+    }
+
     return [
         'env' => $merged,
         'paths' => $used,
